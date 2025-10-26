@@ -54,6 +54,11 @@
   popupDate.value = true;
   dateTab.value = "date";
 };
+
+  //registation popup
+  const showPopup = ref(false);
+  const activeTAB = ref("phone"); // default tab
+
   const closeDate = () => (popupDate.value = false);
 
   const selectedDates = ref([]); // store up to 2 selected dates
@@ -220,8 +225,44 @@
 }
 };
 
-  onMounted(() => document.addEventListener("click", handleClickOutside));
-  onBeforeUnmount(() => document.removeEventListener("click", handleClickOutside));
+  onMounted(() => {
+    document.addEventListener("click", handleClickOutside);
+  });
+  onBeforeUnmount(() => {
+    document.removeEventListener("click", handleClickOutside);
+  });
+
+  // ✅ Reactive state for popup visibility
+  const showLogin = ref(false)
+
+  // ✅ Close popup
+  function closeLoginPopup() {
+    showLogin.value = false
+  }
+
+  // ✅ Handle continue button
+  function handleContinue() {
+    alert('Continue clicked (demo)')
+    closeLoginPopup()
+  }
+
+
+
+
+  // Host popup
+  const showHost = ref(false)
+
+  function closeHostPopup (){
+    showHost.value = false;
+  }
+
+  function handleContinueHost(){
+    alert('Continue clicked (demo)')
+    closeHostPopup()
+  }
+
+
+
 
 </script>
 
@@ -296,22 +337,147 @@
   </div>
 
 
-
   <!-- === DROPDOWN === -->
   <div class="dropdown" id="dropdown-menu" :class="{ active: dropdownActive }">
     <RouterLink to="#" class="dropdown-item"><strong>Help Center</strong></RouterLink>
     <div class="divider"></div>
-    <RouterLink to="#" class="dropdown-item">
+    <RouterLink to="#" class="dropdown-item" @click.prevent="showHost = true">
       <strong>{{ props.be_host }}</strong>
       <span>It's easy to start hosting and earn extra income.</span>
     </RouterLink>
     <div class="divider"></div>
     <RouterLink to="#" class="dropdown-item">Refer a Host</RouterLink>
     <RouterLink to="#" class="dropdown-item" >Find a co-host</RouterLink>
-    <RouterLink to="#" class="dropdown-item">Gift cards</RouterLink>
     <div class="divider"></div>
-    <RouterLink to="#" class="dropdown-item">Log in or sign up</RouterLink>
+    <RouterLink to="#" class="dropdown-item" @click.prevent="showLogin = true"
+    >
+      Log in or sign up
+    </RouterLink>
   </div>
+
+
+  <!--HOST POPUP -->
+  <div v-if="showHost" class="host-overlay">
+    <div class="host-popup">
+      <button class="host-close-btn" @click="closeHostPopup">&times;</button>
+      <h2 class="host-popup-title">What would you like to host?</h2>
+
+      <div class="host-options">
+        <div class="host-card">
+          <img src="https://img.icons8.com/emoji/96/house-emoji.png" alt="Home">
+          <p>Home</p>
+        </div>
+        <div class="host-card">
+          <img src="https://img.icons8.com/emoji/96/hot-air-balloon.png" alt="Experience">
+          <p>Experience</p>
+        </div>
+        <div class="host-card">
+          <img src="https://img.icons8.com/emoji/96/bellhop-bell.png" alt="Service">
+          <p>Service</p>
+        </div>
+      </div>
+
+      <button class="host-next-btn" @click="handleContinueHost">Next</button>
+    </div>
+  </div>
+
+
+
+  <!---LOG IN POPUP -->
+  <div
+      v-if="showLogin"
+      id="login-overlay"
+      class="overlay"
+      aria-hidden="false"
+      role="dialog"
+      aria-modal="true"
+      @click.self="closeLoginPopup"
+  >
+    <div class="popup" role="document" aria-labelledby="popup-title">
+      <!-- Close button -->
+      <button
+          class="close-btn"
+          id="close-login"
+          aria-label="Close popup"
+          @click="closeLoginPopup"
+      >
+        ✕
+      </button>
+
+      <!-- Tabs -->
+      <div class="tabs" role="tablist" style="margin-top:8px;">
+        <button class="active" role="tab" aria-selected="true">Log in</button>
+      </div>
+
+      <!-- Main grid -->
+      <div class="login-grid" style="margin-top:8px;">
+        <!-- left column -->
+        <div class="login-left">
+          <h2 id="popup-title">Welcome to Brand</h2>
+
+          <label class="label" for="country">Country code</label>
+          <select id="country" class="select country-select" aria-label="Country code">
+            <option value="+421">Slovakia (+421)</option>
+            <option value="+1">United States (+1)</option>
+            <option value="+44">United Kingdom (+44)</option>
+          </select>
+
+          <label class="label" for="phone">Phone number</label>
+          <input
+              id="phone"
+              class="phone-input"
+              type="tel"
+              placeholder="Phone number"
+              aria-label="Phone"
+          />
+
+          <p style="color:var(--muted); font-size:13px; margin-bottom:12px;">
+            We’ll call or text you to confirm your number. Standard message and data rates apply.
+            <a href="#" style="color:var(--accent)">Privacy Policy</a>
+          </p>
+
+          <button
+              class="continue-btn"
+              id="continue-login"
+              @click="handleContinue"
+          >
+            Continue
+          </button>
+
+          <div class="or-row" aria-hidden="true" style="margin-top:18px;">or</div>
+
+          <div>
+            <button class="social-btn" aria-label="Continue with Google">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path
+                    d="M21 12.2c0-.68-.06-1.32-.18-1.95H12v3.7h5.6c-.24 1.3-.97 2.42-2.06 3.16v2.6h3.34C19.67 18.2 21 15.5 21 12.2z"
+                    fill="#4285F4"
+                />
+              </svg>
+              Continue with Google
+            </button>
+
+            <button class="social-btn" aria-label="Continue with Apple">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path
+                    d="M16 1.2c0 .9-.3 1.9-.8 2.7-.4.6-1 1.3-1.7 1.3-.1 0-.2-.1-.3-.2-.9-.8-1.9-1.1-3.1-.9-1.2.2-2.5.9-3.3 1.9-.9 1.1-1.2 2.5-1.1 3.8.1 1.3.5 2.6 1.2 3.6.6.9 1.6 1.8 2.6 1.8.6 0 1.2-.2 1.8-.6.6-.3 1.1-.8 1.6-1.4.2-.2.5-.3.8-.2.5.1 1 .5 1.1 1.1.2.9.6 1.7 1.2 2.4 1 .9 2.3.8 3.3.1.1-.1.2-.2.3-.3-1.6-1.3-2.8-3.5-3-6-.1-1.1.1-2.1.6-3 .8-1.6 2.6-1.6 3.8-1.1-.4-.6-1-1-1.6-1.4-.8-.5-1.6-.9-2.6-1-.4-.1-.9 0-1.3.1z"
+                    fill="#fff"
+                />
+              </svg>
+              Continue with Apple
+            </button>
+
+            <button class="social-btn" aria-label="Continue with email">Continue with email</button>
+            <button class="social-btn" aria-label="Continue with Facebook">Continue with Facebook</button>
+          </div>
+        </div>
+
+        </div>
+    </div>
+  </div>
+
+
+
 
   <div class="where_overlay" v-show="popupWhere" @click.self="closeWhere">
     <div class="wherePopup">
@@ -499,11 +665,6 @@
   </div>
 
 
-
-
-
-
-
   <!-- === GUESTS POPUP === -->
   <div class="guest_overlay" v-show="popupGuests" @click.self="closeGuests">
     <div class="guests-popup">
@@ -532,6 +693,9 @@
       </div>
     </div>
   </div>
+
+
+
 
 
 
