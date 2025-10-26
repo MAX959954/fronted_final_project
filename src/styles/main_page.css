@@ -1,0 +1,382 @@
+/* Added global section padding */
+
+.offers-section,
+.trip-planner,
+.property-types,
+.explore-section,
+.trending-section {
+    max-width: 1300px;    /* limits total width */
+    margin: 0 auto;       /* centers the section */
+    padding: 40px 60px;   /* inner space */
+}
+
+
+.offers-section {
+    padding: 40px 80px;
+    background-color: #121212;
+    color: #fff;
+}
+
+.offers-section h2 {
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.offers-section p {
+    font-size: 16px;
+    color: #b3b3b3;
+    margin-bottom: 32px;
+}
+
+.offers-cards {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 60px;
+}
+
+.card {
+    background: linear-gradient(135deg, #282828 0%, #333 100%);
+    border-radius: 16px;
+    padding: 24px;
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+    color: #fff;
+    border: 1px solid #333;
+    transition: border-color 0.2s ease;
+}
+
+.card:hover {
+    border-color: #1db954;
+}
+
+.card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 200px;
+    background-size: cover;
+    background-position: center;
+    opacity: 0.8;
+}
+
+.late-escape::before {
+    background-image: url('https://via.placeholder.com/600x200/FF6B35/FFFFFF?text=Late+Escape+Sunset');
+}
+
+.holiday-rentals::before {
+    background-image: url('https://via.placeholder.com/600x200/4ECDC4/FFFFFF?text=Holiday+Home');
+}
+
+.card h3 {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 8px;
+    position: relative;
+    z-index: 1;
+}
+
+.card p {
+    font-size: 14px;
+    color: #b3b3b3;
+    margin-bottom: 16px;
+    position: relative;
+    z-index: 1;
+}
+
+.card button {
+    background: #1db954;
+    color: #fff;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    position: relative;
+    z-index: 1;
+}
+
+.card button:hover {
+    background: #1ed760;
+}
+
+.trip-planner {
+    padding: 0 80px 40px;
+    background-color: #121212;
+    color: #fff;
+}
+
+.trip-planner h2 {
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.trip-planner p {
+    font-size: 16px;
+    color: #b3b3b3;
+    margin-bottom: 32px;
+}
+
+.vibes {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 32px;
+    overflow-x: auto;
+    padding-bottom: 8px;
+}
+
+.vibes button {
+    background: none;
+    border: 1px solid #333;
+    color: #b3b3b3;
+    padding: 12px 20px;
+    border-radius: 24px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.vibes button:hover,
+.vibes button.active {
+    border-color: #1db954;
+    color: #1db954;
+    background: rgba(29, 185, 84, 0.1);
+}
+
+.destinations {
+    display: flex;
+    gap: 16px;
+    overflow-x: auto;
+    padding-bottom: 8px;
+    scroll-snap-type: x mandatory;
+}
+
+.destination {
+    flex: 0 0 280px;
+    background: #282828;
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid #333;
+    transition: border-color 0.2s ease;
+    scroll-snap-align: start;
+}
+
+.destination:hover {
+    border-color: #1db954;
+}
+
+.destination img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.destination h3 {
+    font-size: 18px;
+    font-weight: bold;
+    padding: 16px 16px 8px;
+    color: #fff;
+}
+
+.destination p {
+    font-size: 14px;
+    color: #b3b3b3;
+    padding: 0 16px 16px;
+}
+
+.property-types {
+    padding: 40px 80px;
+    background-color: #121212;
+    color: #fff;
+}
+
+.property-types h2 {
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 32px;
+}
+
+.types {
+    display: flex;
+    gap: 16px;
+    overflow-x: auto;
+    padding-bottom: 8px;
+    scroll-snap-type: x mandatory;
+}
+
+.type-card {
+    flex: 0 0 280px;
+    background: #282828;
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid #333;
+    transition: border-color 0.2s ease;
+    scroll-snap-align: start;
+}
+
+.type-card:hover {
+    border-color: #1db954;
+}
+
+.type-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.type-card h3 {
+    font-size: 18px;
+    font-weight: bold;
+    padding: 16px;
+    color: #fff;
+    text-align: center;
+}
+
+.explore-section {
+    padding: 0 80px 40px;
+    background-color: #121212;
+    color: #fff;
+}
+
+.explore-section h1 {
+    font-size: 36px;
+    font-weight: 500;
+    margin-bottom: 8px;
+    margin-top: 40px;
+}
+
+.explore-section p {
+    font-size: 16px;
+    color: #b3b3b3;
+    margin-bottom: 32px;
+}
+
+.scroll-indicator {
+    position: absolute;
+    top: 50%;
+    right: 20px;
+    transform: translateY(-50%);
+    background: rgba(29, 185, 84, 0.8);
+    border: none;
+    color: #fff;
+    padding: 8px 12px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 18px;
+    z-index: 10;
+}
+
+.trending-section {
+    padding: 40px 80px;
+    background-color: #121212;
+    color: #fff;
+}
+
+.trending-section h1 {
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.trending-section p {
+    font-size: 16px;
+    color: #b3b3b3;
+    margin-bottom: 32px;
+}
+
+.destinations-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.destination-card {
+    background: #282828;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid #4B5563;
+    transition: border-color 0.2s ease, transform 0.2s ease;
+    position: relative;
+    color: #fff;
+}
+
+.destination-card:hover {
+    border-color: #1db954;
+    transform: translateY(-4px);
+}
+
+.destination-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.destination-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(transparent, rgba(0,0,0,0.8));
+    padding: 20px 16px 16px;
+}
+
+.destination-card h3 {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 4px;
+}
+
+.flag {
+    font-size: 16px;
+    margin-right: 8px;
+}
+
+/* Specific layout adjustments for 2-3 grid */
+@media (min-width: 768px) {
+    .destinations-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+    .destinations-grid > *:nth-child(5) {
+        grid-column: span 2;
+    }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .offers-section,
+    .trip-planner,
+    .property-types,
+    .explore-section,
+    .trending-section {
+        padding: 20px 60px;
+    }
+
+    .offers-cards {
+        flex-direction: column;
+    }
+
+    .vibes {
+        justify-content: flex-start;
+    }
+
+    .destination {
+        flex: 0 0 250px;
+    }
+
+    .type-card {
+        flex: 0 0 250px;
+    }
+
+    .destinations-grid {
+        grid-template-columns: 1fr;
+    }
+}

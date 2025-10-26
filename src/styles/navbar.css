@@ -1,0 +1,1025 @@
+/* ======================================================================
+   Full updated stylesheet — Spotify dark aesthetic with green accents
+   - Includes animated underline for navbar links
+   - Minimalist SVG search button style
+   - Responsive calendar + popup rules
+   - Accessibility + focus states
+   - Utility classes and polish
+   ====================================================================== */
+
+/* -------------------------
+   Variables (kept simple)
+   ------------------------- */
+:root{
+    --bg: #121212;
+    --panel: #181818;
+    --muted: #b3b3b3;
+    --muted-2: #a7a7a7;
+    --muted-3: #888;
+    --accent: #1db954;
+    --accent-2: #22c55e;
+    --border: #282828;
+    --panel-2: #121212;
+    --soft: rgba(255,255,255,0.06);
+    --shadow: 0 4px 12px rgba(0,0,0,0.6);
+    --radius: 12px;
+    --radius-pill: 40px;
+    --font-base: "Inter", Arial, sans-serif;
+    --focus-ring: rgba(29,185,84,0.2);
+}
+
+/* Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body */
+html, body {
+    height: 100%;
+}
+
+body {
+    font-family: var(--font-base);
+    background-color: var(--bg); /* Spotify dark background */
+    color: #fff; /* Light text for readability */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    line-height: 1.4;
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* Utility helper classes */
+.hidden { display: none !important; }
+.visually-hidden {
+    position: absolute !important;
+    width: 1px; height: 1px;
+    padding: 0; margin: -1px; overflow: hidden;
+    clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* -------------------------
+   Navbar layout
+   ------------------------- */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 40px;
+    background-color: var(--bg);
+    border-bottom: 1px solid var(--border); /* Subtle divider */
+    position: relative;
+    z-index: 50;
+}
+
+.logo {
+    height: 32px;
+    display: inline-block;
+}
+
+/* center nav links */
+.navbar-center {
+    display: flex;
+    gap: 25px;
+    font-size: 16px;
+    align-items: center;
+    justify-content: center;
+}
+
+/* default link style (integrated animated underline below) */
+.navbar-center a {
+    position: relative;
+    text-decoration: none;
+    color: var(--muted);
+    font-weight: 500;
+    padding-bottom: 6px;
+    transition: color 0.2s ease, transform 0.15s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    line-height: 1;
+}
+
+/* hover color */
+.navbar-center a:hover {
+    color: var(--accent);
+    transform: translateY(-1px);
+}
+
+/* Animated underline using ::after pseudo-element */
+.navbar-center a::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background-color: var(--accent);
+    transition: width 0.28s cubic-bezier(.2,.9,.2,1), left 0.28s cubic-bezier(.2,.9,.2,1);
+    transform: translateX(-50%);
+    border-radius: 2px;
+}
+
+/* active link styles (use Vue to add .active) */
+.navbar-center a.active {
+    color: #fff;
+}
+
+.navbar-center a.active::after {
+    width: 100%;
+}
+
+/* optional: show underline on hover too (subtle) */
+.navbar-center a:hover::after {
+    width: 60%;
+}
+
+/* backward-compatible fallback for older rule you had */
+.navbar-center a.old-border {
+    border-bottom: 2px solid var(--accent);
+}
+
+/* badge */
+.badge {
+    background: var(--accent);
+    color: #fff;
+    font-size: 10px;
+    padding: 2px 6px;
+    border-radius: 8px;
+    margin-left: 4px;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+/* right side icons */
+.navbar-right {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+/* circular icon button */
+.icon-btn {
+    background: #282828;
+    border: none;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.12s ease;
+    color: #fff;
+    border: 1px solid transparent;
+}
+
+.icon-btn:hover {
+    background: #333;
+    transform: translateY(-2px);
+}
+
+/* focus state for accessibility */
+.icon-btn:focus {
+    outline: none;
+    box-shadow: 0 0 0 4px var(--focus-ring);
+    border-color: rgba(29,185,84,0.25);
+}
+
+/* -------------------------
+   Search Bar area
+   ------------------------- */
+.search-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    width: 100%;
+}
+
+/* main pill container */
+.search-bar {
+    display: flex;
+    align-items: center;
+    background-color: #282828;
+    border: 1px solid #333;
+    border-radius: var(--radius-pill);
+    box-shadow:  0 2px 6px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    padding-left: 10px;
+    color: #fff;
+    transition: box-shadow 0.3s ease, transform 0.08s ease;
+    min-width: 420px;
+    max-width: 980px;
+}
+
+.search-bar:hover {
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+    transform: translateY(-1px);
+}
+
+/* each clickable area inside the pill */
+.search-item {
+    padding: 12px 20px;
+    cursor: pointer;
+    display: flex;
+    transition: background-color 0.25s ease, color 0.2s ease;
+    flex-direction: column;
+    border-radius: var(--radius-pill);
+    min-width: 120px;
+}
+
+.search-item:hover {
+    background-color: #333; /* Light gray hover like Airbnb */
+}
+
+.label {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--muted);
+}
+
+.placeholder {
+    font-size: 14px;
+    color: var(--muted-2);
+}
+
+/* thin vertical divider inside the pill */
+.divider {
+    height: 30px;
+    width: 1px;
+    background: #333;
+    margin: 0 8px;
+    align-self: center;
+}
+
+/* -------------------------
+   Minimalist search button (SVG friendly)
+   ------------------------- */
+/* Note: keeps backwards compatibility with existing .search-btn */
+.search-btn {
+    background: transparent;
+    border: 1px solid #444;
+    color: var(--muted);
+    border-radius: 50%;
+    width: 38px;
+    height: 38px;
+    margin: 0 10px;
+    font-size: 18px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.22s ease;
+}
+
+/* darker hover with accent ring */
+.search-btn:hover {
+    color: #fff;
+    border-color: var(--accent);
+    background: rgba(29, 185, 84, 0.06);
+    transform: translateY(-1px);
+}
+
+/* focus for keyboard navigation */
+.search-btn:focus {
+    outline: none;
+    box-shadow: 0 0 0 4px var(--focus-ring);
+    border-color: rgba(29,185,84,0.35);
+}
+
+/* Example SVG size inside button */
+.search-btn svg { width: 18px; height: 18px; display: block; }
+
+/* -------------------------
+   Dropdown menu
+   ------------------------- */
+.dropdown {
+    position: absolute;
+    top: 60px;
+    right: 20px;
+    background: #282828;
+    border: 1px solid #333;
+    border-radius: 10px;
+    width: 250px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    display: none;
+    flex-direction: column;
+    padding: 10px 0;
+    z-index: 120;
+}
+
+.dropdown.active {
+    display: flex;
+}
+
+.dropdown-item {
+    padding: 12px 20px;
+    font-size: 14px;
+    color: #fff;
+    text-decoration: none;
+    display: block;
+    transition: background 0.2s ease;
+}
+
+.dropdown-item:hover {
+    background: #333;
+}
+
+.dropdown-item strong {
+    display: block;
+    margin-bottom: 3px;
+}
+
+/* -------------------------
+   Generic popup/overlay styles
+   ------------------------- */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+/* central popup card */
+.popup {
+    background: var(--panel);
+    color: #fff;
+    width: 90%;
+    max-width: 920px;
+    border-radius: var(--radius);
+    padding: 20px 30px;
+    overflow-y: auto;
+    max-height: 92%;
+    position: relative;
+    box-shadow: var(--shadow);
+    border: 1px solid rgba(255,255,255,0.02);
+}
+
+/* close button */
+.popup .close-btn {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    font-size: 20px;
+    cursor: pointer;
+    border: none;
+    background: none;
+    color: #fff;
+}
+
+/* tabs inside popups */
+.tabs {
+    display: flex;
+    border-bottom: 1px solid #333;
+    margin-bottom: 20px;
+}
+
+.tabs button {
+    flex: 1;
+    padding: 12px;
+    background: none;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    color: var(--muted);
+    transition: color 0.18s ease;
+}
+
+.tabs button.active {
+    font-weight: 700;
+    border-bottom: 2px solid var(--accent);
+    color: #fff;
+}
+
+/* -------------------------
+   Translation toggle / switch
+   ------------------------- */
+.translation-box {
+    background: #181818;
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 46px;
+    height: 24px;
+}
+
+.switch input {
+    display: none;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: #555;
+    transition: 0.4s;
+    border-radius: 24px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 3px;
+    bottom: 3px;
+    background: white;
+    transition: 0.4s;
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background: var(--accent);
+}
+
+input:checked + .slider:before {
+    transform: translateX(22px);
+}
+
+/* -------------------------
+   Language / Currency grids
+   ------------------------- */
+.section-title {
+    font-weight: bold;
+    margin: 15px 0;
+    color: #fff;
+}
+
+.language-grid,
+.currency-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 12px;
+}
+
+.currency-item,
+.language-item {
+    background: #181818;
+    border: 1px solid #333;
+    border-radius: 8px;
+    padding: 10px;
+    cursor: pointer;
+    transition: border 0.18s ease, transform 0.12s ease;
+    color: #fff;
+}
+
+.currency-item:hover,
+.language-item:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+}
+
+.language-item.selected {
+    border-color: var(--accent);
+    font-weight: bold;
+}
+
+/* -------------------------
+   Where/Modal specifics
+   ------------------------- */
+.where_overlay {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: 120px;
+    z-index: 999;
+    backdrop-filter: blur(4px);
+}
+
+.wherePopup {
+    background-color: var(--panel-2);
+    border-radius: 20px;
+    padding: 25px 28px;
+    width: 420px;
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.6);
+    color: #fff;
+    animation: popupIn 0.25s ease;
+    border: 1px solid rgba(255,255,255,0.02);
+}
+
+@keyframes popupIn {
+    from {
+        transform: translateY(-20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.whereTab {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 15px;
+}
+
+.whereTab button {
+    background-color: var(--accent);
+    color: #fff;
+    border: none;
+    padding: 8px 18px;
+    border-radius: 50px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.25s ease;
+    font-size: 15px;
+    box-shadow: 0 0 6px rgba(29, 185, 84, 0.3);
+}
+
+.whereTab button:hover {
+    background-color: #1ed760;
+    box-shadow: 0 0 10px rgba(29, 185, 84, 0.5);
+}
+
+.whereTab button.active {
+    box-shadow: 0 0 12px var(--accent);
+}
+
+/* where grid list */
+.where-grid {
+    display: flex;
+    flex-direction: column;
+    margin-top: 15px;
+    gap: 12px;
+    max-height: 400px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent) var(--bg);
+}
+
+.where-grid::-webkit-scrollbar {
+    width: 6px;
+}
+
+.where-grid::-webkit-scrollbar-thumb {
+    background-color: var(--accent);
+    border-radius: 10px;
+}
+
+/* where item hover */
+.where-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background-color: #181818;
+    border-radius: 12px;
+    padding: 12px 16px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: 1px solid transparent;
+}
+
+.where-item:hover {
+    background-color: #1f1f1f;
+    border-color: var(--accent);
+    transform: translateY(-1px);
+}
+
+.where-item .icon {
+    font-size: 22px;
+    color: var(--accent);
+    width: 32px;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+.where-item small {
+    color: var(--muted);
+    font-size: 13px;
+}
+
+/* -------------------------
+   Date picker overlay + popup
+   ------------------------- */
+.date_overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.85);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1100;
+    backdrop-filter: blur(10px);
+}
+
+.date-picker-popup {
+    background: var(--panel-2);
+    border-radius: 24px;
+    padding: 24px;
+    color: #fff;
+    width: 760px;
+    max-width: calc(100% - 40px);
+    box-shadow: 0 0 25px rgba(0, 0, 0, 0.5);
+    font-family: var(--font-base);
+}
+
+/* header tabs in date picker */
+.date-picker-header {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 24px;
+}
+
+.tab {
+    background: transparent;
+    color: var(--muted);
+    border: none;
+    font-size: 16px;
+    font-weight: 500;
+    padding: 10px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background 0.3s, color 0.3s;
+}
+
+.tab.active {
+    background: var(--accent);
+    color: #fff;
+}
+
+/* calendar layout (two months side-by-side) */
+.calendar {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    align-items: flex-start;
+    width: 100%;
+}
+
+.months-container {
+    display: flex;
+    justify-content: center;
+    gap: 36px; /* space between months */
+    width: 100%;
+}
+
+.month {
+    width: 48%;
+    min-width: 260px;
+    max-width: 360px;
+    background: transparent;
+}
+
+.month h3 {
+    text-align: center;
+    margin-bottom: 10px;
+    color: #fff;
+    font-weight: 600;
+}
+
+/* days grid inside a month */
+.days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 6px;
+    text-align: center;
+}
+
+.day-label {
+    font-size: 12px;
+    color: var(--muted);
+    font-weight: 600;
+}
+
+/* day / empty cell */
+.day, .empty {
+    padding: 10px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background 0.18s ease, transform 0.08s;
+    background: transparent;
+    color: #ddd;
+}
+
+.day:hover {
+    background: rgba(255, 255, 255, 0.06);
+    transform: translateY(-2px);
+}
+
+/* selected states */
+.day.selected {
+    background: var(--accent);
+    color: white;
+}
+
+.day.range {
+    background: rgba(34, 197, 94, 0.15);
+    color: white;
+}
+
+/* options row (± days) */
+.options {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 24px;
+}
+
+.option {
+    background: transparent;
+    color: var(--muted);
+    border: 1px solid #2a2a2a;
+    padding: 8px 18px;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.option:hover,
+.option.active {
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
+}
+
+/* month buttons (shift by months) */
+.month-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 12px;
+}
+
+.month-buttons button {
+    background: #1a1a1a;
+    color: #fff;
+    border: 1px solid #333;
+    border-radius: 30px;
+    padding: 6px 16px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.month-buttons button:hover {
+    background: var(--accent-2);
+    border-color: var(--accent-2);
+}
+
+/* -------------------------
+   Guests popup + controls
+   ------------------------- */
+.guest_overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.85);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1100;
+    backdrop-filter: blur(10px);
+}
+
+.guests-popup {
+    background: var(--panel-2);
+    border-radius: 24px;
+    padding: 32px;
+    width: 400px;
+    color: #fff;
+    box-shadow: 0 0 25px rgba(0, 0, 0, 0.5);
+}
+
+.guest-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 0;
+    border-bottom: 1px solid #2a2a2a;
+}
+
+.guest-row:last-child {
+    border-bottom: none;
+}
+
+.guest-info { display: flex; flex-direction: column; }
+.guest-title { font-size: 16px; font-weight: 600; }
+.guest-sub { font-size: 13px; color: var(--muted); }
+
+.guest-link { font-size: 13px; color: var(--accent); text-decoration: none; margin-top: 4px; }
+.guest-link:hover { text-decoration: underline; }
+
+.guest-controls { display: flex; align-items: center; gap: 12px; }
+
+/* circular control */
+.circle-btn {
+    background: transparent;
+    color: var(--muted);
+    border: 2px solid #2a2a2a;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    font-size: 18px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.circle-btn:hover:not(:disabled) {
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
+}
+
+.circle-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.count {
+    width: 28px;
+    text-align: center;
+    font-weight: 700;
+}
+
+/* -------------------------
+   Scrollbar styles (global)
+   ------------------------- */
+*::-webkit-scrollbar {
+    height: 10px;
+    width: 8px;
+}
+
+*::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.06);
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.02);
+}
+
+*::-webkit-scrollbar-thumb:hover {
+    background: rgba(255,255,255,0.08);
+}
+
+/* -------------------------
+   Tiny responsive rules
+   ------------------------- */
+@media (max-width: 1024px) {
+    .search-bar { min-width: 360px; }
+    .months-container { gap: 20px; }
+    .month { width: 46%; }
+}
+
+@media (max-width: 880px) {
+    .navbar { padding: 8px 16px; }
+    .search-bar { min-width: 320px; max-width: 680px; }
+    .navbar-center { gap: 14px; font-size: 15px; }
+    .month { width: 48%; }
+}
+
+@media (max-width: 680px) {
+    .calendar { flex-direction: column; gap: 16px; }
+    .months-container { flex-direction: column; gap: 12px; }
+    .month { width: 100%; }
+    .search-bar { width: calc(100% - 32px); min-width: auto; max-width: none; }
+    .search-container { padding: 0 12px; }
+    .navbar-center { display: none; } /* hide center links on very small screens */
+}
+
+/* -------------------------
+   Accessibility helpers + focus styles
+   ------------------------- */
+a:focus, button:focus, input:focus, select:focus, textarea:focus {
+    outline: none;
+    box-shadow: 0 0 0 4px var(--focus-ring);
+    border-radius: 8px;
+}
+
+/* high-contrast outlines for keyboard users */
+:focus-visible {
+    outline: 2px solid rgba(255,255,255,0.06);
+    outline-offset: 2px;
+}
+
+/* -------------------------
+   Extra UI polish (modals, toasts, small animations)
+   ------------------------- */
+/* subtle fade-in used on overlays */
+.fade-in {
+    animation: fadeIn 0.22s ease both;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-6px) scale(0.995); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* small bounce for micro-interactions */
+.bounce {
+    animation: bounce 260ms cubic-bezier(.2,.9,.2,1);
+}
+@keyframes bounce {
+    0% { transform: translateY(0); }
+    40% { transform: translateY(-6px); }
+    100% { transform: translateY(0); }
+}
+
+/* tooltip */
+.tooltip {
+    position: relative;
+}
+.tooltip:hover::after {
+    content: attr(data-tip);
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(20,20,20,0.95);
+    color: #fff;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    white-space: nowrap;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+    z-index: 80;
+}
+
+/* -------------------------
+   Form controls styling (if needed)
+   ------------------------- */
+.input {
+    background: #121212;
+    border: 1px solid #2a2a2a;
+    padding: 10px 12px;
+    border-radius: 8px;
+    color: #fff;
+    width: 100%;
+}
+
+.select {
+    background: #121212;
+    border: 1px solid #2a2a2a;
+    color: #fff;
+    padding: 8px 12px;
+    border-radius: 8px;
+}
+
+/* -------------------------
+   Extra utility spacing & layout helpers
+   ------------------------- */
+.row { display:flex; gap:12px; align-items:center; }
+.col { display:flex; flex-direction:column; gap:12px; }
+.center { display:flex; align-items:center; justify-content:center; }
+.space-between { display:flex; justify-content:space-between; align-items:center; }
+
+/* small helpers */
+.mt-6 { margin-top: 6px; }
+.mt-12 { margin-top: 12px; }
+.mb-12 { margin-bottom: 12px; }
+.p-8 { padding: 8px; }
+.p-12 { padding: 12px; }
+
+/* -------------------------
+   Large-screen adjustments & final tweaks
+   ------------------------- */
+@media (min-width: 1400px) {
+    .date-picker-popup { width: 880px; }
+    .search-bar { max-width: 1100px; }
+}
+
+/* Ensure the old .day.selected color remains consistent */
+.day.selected {
+    background-color: var(--accent-2);
+    color: white;
+    border-radius: 50%;
+}
+
+/* ensure .day.range used for intermediate days */
+.day.range {
+    background-color: rgba(34,197,94,0.15);
+    color: white;
+    border-radius: 50%;
+}
+
+/* final safe defaults (to avoid broken layouts) */
+html, body, #app {
+    min-height: 100%;
+}
+
