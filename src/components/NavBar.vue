@@ -1,75 +1,58 @@
 <script setup>
   import { ref, onMounted, onBeforeUnmount, computed } from "vue";
   import { RouterLink } from "vue-router";
-  import { useExperiences } from "@/composables/useExperiences.js";
-  import { useServices, useServicesTraining } from "@/composables/useServices.js";
   import "@/styles/navbar.css";
 
-  // ✅ Define props for reusability
   const props = defineProps({
-  title: { type: String, default: "NEW" },
-  date: { type: String, default: "Add date" },
-  be_host: { type: String, default: "Become a host" },
-});
+    title: { type: String, default: "NEW" },
+    date: { type: String, default: "Add date" },
+    be_host: { type: String, default: "Become a host" },
+  });
 
-  // ✅ Composables
-  const { title: experienceTitle } = useExperiences();
-  const { services, titles } = useServices();
-  const { servicesTraining, titlesTraining } = useServicesTraining();
-
-  // ✅ Dropdown state
   const dropdownActive = ref(false);
   const toggleDropdown = () => (dropdownActive.value = !dropdownActive.value);
 
-  // ✅ Language/Currency popup
+  // Language/Currency popup
   const popupVisible = ref(false);
   const activeTab = ref("language");
 
   const openPopup = (tab = "language") => {
-  activeTab.value = tab;
-  popupVisible.value = true;
-};
+    activeTab.value = tab;
+    popupVisible.value = true;
+  };
   const closePopup = () => (popupVisible.value = false);
 
-  // ✅ WHERE popup
   const popupWhere = ref(false);
   const whereTab = ref("where");
   const selectedDestination = ref("Where");
 
   const openWhere = () => {
-  popupWhere.value = true;
-  whereTab.value = "where";
-};
-  const closeWhere = () => (popupWhere.value = false);
-  const selectDestination = (city) => {
-  selectedDestination.value = city;
-  closeWhere();
-};
+    popupWhere.value = true;
+    whereTab.value = "where";
+  };
 
-  // ✅ DATE popup
+  const closeWhere = () => (popupWhere.value = false);
+    const selectDestination = (city) => {
+    selectedDestination.value = city;
+    closeWhere();
+  };
+
   const popupDate = ref(false);
   const dateTab = ref("date");
 
   const openDate = () => {
-  popupDate.value = true;
-  dateTab.value = "date";
-};
-
-  //registation popup
-  const showPopup = ref(false);
-  const activeTAB = ref("phone"); // default tab
-
+    popupDate.value = true;
+    dateTab.value = "date";
+  };
   const closeDate = () => (popupDate.value = false);
 
-  const selectedDates = ref([]); // store up to 2 selected dates
+  const selectedDates = ref([]);
 
   function selectDay(monthName, day) {
     const year = 2025;
     const fullDate = new Date(`${monthName} ${day}, ${year}`);
 
-    // if no date or only one selected, add it
     if (selectedDates.value.length < 2) {
-      // prevent duplicate selection of same day
       const alreadySelected = selectedDates.value.some(
           d => d.month === monthName && d.day === day
       );
@@ -77,11 +60,8 @@
         selectedDates.value.push({ month: monthName, day, fullDate });
       }
     } else {
-      // if two already selected → reset and start over
       selectedDates.value = [{ month: monthName, day, fullDate }];
     }
-
-    // sort by chronological order
     selectedDates.value.sort((a, b) => a.fullDate - b.fullDate);
   }
 
@@ -99,46 +79,18 @@
     return current > start.fullDate && current < end.fullDate;
   }
 
-
-
-  // ✅ Helper functions for calendar
   function getDaysInMonth(monthName) {
-  const year = 2025;
-  const monthIndex = new Date(`${monthName} 1, ${year}`).getMonth();
-  const daysInMonth = new Date(year, monthIndex + 1, 0).getDate();
-  return Array.from({ length: daysInMonth }, (_, i) => i + 1);
-}
-
-  function getEmptyDays(monthName) {
-  const year = 2025;
-  const firstDay = new Date(`${monthName} 1, ${year}`).getDay();
-  return Array.from({ length: firstDay });
-}
+    const year = 2025;
+    const monthIndex = new Date(`${monthName} 1, ${year}`).getMonth();
+    const daysInMonth = new Date(year, monthIndex + 1, 0).getDate();
+    return Array.from({ length: daysInMonth }, (_, i) => i + 1);
+  }
 
   function changeDate(days) {
-    const year = 2025;
-
     if (selectedDates.value.length === 0) {
       console.log("No date selected yet.");
       return;
     }
-
-    // If only one date selected → add new one offset by +days
-    if (selectedDates.value.length === 1) {
-      const first = selectedDates.value[0];
-      const firstDate = new Date(`${first.month} ${first.day}, ${year}`);
-      const newDate = new Date(firstDate);
-      newDate.setDate(firstDate.getDate() + days);
-
-      const monthName = newDate.toLocaleString("default", { month: "long" });
-      const day = newDate.getDate();
-
-      selectedDates.value.push({ month: monthName, day, fullDate: newDate });
-      selectedDates.value.sort((a, b) => a.fullDate - b.fullDate);
-      return;
-    }
-
-    // If two dates selected → shift both by ±days
     selectedDates.value = selectedDates.value.map(d => {
       const newDate = new Date(d.fullDate);
       newDate.setDate(newDate.getDate() + days);
@@ -150,7 +102,6 @@
     selectedDates.value.sort((a, b) => a.fullDate - b.fullDate);
   }
 
-  // ✅ GUEST popup
   const popupGuests = ref(false);
   const openGuests = () => (popupGuests.value = true);
   const closeGuests = () => (popupGuests.value = false);
@@ -164,14 +115,14 @@
 
   const increment = (i) => guests.value[i].count++;
   const decrement = (i) => {
-  if (guests.value[i].count > 0) guests.value[i].count--;
-};
+    if (guests.value[i].count > 0) guests.value[i].count--;
+  };
 
   const totalGuests = computed(() =>
-  guests.value.reduce((sum, g) => sum + g.count, 0)
+    guests.value.reduce((sum, g) => sum + g.count, 0)
   );
 
-  // ✅ Currency list
+  // Currency list
   const currencies = [
     { name: "Australian Dollar", code: "AUD", symbol: "$" },
     { name: "Euro", code: "EUR", symbol: "€" },
@@ -215,15 +166,13 @@
     { name: "Serbian Dinar", code: "RSD", symbol: "дин" },
   ];
 
-
-  // ✅ Handle dropdown clicks outside
   const handleClickOutside = (event) => {
-  const dropdown = document.getElementById("dropdown-menu");
-  const menuBtn = document.getElementById("menu-btn");
-  if (dropdown && menuBtn && !dropdown.contains(event.target) && !menuBtn.contains(event.target)) {
-  dropdownActive.value = false;
-}
-};
+      const dropdown = document.getElementById("dropdown-menu");
+      const menuBtn = document.getElementById("menu-btn");
+      if (dropdown && menuBtn && !dropdown.contains(event.target) && !menuBtn.contains(event.target)) {
+      dropdownActive.value = false;
+    }
+  };
 
   onMounted(() => {
     document.addEventListener("click", handleClickOutside);
@@ -232,24 +181,17 @@
     document.removeEventListener("click", handleClickOutside);
   });
 
-  // ✅ Reactive state for popup visibility
   const showLogin = ref(false)
 
-  // ✅ Close popup
   function closeLoginPopup() {
     showLogin.value = false
   }
 
-  // ✅ Handle continue button
   function handleContinue() {
     alert('Continue clicked (demo)')
     closeLoginPopup()
   }
 
-
-
-
-  // Host popup
   const showHost = ref(false)
 
   function closeHostPopup (){
@@ -260,9 +202,6 @@
     alert('Continue clicked (demo)')
     closeHostPopup()
   }
-
-
-
 
 </script>
 
@@ -278,11 +217,11 @@
     </div>
 
     <nav class="navbar-center">
-      <RouterLink to="/apartment" class="active">🏠 Apartment</RouterLink>
-      <RouterLink :to="{ name: 'Experience' }" class="experience-link">
+      <RouterLink to="/apartment" active-class="active" exact-active-class="active">🏠 Apartment</RouterLink>
+      <RouterLink :to="{ name: 'Experience' }" active-class="active" exact-active-class="active">
         🎈 Experience
       </RouterLink>
-      <RouterLink to="/services">
+      <RouterLink to="/services" active-class="active" exact-active-class="active">
         🛎️ Services <span class="badge">{{ props.title }}</span>
       </RouterLink>
     </nav>
@@ -325,17 +264,14 @@
       </div>
 
       <button class="search-btn" aria-label="Search">
-        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none"
-             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-             viewBox="0 0 24 24">
-          <circle cx="11" cy="11" r="8"></circle>
-          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 20px; height: 20px; display: block;">
+          <path d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58172 3 3 6.58172 3 11C3 15.4183 6.58172 19 11 19Z" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M21 21L16.65 16.65" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
       </button>
 
     </div>
   </div>
-
 
   <!-- === DROPDOWN === -->
   <div class="dropdown" id="dropdown-menu" :class="{ active: dropdownActive }">
@@ -346,8 +282,8 @@
       <span>It's easy to start hosting and earn extra income.</span>
     </RouterLink>
     <div class="divider"></div>
-    <RouterLink to="#" class="dropdown-item">Refer a Host</RouterLink>
-    <RouterLink to="#" class="dropdown-item" >Find a co-host</RouterLink>
+    <RouterLink to="/co-host" class="dropdown-item">Refer a Host</RouterLink>
+    <RouterLink to="/find-co-host" class="dropdown-item" >Find a co-host</RouterLink>
     <div class="divider"></div>
     <RouterLink to="#" class="dropdown-item" @click.prevent="showLogin = true"
     >
@@ -364,15 +300,15 @@
 
       <div class="host-options">
         <div class="host-card">
-          <img src="https://img.icons8.com/emoji/96/house-emoji.png" alt="Home">
+          <img src=@/img/home.png alt="Home">
           <p>Home</p>
         </div>
         <div class="host-card">
-          <img src="https://img.icons8.com/emoji/96/hot-air-balloon.png" alt="Experience">
+          <img src="@/img/air-balloon.png" alt="Experience">
           <p>Experience</p>
         </div>
         <div class="host-card">
-          <img src="https://img.icons8.com/emoji/96/bellhop-bell.png" alt="Service">
+          <img src="@/img/check.png" alt="Service">
           <p>Service</p>
         </div>
       </div>
@@ -381,42 +317,27 @@
     </div>
   </div>
 
-
-
-  <!---LOG IN POPUP -->
+  <!-- LOGIN POPUP -->
   <div
       v-if="showLogin"
-      id="login-overlay"
       class="overlay"
-      aria-hidden="false"
-      role="dialog"
-      aria-modal="true"
       @click.self="closeLoginPopup"
   >
-    <div class="popup" role="document" aria-labelledby="popup-title">
-      <!-- Close button -->
-      <button
-          class="close-btn"
-          id="close-login"
-          aria-label="Close popup"
-          @click="closeLoginPopup"
-      >
-        ✕
-      </button>
+    <div class="popup">
+      <button class="close-btn" @click="closeLoginPopup">✕</button>
 
       <!-- Tabs -->
-      <div class="tabs" role="tablist" style="margin-top:8px;">
-        <button class="active" role="tab" aria-selected="true">Log in</button>
+      <div class="tabs" style="margin-top:8px;">
+        <button class="active">Log in</button>
       </div>
 
       <!-- Main grid -->
       <div class="login-grid" style="margin-top:8px;">
-        <!-- left column -->
         <div class="login-left">
-          <h2 id="popup-title">Welcome to Brand</h2>
+          <h2>Welcome to Brand</h2>
 
           <label class="label" for="country">Country code</label>
-          <select id="country" class="select country-select" aria-label="Country code">
+          <select id="country" class="select country-select">
             <option value="+421">Slovakia (+421)</option>
             <option value="+1">United States (+1)</option>
             <option value="+44">United Kingdom (+44)</option>
@@ -428,27 +349,25 @@
               class="phone-input"
               type="tel"
               placeholder="Phone number"
-              aria-label="Phone"
           />
 
           <p style="color:var(--muted); font-size:13px; margin-bottom:12px;">
-            We’ll call or text you to confirm your number. Standard message and data rates apply.
+            We'll call or text you to confirm your number. Standard message and data rates apply.
             <a href="#" style="color:var(--accent)">Privacy Policy</a>
           </p>
 
           <button
               class="continue-btn"
-              id="continue-login"
               @click="handleContinue"
           >
             Continue
           </button>
 
-          <div class="or-row" aria-hidden="true" style="margin-top:18px;">or</div>
+          <div class="or-row" style="margin-top:18px;">or</div>
 
           <div>
-            <button class="social-btn" aria-label="Continue with Google">
-              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <button class="social-btn">
+              <svg viewBox="0 0 24 24" fill="none" style="width:18px;height:18px;">
                 <path
                     d="M21 12.2c0-.68-.06-1.32-.18-1.95H12v3.7h5.6c-.24 1.3-.97 2.42-2.06 3.16v2.6h3.34C19.67 18.2 21 15.5 21 12.2z"
                     fill="#4285F4"
@@ -457,8 +376,8 @@
               Continue with Google
             </button>
 
-            <button class="social-btn" aria-label="Continue with Apple">
-              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <button class="social-btn">
+              <svg viewBox="0 0 24 24" fill="none" style="width:18px;height:18px;">
                 <path
                     d="M16 1.2c0 .9-.3 1.9-.8 2.7-.4.6-1 1.3-1.7 1.3-.1 0-.2-.1-.3-.2-.9-.8-1.9-1.1-3.1-.9-1.2.2-2.5.9-3.3 1.9-.9 1.1-1.2 2.5-1.1 3.8.1 1.3.5 2.6 1.2 3.6.6.9 1.6 1.8 2.6 1.8.6 0 1.2-.2 1.8-.6.6-.3 1.1-.8 1.6-1.4.2-.2.5-.3.8-.2.5.1 1 .5 1.1 1.1.2.9.6 1.7 1.2 2.4 1 .9 2.3.8 3.3.1.1-.1.2-.2.3-.3-1.6-1.3-2.8-3.5-3-6-.1-1.1.1-2.1.6-3 .8-1.6 2.6-1.6 3.8-1.1-.4-.6-1-1-1.6-1.4-.8-.5-1.6-.9-2.6-1-.4-.1-.9 0-1.3.1z"
                     fill="#fff"
@@ -467,16 +386,13 @@
               Continue with Apple
             </button>
 
-            <button class="social-btn" aria-label="Continue with email">Continue with email</button>
-            <button class="social-btn" aria-label="Continue with Facebook">Continue with Facebook</button>
+            <button class="social-btn">Continue with email</button>
+            <button class="social-btn">Continue with Facebook</button>
           </div>
         </div>
-
-        </div>
+      </div>
     </div>
   </div>
-
-
 
 
   <div class="where_overlay" v-show="popupWhere" @click.self="closeWhere">
@@ -599,17 +515,9 @@
     </div>
   </div>
 
-
   <!-- === DATE PICKER POPUP === -->
   <div class="date_overlay" v-show="popupDate" @click.self="closeDate">
     <div class="date-picker-popup">
-      <!---
-      <div class="date-picker-header">
-        <button class="tab" :class="{active: dateTab === 'date'}" @click="dateTab = 'date'">Dates</button>
-        <button class="tab" :class="{active: dateTab === 'months'}" @click="dateTab = 'months'">Months</button>
-        <button class="tab" :class="{active: dateTab === 'flexible'}" @click="dateTab = 'flexible'">Flexible</button>
-      </div>
-      -->
       <div v-show="dateTab === 'date'" class="calendar">
         <div class="months-container">
           <!-- October -->
@@ -660,8 +568,6 @@
       </div>
 
     </div>
-
-
   </div>
 
 
@@ -693,11 +599,6 @@
       </div>
     </div>
   </div>
-
-
-
-
-
 
   <div class="overlay" v-show="popupVisible" @click.self="closePopup">
     <div class="popup">
@@ -796,5 +697,5 @@
 </template>
 
 <style scoped>
-/* Optional custom navbar styles */
+
 </style>

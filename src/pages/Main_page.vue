@@ -1,12 +1,5 @@
 <script setup>
-import { ref, onMounted, onBeforeUnmount } from "vue";
-import { RouterLink } from "vue-router";
 import "@/styles/main_page.css";
-
-// Simple scroll function for destinations
-function scrollDestinations() {
-  document.querySelector('.destinations').scrollBy({ left: 280, behavior: 'smooth' });
-}
 </script>
 
 <template>

@@ -1,7 +1,13 @@
 <script setup>
-import { ref, onMounted, onBeforeUnmount } from "vue";
+import { ref } from "vue";
 import {RouterLink} from "vue-router";
 import "@/styles/main_footer.css"
+
+const activeTab = ref('domestic');
+
+const setActiveTab = (tab) => {
+  activeTab.value = tab;
+};
 
 </script>
 
@@ -9,13 +15,43 @@ import "@/styles/main_footer.css"
    <footer>
      <section class="popular-section">
        <h1 class="popular-title">Popular with travellers from Slovakia</h1>
-       <div class="tabs">
-         <button class="tab active">Domestic cities</button>
-         <button class="tab">International cities</button>
-         <button class="tab">Regions</button>
-         <button class="tab">Countries</button>
-         <button class="tab">Places to stay</button>
-       </div>
+      <div class="tabs">
+        <button 
+          class="tab" 
+          :class="{ active: activeTab === 'domestic' }"
+          @click="setActiveTab('domestic')"
+        >
+          Domestic cities
+        </button>
+        <button 
+          class="tab" 
+          :class="{ active: activeTab === 'international' }"
+          @click="setActiveTab('international')"
+        >
+          International cities
+        </button>
+        <button 
+          class="tab" 
+          :class="{ active: activeTab === 'regions' }"
+          @click="setActiveTab('regions')"
+        >
+          Regions
+        </button>
+        <button 
+          class="tab" 
+          :class="{ active: activeTab === 'countries' }"
+          @click="setActiveTab('countries')"
+        >
+          Countries
+        </button>
+        <button 
+          class="tab" 
+          :class="{ active: activeTab === 'places' }"
+          @click="setActiveTab('places')"
+        >
+          Places to stay
+        </button>
+      </div>
        <div class="hotels-grid">
          <RouterLink to="#" class="hotel-link">Bratislava hotels</RouterLink>
          <RouterLink to="#" class="hotel-link">Žilina hotels</RouterLink>
@@ -107,7 +143,3 @@ import "@/styles/main_footer.css"
      </section>
    </footer>
 </template>
-
-<style scoped>
-
-</style>

@@ -1,0 +1,262 @@
+/* ===== GLOBAL STYLES ===== */
+body {
+    margin: 0;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    background-color: #121212;
+    color: #fff;
+}
+
+/* ===== PAGE LAYOUT ===== */
+.refer-host-page {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* ===== LOGIN SECTION ===== */
+.login-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+    padding: 80px 20px;
+    background: linear-gradient(180deg, #121212 0%, #181818 100%);
+}
+
+.login-container {
+    width: 100%;
+    max-width: 440px;
+    background: #181818;
+    border-radius: 16px;
+    padding: 40px 45px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+}
+
+.page-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #1db954; /* Spotify Green */
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.intro-text {
+    text-align: center;
+    color: #b3b3b3;
+    margin-bottom: 30px;
+}
+
+.label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: #fff;
+}
+
+.select,
+.phone-input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 18px;
+    border: none;
+    border-radius: 6px;
+    background-color: #2a2a2a;
+    color: #fff;
+    font-size: 15px;
+}
+
+.select:focus,
+.phone-input:focus {
+    outline: 2px solid #1db954;
+}
+
+.continue-btn {
+    width: 100%;
+    padding: 14px;
+    background: #1db954;
+    color: #000;
+    font-weight: 700;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background 0.3s ease, transform 0.1s ease;
+}
+
+.continue-btn:hover {
+    background: #1ed760;
+    transform: scale(1.02);
+}
+
+.privacy-text {
+    font-size: 0.85rem;
+    color: #aaa;
+    margin-bottom: 20px;
+}
+
+.privacy-text a {
+    color: #1db954;
+    text-decoration: none;
+}
+
+.privacy-text a:hover {
+    text-decoration: underline;
+}
+
+.or-row {
+    text-align: center;
+    margin: 25px 0;
+    color: #666;
+    position: relative;
+}
+
+.or-row::before,
+.or-row::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: 40%;
+    height: 1px;
+    background-color: #333;
+}
+
+.or-row::before {
+    left: 0;
+}
+
+.or-row::after {
+    right: 0;
+}
+
+.social-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.social-btn {
+    background: #2a2a2a;
+    color: #fff;
+    border: 1px solid #333;
+    padding: 12px;
+    border-radius: 25px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.1s;
+}
+
+.social-btn:hover {
+    background: #333;
+    transform: scale(1.02);
+}
+
+/* ===== FOOTER ===== */
+.footer {
+    background-color: #000;
+    color: #b3b3b3;
+    padding: 60px 80px;
+    font-size: 14px;
+}
+
+.footer-container {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 40px;
+    margin-bottom: 40px;
+}
+
+.footer-column h4 {
+    font-size: 16px;
+    margin-bottom: 12px;
+    color: #fff;
+    font-weight: 700;
+}
+
+.footer-column ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-column ul li {
+    margin-bottom: 8px;
+}
+
+.footer-column a {
+    text-decoration: none;
+    color: #b3b3b3;
+    transition: color 0.3s;
+}
+
+.footer-column a:hover {
+    color: #1db954;
+}
+
+.footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid #333;
+    padding-top: 20px;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.footer-bottom a {
+    color: #b3b3b3;
+    text-decoration: none;
+}
+
+.footer-bottom a:hover {
+    color: #1db954;
+}
+
+.footer-icons {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.footer-icons select {
+    background: transparent;
+    border: none;
+    color: #fff;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.footer-icons span {
+    color: #b3b3b3;
+}
+
+.footer-icons i {
+    font-size: 18px;
+    color: #b3b3b3;
+    transition: color 0.3s;
+    cursor: pointer;
+}
+
+.footer-icons i:hover {
+    color: #1db954;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+    .login-container {
+        padding: 30px;
+    }
+
+    .footer {
+        padding: 40px 25px;
+    }
+
+    .footer-container {
+        flex-direction: column;
+    }
+
+    .footer-bottom {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}

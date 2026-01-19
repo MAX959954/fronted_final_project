@@ -1,5 +1,26 @@
 import { ref, computed } from 'vue'
 
+import Image1 from '@/img/mila_deva.jpg';
+import cImage from '@/img/hami papi.jpg';
+import dImage from '@/img/patriot.jpg';
+import gImage from '@/img/pensione.jpg';
+import qImage from '@/img/stara kotolna.jpg';
+import rImage from '@/img/kayak-5543935_1920.jpg';
+import tImage from '@/img/staryBiskupsky.jpg';
+import jImage from '@/img/taban.jpg';
+import pImage from '@/img/zanzibar.jpg';
+
+import sImage from '@/img/fit_up.JPG';
+import iImage from '@/img/fitko 9.jpg';
+import kImage from '@/img/gym 75.jpg';
+import fImage from '@/img/kalpa.jpg';
+import lImage from '@/img/oysis.jpg';
+import mImage from '@/img/unnamed.jpg';
+import xImage from '@/img/yoga_house.jpg';
+import Imagek from '@/img/pilates_studio.jpg';
+import Imagef from '@/img/re-forma.jpg' ;
+
+
 const services = ref([
     {
         id: 1,
@@ -7,7 +28,7 @@ const services = ref([
         description: "Authentic Roman meal",
         price: "From €164 / guest",
         rating: "★ 5.0",
-        img: "https://via.placeholder.com/180x140/FF6B6B/FFFFFF?text=Hyperlocal"
+        img: Image1
     },
     {
         id: 2,
@@ -15,7 +36,7 @@ const services = ref([
         description: "Individual host",
         price: "From €65 / guest",
         rating: "★ 4.97",
-        img: "https://via.placeholder.com/180x140/4ECDC4/FFFFFF?text=Authentic"
+        img: cImage
     },
     {
         id: 3,
@@ -23,7 +44,7 @@ const services = ref([
         description: "From €1120 / min. 2 guests",
         price: "€1120 min",
         rating: "★ 5.0",
-        img: "https://via.placeholder.com/180x140/45B7D1/FFFFFF?text=Luxury"
+        img: dImage
     },
     {
         id: 4,
@@ -31,7 +52,7 @@ const services = ref([
         description: "From €113 / min. 5 guests",
         price: "€113 min.",
         rating: "★ 5.0",
-        img: "https://via.placeholder.com/180x140/96CEB4/FFFFFF?text=Behind"
+        img: gImage
     },
     {
         id: 5,
@@ -39,7 +60,7 @@ const services = ref([
         description: "From €872 / min. 2 guests",
         price: "€872 min.",
         rating: "★ 5.0",
-        img: "https://via.placeholder.com/180x140/F7DC6F/FFFFFF?text=Vibrant"
+        img: rImage
     },
     {
         id: 6,
@@ -47,7 +68,7 @@ const services = ref([
         description: "Individual host",
         price: "From €40 / guest",
         rating: "★ 5.0",
-        img: "https://via.placeholder.com/180x140/BB8FCE/FFFFFF?text=Catalan"
+        img: tImage
     },
     {
         id: 7,
@@ -55,7 +76,23 @@ const services = ref([
         description: "From €43 / guest",
         price: "From €43 / guest",
         rating: "★ 5.0",
-        img: "https://via.placeholder.com/180x140/FF9FF3/FFFFFF?text=Vegan"
+        img: qImage
+    },
+    {
+        id: 8,
+        title: "The Vegan Experience: Plant-based Private Chef",
+        description: "From €43 / guest",
+        price: "From €43 / guest",
+        rating: "★ 5.0",
+        img: jImage
+    },
+    {
+        id: 9,
+        title: "The Vegan Experience: Plant-based Private Chef",
+        description: "From €43 / guest",
+        price: "From €43 / guest",
+        rating: "★ 5.0",
+        img: pImage
     }
 ])
 
@@ -72,7 +109,7 @@ const servicesTraining = ref([
         description: "Pasadena, United States",
         price: "From €43 / guest",
         rating: "★ 5.0",
-        img: "https://via.placeholder.com/180x140/5F27CD/FFFFFF?text=Total"
+        img:  sImage
     },
     {
         id: 9,
@@ -80,7 +117,7 @@ const servicesTraining = ref([
         description: "From €12 / min. 2 guests",
         price: "€12 min.",
         rating: "★ 5.0",
-        img: "https://via.placeholder.com/180x140/54A0FF/FFFFFF?text=Yoga"
+        img: iImage
     },
     {
         id: 10,
@@ -88,7 +125,7 @@ const servicesTraining = ref([
         description: "Westmount, Canada",
         price: "From €74 / guest",
         rating: "★ 5.0",
-        img: "https://via.placeholder.com/180x140/FF6B35/FFFFFF?text=Fitness"
+        img: kImage
     },
     {
         id: 11,
@@ -96,7 +133,7 @@ const servicesTraining = ref([
         description: "Los Angeles, United States",
         price: "From €73 / guest",
         rating: "★ 5.0",
-        img: "https://via.placeholder.com/180x140/FF6B35/FFFFFF?text=Restorative"
+        img: fImage
     },
     {
         id: 12,
@@ -104,7 +141,7 @@ const servicesTraining = ref([
         description: "Redondo Beach, United States",
         price: "From €138 / guest",
         rating: "★ 5.0",
-        img: "https://via.placeholder.com/180x140/FF6B35/FFFFFF?text=HighEnergy"
+        img: lImage
     },
     {
         id: 13,
@@ -112,7 +149,32 @@ const servicesTraining = ref([
         description: "San Diego, United States",
         price: "From €86 / guest",
         rating: "★ 5.0",
-        img: "https://via.placeholder.com/180x140/FF6B35/FFFFFF?text=SunSweat"
+        img: mImage
+    } ,
+
+    {
+        id: 14,
+        title: "Sun-sweat by Nishant",
+        description: "San Diego, United States",
+        price: "From €86 / guest",
+        rating: "★ 5.0",
+        img: xImage
+    },
+    {
+        id: 15,
+        title: "Sun-sweat by Nishant",
+        description: "San Diego, United States",
+        price: "From €86 / guest",
+        rating: "★ 5.0",
+        img: Imagek
+    } ,
+    {
+        id: 16,
+        title: "Sun-sweat by Nishant",
+        description: "San Diego, United States",
+        price: "From €86 / guest",
+        rating: "★ 5.0",
+        img: Imagef
     }
 ])
 

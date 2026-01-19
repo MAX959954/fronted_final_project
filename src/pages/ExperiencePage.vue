@@ -1,13 +1,9 @@
 <script setup>
-import { onMounted } from 'vue'  // Removed unused ref/computed (now from composable)
-import { useExperiences } from '@/composables/useExperiences.js'  // Assuming path; adjust if needed
+import { useExperiences } from '@/composables/useExperiences.js'
 import "@/styles/experience_page.css"
 
-const { experiences, title } = useExperiences()  // Use composable for reusability
+const { experiences } = useExperiences()
 
-onMounted(() => {
-  console.log('Experiences loaded');
-});
 </script>
 
 <template>

@@ -1,6 +1,6 @@
 import { createApp } from 'vue'
 import App from './App.vue'
-import router from './router'   // now this file exists
+import router from './router'
 
 import "@/styles/experience_page.css";
 import "@/styles/main_page.css"
