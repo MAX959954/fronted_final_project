@@ -13,6 +13,12 @@ export default defineConfig({
   // so the base path is "/fronted_final_project/".
   base: '/fronted_final_project/',
 
+  // Build the production site into "docs" so GitHub Pages
+  // can serve it directly from main/docs
+  build: {
+    outDir: 'docs',
+  },
+
   plugins: [
     vue(),
     vueDevTools(),
