@@ -1,10 +1,11 @@
 <script setup>
-import { ref, onMounted } from 'vue'  // Added ref for activeTab
+import { ref, onMounted } from 'vue'
 import { useServices, useServicesTraining } from '@/composables/useServices.js'
+import ProductCard from '@/components/ProductCard.vue'
 import "@/styles/service_page.css"
 
 const { services } = useServices()
-const { servicesTraining} = useServicesTraining()
+const { servicesTraining } = useServicesTraining()
 
 onMounted(() => {
   console.log("Services loaded")
@@ -12,47 +13,43 @@ onMounted(() => {
 </script>
 
 <template>
-    <div class="services-wrapper">
-      <h1>Best Cafés in Slovakia</h1>
-      <p>Discover local cafés, restaurants, and enjoy traditional Slovak cuisine.</p>
-
-      <div class="experiences-grid">
-        <div v-for="chef in services" :key="chef.id" class="chef-card">
-          <img :src="chef.img" :alt="chef.title" />
-
-          <div class="card-content">
-            <h3>{{ chef.title }}</h3>
-            <p>{{ chef.description }}</p>
-
-            <div class="card-footer">
-              <span class="price">{{ chef.price }}</span>
-              <span class="rating">{{ chef.rating }}</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-  <!-- TRAINING SECTION -->
-  <div id="training-section">
-    <h1>Unique Experiences in Slovakia</h1>
-    <p>Discover adventures, workshops, and activities hosted by passionate locals.</p>
+  <!-- BEST CAFÉS SECTION -->
+  <div id="cafes-section" class="services-wrapper">
+    <h1>Best Cafés in Slovakia</h1>
+    <p>Discover local cafés, restaurants, and enjoy traditional Slovak cuisine.</p>
 
     <div class="experiences-grid">
-      <div
-          v-for="train in servicesTraining" :key="train.id" class="experience-card">
-        <img :src="train.img" :alt="train.title" />
+      <ProductCard
+        v-for="chef in services"
+        :key="chef.id"
+        :id="chef.id"
+        :title="chef.title"
+        :description="chef.description"
+        :price="chef.price"
+        :image="chef.img"
+        :rating="chef.rating"
+        type="service"
+      />
+    </div>
+  </div>
 
-        <div class="card-content">
-          <h3>{{ train.title }}</h3>
-          <p>{{ train.description }}</p>
+  <!-- FITNESS & WELLNESS SECTION -->
+  <div id="training-section">
+    <h1>Fitness & Wellness Services</h1>
+    <p>Discover fitness classes, personal training, and wellness activities hosted by passionate locals.</p>
 
-          <div class="card-footer">
-            <span class="price">{{ train.price }}</span>
-            <span class="rating">{{ train.rating }}</span>
-          </div>
-        </div>
-      </div>
+    <div class="experiences-grid">
+      <ProductCard
+        v-for="train in servicesTraining"
+        :key="train.id"
+        :id="train.id"
+        :title="train.title"
+        :description="train.description"
+        :price="train.price"
+        :image="train.img"
+        :rating="train.rating"
+        type="training"
+      />
     </div>
   </div>
 </template>

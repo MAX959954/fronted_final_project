@@ -5,6 +5,9 @@ import ApartmentPage from "@/pages/ApartmentPage.vue";
 import ServicePage from "@/pages/ServicePage.vue";
 import CoHost from "@/pages/Co-Host.vue";
 import FindCoHost from "@/pages/FindCoHost.vue";
+import BookingsPage from "@/pages/BookingsPage.vue";
+import BlogPage from "@/pages/BlogPage.vue";
+import CartPage from "@/pages/CartPage.vue";
 
 const routes = [
     {
@@ -38,6 +41,21 @@ const routes = [
         name : 'FindCoHost',
         component: FindCoHost ,
         meta: { hideNav: true}
+    },
+    {
+        path: "/bookings",
+        name: "Bookings",
+        component: BookingsPage,
+    },
+    {
+        path: "/blog",
+        name: "Blog",
+        component: BlogPage,
+    },
+    {
+        path: "/cart",
+        name: "Cart",
+        component: CartPage,
     }
 ];
 

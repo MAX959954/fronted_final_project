@@ -7,14 +7,23 @@
 .trending-section {
     max-width: 1300px;    /* limits total width */
     margin: 0 auto;       /* centers the section */
-    padding: 40px 60px;   /* inner space */
+    padding: 40px 60px;
+}
+
+/* Ensure proper spacing between sections */
+.offers-section + .trip-planner {
+    padding-top: 40px;
 }
 
 
 .offers-section {
-    padding: 40px 80px;
+    padding: 40px 80px 60px 80px;
     background-color: #121212;
     color: #fff;
+    margin-top: 0;
+    max-width: 1300px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .offers-section h2 {
@@ -32,59 +41,52 @@
 .offers-cards {
     display: flex;
     gap: 20px;
-    margin-bottom: 60px;
+    margin-bottom: 0;
+    width: 100%;
+    color: #181818;
 }
 
 .card {
-    background: linear-gradient(135deg, #282828 0%, #333 100%);
+    background: #181818;
     border-radius: 16px;
     padding: 24px;
     flex: 1;
     position: relative;
     overflow: hidden;
-    color: #fff;
     border: 1px solid #333;
     transition: border-color 0.2s ease;
+    min-height: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .card:hover {
     border-color: #1db954;
 }
 
-.card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 200px;
-    background-size: cover;
-    background-position: center;
-    opacity: 0.8;
-}
-
-.late-escape::before {
-    background-image: url('https://via.placeholder.com/600x200/FF6B35/FFFFFF?text=Late+Escape+Sunset');
-}
-
-.holiday-rentals::before {
-    background-image: url('https://via.placeholder.com/600x200/4ECDC4/FFFFFF?text=Holiday+Home');
-}
+/* Removed background images to match the design */
 
 .card h3 {
     font-size: 20px;
     font-weight: bold;
     margin-bottom: 8px;
-    position: relative;
-    z-index: 1;
+    color: #fff;
 }
 
 .card p {
     font-size: 14px;
     color: #b3b3b3;
+    margin-bottom: 8px;
+    line-height: 1.5;
+}
+
+.card p:first-of-type {
+    margin-bottom: 8px;
+}
+
+.card p:last-of-type {
     margin-bottom: 16px;
-    position: relative;
-    z-index: 1;
 }
 
 .card button {
@@ -97,8 +99,8 @@
     font-weight: 500;
     cursor: pointer;
     transition: background 0.2s ease;
-    position: relative;
-    z-index: 1;
+    align-self: flex-start;
+    margin-top: auto;
 }
 
 .card button:hover {
@@ -106,9 +108,12 @@
 }
 
 .trip-planner {
-    padding: 0 80px 40px;
+    padding: 60px 80px 40px 80px;
     background-color: #121212;
     color: #fff;
+    max-width: 1300px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .trip-planner h2 {
@@ -161,7 +166,7 @@
 
 .destination {
     flex: 0 0 280px;
-    background: #282828;
+    background: #181818;
     border-radius: 16px;
     overflow: hidden;
     border: 1px solid #333;
@@ -214,7 +219,7 @@
 
 .type-card {
     flex: 0 0 280px;
-    background: #282828;
+    background: #181818;
     border-radius: 16px;
     overflow: hidden;
     border: 1px solid #333;
@@ -300,7 +305,7 @@
 }
 
 .destination-card {
-    background: #282828;
+    background: #181818;
     border-radius: 12px;
     overflow: hidden;
     border: 1px solid #4B5563;
@@ -362,8 +367,9 @@
 
     .offers-cards {
         flex-direction: column;
+        background-color: #181818;
     }
-
+    
     .vibes {
         justify-content: flex-start;
     }
@@ -379,4 +385,9 @@
     .destinations-grid {
         grid-template-columns: 1fr;
     }
+}
+
+.offers-section .card {
+    background-color: #181818 !important;
+    color: #ffffff;
 }

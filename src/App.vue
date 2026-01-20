@@ -13,7 +13,7 @@ const route = useRoute();
 
     <Main_page v-if="route.name === 'Apartment' || route.name === 'Home'" />
 
-    <RouterView :key="$route.fullPath" />
+    <RouterView :key="route.fullPath" />
 
     <Main_footer
         v-if="route.name !== 'CoHost'

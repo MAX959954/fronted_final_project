@@ -9,7 +9,8 @@ body {
 
 /* Main wrapper shared by both sections */
 .services-wrapper,
-#training-section {
+#training-section,
+#cafes-section {
     width: 100%;
     max-width: 1150px;   /* prevents huge stretching */
     margin: 0 auto;      /* centers properly */
@@ -20,15 +21,18 @@ body {
 }
 
 .services-wrapper h1,
-#training-section h1 {
+#training-section h1,
+#cafes-section h1 {
     font-size: 36px;
     font-weight: bold;
     text-align: center;
     margin-bottom: 10px;
+    color: #fff;
 }
 
 .services-wrapper p,
-#training-section p {
+#training-section p,
+#cafes-section p {
     font-size: 16px;
     color: #b3b3b3;
     text-align: center;
@@ -45,7 +49,7 @@ body {
 /* Main card style shared by chefs + training */
 .chef-card,
 .experience-card {
-    background: #282828;
+    background: #181818;
     border-radius: 10px;
     overflow: hidden;
     border: 1px solid #333;
@@ -69,7 +73,7 @@ body {
 
 .card-content {
     padding: 16px;
-    background: #282828;
+    background: #181818;
 }
 
 .card-content h3 {
@@ -109,7 +113,8 @@ body {
 /* -------------------------------------- */
 @media (max-width: 768px) {
     .services-wrapper,
-    #training-section {
+    #training-section,
+    #cafes-section {
         padding-left: 20px;
         padding-right: 20px;
     }

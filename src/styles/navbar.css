@@ -233,10 +233,24 @@ body {
     flex-direction: column;
     border-radius: var(--radius-pill);
     min-width: 120px;
+    color: #fff;
 }
 
 .search-item:hover {
     background-color: #333; /* Light gray hover like Airbnb */
+}
+
+/* Strong, readable text inside the search segments */
+.search-item .label {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: #ffffff; /* bright label like on Airbnb */
+}
+
+.search-item .placeholder {
+    font-size: 14px;
+    color: #e5e5e5; /* light grey, clearly visible on dark background */
 }
 
 .label {
@@ -301,10 +315,10 @@ body {
 }
 
 /* Example SVG size inside button */
-.search-btn svg { 
-    width: 20px !important; 
-    height: 20px !important; 
-    display: block !important; 
+.search-btn svg {
+    width: 20px !important;
+    height: 20px !important;
+    display: block !important;
     visibility: visible !important;
     opacity: 1 !important;
 }
@@ -317,26 +331,45 @@ body {
     opacity: 1 !important;
 }
 
-/* -------------------------
-   Dropdown menu
-   ------------------------- */
+.help-center-button {
+    background-color: #121212;
+    position: relative;  /* This makes it the positioning parent */
+}
+
 .dropdown {
     position: absolute;
-    top: 60px;
-    right: 20px;
+    top: 0;
+    right: 0 ;
+    left: 1540px;
+
     background: #282828;
     border: 1px solid #333;
-    border-radius: 10px;
-    width: 250px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    border-radius: 12px;
+    width: 260px;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.7);
     display: none;
     flex-direction: column;
     padding: 10px 0;
-    z-index: 120;
+    z-index: 9999;
+
+    /* Add transform origin for better animation */
+    transform-origin: top right;
 }
 
 .dropdown.active {
     display: flex;
+    animation: dropdownFade 0.18s ease-out;
+}
+
+@keyframes dropdownFade {
+    from {
+        opacity: 0;
+        transform: translateY(-8px) scale(0.98);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
 }
 
 .dropdown-item {
@@ -346,6 +379,7 @@ body {
     text-decoration: none;
     display: block;
     transition: background 0.2s ease;
+    text-align: left;
 }
 
 .dropdown-item:hover {
@@ -355,6 +389,19 @@ body {
 .dropdown-item strong {
     display: block;
     margin-bottom: 3px;
+}
+
+.dropdown-item span {
+    display: block;
+    font-size: 13px;
+    color: #b3b3b3;
+    font-weight: normal;
+}
+
+.divider {
+    height: 1px;
+    background: #404040;
+    margin: 8px 0;
 }
 
 /* -------------------------
@@ -633,7 +680,6 @@ input:checked + .slider:before {
 }
 
 .where-item small {
-    color: var(--muted);
     font-size: 13px;
 }
 

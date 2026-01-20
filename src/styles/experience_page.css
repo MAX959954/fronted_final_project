@@ -45,12 +45,13 @@ main, .main-content, .container {
 }
 
 .experience-card {
+    background: #181818;
     overflow: hidden;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
     position: relative;
-    border: 1px solid #ddd;
+    border: 1px solid #333;
     border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
 }
 
 .experience-card:hover {
@@ -67,7 +68,7 @@ main, .main-content, .container {
 
 .card-content {
     padding: 16px;
-    background: #282828;
+    background: #181818;
 }
 
 .card-content h3 {

@@ -1,11 +1,39 @@
 <script setup>
-import "@/styles/cohost.css"
+import { ref } from "vue";
+import "@/styles/cohost.css";
 
-const handleContinue = () => alert("Continue button clicked")
+const handleContinue = () => alert("Continue button clicked");
+
+// Simple search state for the co-host search bar
+const searchQuery = ref("");
+
+const handleSearch = () => {
+  // For now just demo the search term – later you can replace with real logic
+  if (!searchQuery.value.trim()) {
+    alert("Please enter a location to search for co-hosts.");
+    return;
+  }
+  alert(`Searching co-hosts near: ${searchQuery.value}`);
+};
 </script>
 
 <template>
   <main class="refer-host-page">
+    <!-- Co-Host Search Bar -->
+    <section class="cohost-search-section">
+      <div class="cohost-search-wrapper">
+        <input
+          v-model="searchQuery"
+          type="text"
+          class="cohost-search-input"
+          placeholder="Find co-hosts near Nitra, Slovakia"
+        />
+        <button class="cohost-search-button" @click="handleSearch">
+          Search
+        </button>
+      </div>
+    </section>
+
     <!-- Login Section -->
     <section class="login-section">
       <div class="login-container">

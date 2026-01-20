@@ -1,7 +1,10 @@
 <script setup>
   import { ref, onMounted, onBeforeUnmount, computed } from "vue";
   import { RouterLink } from "vue-router";
+  import { useCartStore } from '@/stores/cart';
   import "@/styles/navbar.css";
+  
+  const cartStore = useCartStore();
 
   const props = defineProps({
     title: { type: String, default: "NEW" },
@@ -224,11 +227,32 @@
       <RouterLink to="/services" active-class="active" exact-active-class="active">
         🛎️ Services <span class="badge">{{ props.title }}</span>
       </RouterLink>
+      <RouterLink to="/bookings" active-class="active" exact-active-class="active" class="position-relative">
+        📋 Bookings
+        <span v-if="cartStore.totalItems > 0" class="badge bg-danger position-absolute top-0 start-100 translate-middle rounded-pill" style="font-size: 0.7rem; padding: 0.2em 0.5em;">
+          {{ cartStore.totalItems }}
+        </span>
+      </RouterLink>
+      <RouterLink to="/blog" active-class="active" exact-active-class="active">
+        📰 Blog
+      </RouterLink>
     </nav>
 
     <div class="navbar-right">
-      <button class="icon-btn" @click="openPopup('language')">🌐</button>
+      <button class="icon-btn position-relative" @click="openPopup('language')">
+        🌐
+      </button>
       <button class="icon-btn" @click="openPopup('currency')">💰</button>
+      <RouterLink 
+        to="/bookings" 
+        class="icon-btn position-relative"
+        style="text-decoration: none; display: inline-flex; align-items: center; justify-content: center;"
+      >
+        🛒
+        <span v-if="cartStore.totalItems > 0" class="badge bg-danger position-absolute top-0 start-100 translate-middle rounded-pill" style="font-size: 0.7rem; padding: 0.2em 0.5em;">
+          {{ cartStore.totalItems }}
+        </span>
+      </RouterLink>
       <button class="icon-btn" id="menu-btn" @click="toggleDropdown">☰</button>
     </div>
   </header>
@@ -238,9 +262,6 @@
       <!-- WHERE -->
       <div class="search-item hoverable" @click="openWhere">
         <span class="label">Where</span>
-        <span class="placeholder">
-          {{ selectedDestination !== 'Where' ? selectedDestination : 'Search destinations' }}
-        </span>
       </div>
 
       <div class="divider"></div>
@@ -248,9 +269,6 @@
       <!-- WHEN -->
       <div class="search-item hoverable" @click="openDate">
         <span class="label">When</span>
-        <span class="placeholder">
-          {{ props.date || 'Add dates' }}
-        </span>
       </div>
 
       <div class="divider"></div>
@@ -258,9 +276,6 @@
       <!-- WHO -->
       <div class="search-item hoverable" @click="openGuests">
         <span class="label">Who</span>
-        <span class="placeholder">
-          {{ totalGuests > 0 ? totalGuests + ' guests' : 'Add guests' }}
-        </span>
       </div>
 
       <button class="search-btn" aria-label="Search">
@@ -274,22 +289,43 @@
   </div>
 
   <!-- === DROPDOWN === -->
-  <div class="dropdown" id="dropdown-menu" :class="{ active: dropdownActive }">
-    <RouterLink to="#" class="dropdown-item"><strong>Help Center</strong></RouterLink>
-    <div class="divider"></div>
-    <RouterLink to="#" class="dropdown-item" @click.prevent="showHost = true">
-      <strong>{{ props.be_host }}</strong>
-      <span>It's easy to start hosting and earn extra income.</span>
-    </RouterLink>
-    <div class="divider"></div>
-    <RouterLink to="/co-host" class="dropdown-item">Refer a Host</RouterLink>
-    <RouterLink to="/find-co-host" class="dropdown-item" >Find a co-host</RouterLink>
-    <div class="divider"></div>
-    <RouterLink to="#" class="dropdown-item" @click.prevent="showLogin = true"
+  <button class="icon-btn help-center-button" @click="toggleDropdown">
+
+    <!-- Dropdown with click.stop to prevent closing when clicking inside -->
+    <div
+        class="dropdown"
+        id="dropdown-menu"
+        :class="{ active: dropdownActive }"
+        @click.stop
     >
-      Log in or sign up
-    </RouterLink>
-  </div>
+      <RouterLink to="#" class="dropdown-item">
+        <strong>Help Center</strong>
+      </RouterLink>
+
+      <div class="divider"></div>
+
+      <RouterLink to="#" class="dropdown-item" @click.prevent="showHost = true">
+        <strong>{{ props.be_host }}</strong>
+        <span>It's easy to start hosting and earn extra income.</span>
+      </RouterLink>
+
+      <div class="divider"></div>
+
+      <RouterLink to="/co-host" class="dropdown-item">
+        Refer a Host
+      </RouterLink>
+
+      <RouterLink to="/find-co-host" class="dropdown-item">
+        Find a co-host
+      </RouterLink>
+
+      <div class="divider"></div>
+
+      <RouterLink to="#" class="dropdown-item" @click.prevent="showLogin = true">
+        Log in or sign up
+      </RouterLink>
+    </div>
+  </button>
 
 
   <!--HOST POPUP -->
