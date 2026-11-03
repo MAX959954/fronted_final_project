@@ -61,7 +61,16 @@ export default {
     ],
   },
   cta: { text: 'Der ganze Katalog: Gitarren, Drums, Becken und Zubehör.', verb: 'Stöbern' },
-  footer: { about: 'Ein Laden für Musikinstrumente', privacy: 'Datenschutz', credits: 'Fotos' },
+  footer: {
+    tagline: 'Gitarren, Drums und alles, was dazugehört. Jedes Instrument wird vor dem Versand eingestellt.',
+    shop: 'Shop', help: 'Kundenservice', mine: 'Mein Backline',
+    delivery: 'Versand und Zahlung', returns: 'Rückgabe', warranty: 'Garantie', faq: 'Häufige Fragen',
+    promises: ['Kostenloser Versand ab 300 €', '30 Tage Rückgabe', 'Zwei Jahre Garantie', 'Einstellung vom Techniker'],
+    rights: 'Alle Rechte vorbehalten.',
+    credits: 'Bildnachweise',
+    creditsText: 'Einige Fotos auf dieser Seite stehen unter Creative-Commons-Lizenzen. Danke an ihre Urheber.',
+    creditsUnsplash: 'Alle anderen Fotos stammen von Unsplash (Unsplash-Lizenz).',
+  },
   catalog: {
     title: 'Katalog',
     search: 'Katalog durchsuchen',

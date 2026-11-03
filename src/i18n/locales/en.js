@@ -61,7 +61,16 @@ export default {
     ],
   },
   cta: { text: 'The whole catalogue: guitars, drums, cymbals and accessories.', verb: 'Shop' },
-  footer: { about: 'A shop for musical instruments', privacy: 'Privacy', credits: 'Photos' },
+  footer: {
+    tagline: 'Guitars, drums and everything they need. Every instrument is set up before it ships.',
+    shop: 'Shop', help: 'Customer care', mine: 'My Backline',
+    delivery: 'Delivery and payment', returns: 'Returns', warranty: 'Warranty', faq: 'Common questions',
+    promises: ['Free delivery from €300', '30-day returns', 'Two-year warranty', 'Technician setup'],
+    rights: 'All rights reserved.',
+    credits: 'Photo credits',
+    creditsText: 'Some photographs on this site are published under Creative Commons licences. Thanks to their authors.',
+    creditsUnsplash: 'All other photographs come from Unsplash (Unsplash licence).',
+  },
   catalog: {
     title: 'Catalogue',
     search: 'Search the catalogue',

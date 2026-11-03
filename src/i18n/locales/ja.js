@@ -61,7 +61,16 @@ export default {
     ],
   },
   cta: { text: 'ギター、ドラム、シンバル、アクセサリーのすべて。', verb: '選ぶ' },
-  footer: { about: '楽器のお店', privacy: 'プライバシー', credits: '写真' },
+  footer: {
+    tagline: 'ギター、ドラム、そして必要なものすべて。どの楽器も出荷前に調整します。',
+    shop: 'ショップ', help: 'カスタマーサポート', mine: 'マイ Backline',
+    delivery: '配送とお支払い', returns: '返品', warranty: '保証', faq: 'よくある質問',
+    promises: ['300ユーロ以上で送料無料', '30日間返品', '2年保証', 'リペアマンによる調整'],
+    rights: 'All rights reserved.',
+    credits: '写真クレジット',
+    creditsText: 'このサイトの一部の写真はクリエイティブ・コモンズ・ライセンスで公開されています。作者の皆さんに感謝します。',
+    creditsUnsplash: 'その他の写真はUnsplash（Unsplashライセンス）のものです。',
+  },
   catalog: {
     title: 'カタログ',
     search: 'カタログを検索',

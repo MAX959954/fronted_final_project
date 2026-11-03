@@ -61,7 +61,16 @@ export default {
     ],
   },
   cta: { text: 'Tout le catalogue : guitares, batteries, cymbales et accessoires.', verb: 'Choisir' },
-  footer: { about: 'Une boutique d’instruments de musique', privacy: 'Confidentialité', credits: 'Photos' },
+  footer: {
+    tagline: 'Guitares, batteries et tout ce qu’il leur faut. Chaque instrument est réglé avant l’envoi.',
+    shop: 'Boutique', help: 'Service client', mine: 'Mon Backline',
+    delivery: 'Livraison et paiement', returns: 'Retours', warranty: 'Garantie', faq: 'Questions fréquentes',
+    promises: ['Livraison offerte dès 300 €', 'Retour sous 30 jours', 'Garantie deux ans', 'Réglage par un technicien'],
+    rights: 'Tous droits réservés.',
+    credits: 'Crédits photo',
+    creditsText: 'Certaines photos de ce site sont publiées sous licences Creative Commons. Merci à leurs auteurs.',
+    creditsUnsplash: 'Toutes les autres photos viennent d’Unsplash (licence Unsplash).',
+  },
   catalog: {
     title: 'Catalogue',
     search: 'Rechercher dans le catalogue',

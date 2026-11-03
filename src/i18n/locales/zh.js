@@ -61,7 +61,16 @@ export default {
     ],
   },
   cta: { text: '完整目录：吉他、鼓、镲片和配件。', verb: '选购' },
-  footer: { about: '乐器商店', privacy: '隐私', credits: '图片' },
+  footer: {
+    tagline: '吉他、鼓以及它们需要的一切。每件乐器发货前都经过调校。',
+    shop: '商店', help: '客户服务', mine: '我的 Backline',
+    delivery: '配送与付款', returns: '退货', warranty: '保修', faq: '常见问题',
+    promises: ['满300欧元免运费', '30天退货', '两年保修', '技师调校'],
+    rights: '保留所有权利。',
+    credits: '图片来源',
+    creditsText: '本站部分照片采用知识共享（Creative Commons）许可发布，感谢各位作者。',
+    creditsUnsplash: '其余照片来自 Unsplash（Unsplash 许可）。',
+  },
   catalog: {
     title: '商品目录',
     search: '搜索目录',
