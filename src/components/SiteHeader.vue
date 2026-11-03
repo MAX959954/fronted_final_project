@@ -16,11 +16,14 @@ const langRoot = ref(null)
 const bump = ref(false)
 
 const links = [
-  { to: '/catalog', key: 'nav.catalog' },
-  { to: '/catalog?cat=guitars', key: 'nav.guitars' },
-  { to: '/catalog?cat=drums', key: 'nav.drums' },
-  { to: '/catalog?cat=accessories', key: 'nav.accessories' },
+  { to: '/catalog', cat: '', key: 'nav.catalog' },
+  { to: '/catalog?cat=guitars', cat: 'guitars', key: 'nav.guitars' },
+  { to: '/catalog?cat=drums', cat: 'drums', key: 'nav.drums' },
+  { to: '/catalog?cat=accessories', cat: 'accessories', key: 'nav.accessories' },
 ]
+
+// RouterLink's active class ignores the query, which would light up all four links on /catalog.
+const isCurrent = (l) => route.name === 'Catalog' && (route.query.cat || '') === l.cat
 
 function chooseLocale(code) {
   setLocale(code)
@@ -64,7 +67,16 @@ onBeforeUnmount(() => {
     <RouterLink to="/" class="wordmark">Backline</RouterLink>
 
     <nav class="links" :aria-label="t('nav.menu')">
-      <RouterLink v-for="l in links" :key="l.to" :to="l.to" class="link nav-link" exact-active-class="is-current">
+      <RouterLink
+        v-for="l in links"
+        :key="l.to"
+        :to="l.to"
+        class="link nav-link"
+        :class="{ 'is-current': isCurrent(l) }"
+        active-class=""
+        exact-active-class=""
+        :aria-current="isCurrent(l) ? 'page' : undefined"
+      >
         {{ t(l.key) }}
       </RouterLink>
     </nav>

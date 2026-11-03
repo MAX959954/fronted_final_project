@@ -193,8 +193,7 @@ button {
 }
 
 .link:hover,
-.link:focus-visible,
-.link.router-link-active {
+.link:focus-visible {
   text-decoration-color: currentColor;
   text-underline-offset: 3px;
 }
