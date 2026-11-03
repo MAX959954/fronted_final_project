@@ -1,58 +1,79 @@
 import { defineStore } from 'pinia'
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
+import { productById } from '@/data/products'
+import { load, save } from './persist'
+
+export const FREE_SHIPPING_FROM = 300
+export const COURIER_FEE = 15
+const MAX_QTY = 20
 
 export const useCartStore = defineStore('cart', () => {
-  const items = ref([])
+  // Stored as { id, qty } only, so prices always come from the catalogue.
+  const items = ref(load('cart', []).filter((i) => productById(i.id) && i.qty > 0))
 
-  const totalItems = computed(() => {
-    return items.value.reduce((sum, item) => sum + item.quantity, 0)
-  })
+  watch(items, (value) => save('cart', value), { deep: true })
 
-  const totalPrice = computed(() => {
-    return items.value.reduce((sum, item) => {
-      const price = parseFloat(item.price.replace(/[^0-9.]/g, ''))
-      return sum + (price * item.quantity)
-    }, 0)
-  })
+  const lines = computed(() =>
+    items.value.map((i) => {
+      const product = productById(i.id)
+      return { ...i, product, total: product.price * i.qty }
+    }),
+  )
 
-  function addItem(item) {
-    const existingItem = items.value.find(i => i.id === item.id && i.type === item.type)
-    if (existingItem) {
-      existingItem.quantity += 1
-    } else {
-      items.value.push({ ...item, quantity: 1 })
-    }
+  const totalItems = computed(() => items.value.reduce((sum, i) => sum + i.qty, 0))
+  const subtotal = computed(() => lines.value.reduce((sum, l) => sum + l.total, 0))
+  const leftForFreeShipping = computed(() => Math.max(0, FREE_SHIPPING_FROM - subtotal.value))
+
+  function shipping(method = 'courier') {
+    if (method === 'pickup' || subtotal.value === 0 || subtotal.value >= FREE_SHIPPING_FROM) return 0
+    return COURIER_FEE
   }
 
-  function removeItem(itemId, itemType) {
-    const index = items.value.findIndex(i => i.id === itemId && i.type === itemType)
-    if (index > -1) {
-      items.value.splice(index, 1)
-    }
+  const qtyOf = (id) => items.value.find((i) => i.id === id)?.qty || 0
+
+  function add(id, qty = 1) {
+    const line = items.value.find((i) => i.id === id)
+    if (line) line.qty = Math.min(MAX_QTY, line.qty + qty)
+    else items.value.push({ id, qty: Math.min(MAX_QTY, qty) })
   }
 
-  function updateQuantity(itemId, itemType, quantity) {
-    const item = items.value.find(i => i.id === itemId && i.type === itemType)
-    if (item) {
-      if (quantity <= 0) {
-        removeItem(itemId, itemType)
-      } else {
-        item.quantity = quantity
-      }
-    }
+  function setQty(id, qty) {
+    if (qty <= 0) return remove(id)
+    const line = items.value.find((i) => i.id === id)
+    if (line) line.qty = Math.min(MAX_QTY, qty)
   }
 
-  function clearCart() {
+  function remove(id) {
+    items.value = items.value.filter((i) => i.id !== id)
+  }
+
+  function clear() {
     items.value = []
   }
 
+  // No payment backend: the order is kept in this browser and the cart is emptied.
+  function placeOrder({ customer, delivery, payment, comment }) {
+    const order = {
+      id: `BL-${Date.now().toString().slice(-6)}`,
+      date: new Date().toISOString(),
+      items: lines.value.map((l) => ({ id: l.id, qty: l.qty, price: l.product.price })),
+      customer,
+      delivery,
+      payment,
+      comment,
+      subtotal: subtotal.value,
+      shipping: shipping(delivery),
+    }
+    order.total = order.subtotal + order.shipping
+    save('orders', [order, ...load('orders', [])].slice(0, 20))
+    clear()
+    return order
+  }
+
+  const findOrder = (id) => load('orders', []).find((o) => o.id === id)
+
   return {
-    items,
-    totalItems,
-    totalPrice,
-    addItem,
-    removeItem,
-    updateQuantity,
-    clearCart
+    items, lines, totalItems, subtotal, leftForFreeShipping,
+    shipping, qtyOf, add, setQty, remove, clear, placeOrder, findOrder,
   }
 })

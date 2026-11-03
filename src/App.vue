@@ -1,24 +1,20 @@
 <script setup>
-import { useRoute } from "vue-router";
-import NavBar from "@/components/NavBar.vue";
-import Main_page from "@/pages/Main_page.vue";
-import Main_footer from "@/components/Main_footer.vue";
-
-const route = useRoute();
+import SiteHeader from '@/components/SiteHeader.vue'
+import SiteFooter from '@/components/SiteFooter.vue'
+import ToastStack from '@/components/ToastStack.vue'
 </script>
 
 <template>
-  <div>
-    <NavBar v-if="route.name !== 'FindCoHost' && route.name !== 'CoHost'" />
+  <SiteHeader />
 
-    <Main_page v-if="route.name === 'Apartment' || route.name === 'Home'" />
+  <main id="main">
+    <RouterView v-slot="{ Component, route }">
+      <Transition name="page" mode="out-in">
+        <component :is="Component" :key="route.path" />
+      </Transition>
+    </RouterView>
+  </main>
 
-    <RouterView :key="route.fullPath" />
-
-    <Main_footer
-        v-if="route.name !== 'CoHost'
-      && route.name !== 'FindCoHost'"
-    />
-  </div>
+  <SiteFooter />
+  <ToastStack />
 </template>
-
