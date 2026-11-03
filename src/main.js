@@ -2,14 +2,14 @@ import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import App from './App.vue'
 import router from './router'
+import reveal from './directives/reveal'
+import './i18n'
 
-import "@/assets/main.css"
-import "@/styles/experience_page.css";
-import "@/styles/main_page.css"
+import '@/styles/global.css'
 
 const app = createApp(App)
-const pinia = createPinia()
 
-app.use(pinia)
+app.use(createPinia())
 app.use(router)
+app.directive('reveal', reveal)
 app.mount('#app')

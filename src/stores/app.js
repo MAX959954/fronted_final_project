@@ -2,48 +2,18 @@ import { defineStore } from 'pinia'
 import { ref } from 'vue'
 
 export const useAppStore = defineStore('app', () => {
-  const searchFilters = ref({
-    destination: '',
-    checkIn: null,
-    checkOut: null,
-    guests: 0
-  })
-
-  const loading = ref(false)
   const notifications = ref([])
-
-  function setSearchFilters(filters) {
-    searchFilters.value = { ...searchFilters.value, ...filters }
-  }
-
-  function setLoading(value) {
-    loading.value = value
-  }
+  let nextId = 1
 
   function addNotification(notification) {
-    const id = Date.now()
+    const id = nextId++
     notifications.value.push({ ...notification, id })
-    if (notification.autoHide !== false) {
-      setTimeout(() => {
-        removeNotification(id)
-      }, notification.duration || 3000)
-    }
+    setTimeout(() => removeNotification(id), notification.duration || 2800)
   }
 
   function removeNotification(id) {
-    const index = notifications.value.findIndex(n => n.id === id)
-    if (index > -1) {
-      notifications.value.splice(index, 1)
-    }
+    notifications.value = notifications.value.filter((n) => n.id !== id)
   }
 
-  return {
-    searchFilters,
-    loading,
-    notifications,
-    setSearchFilters,
-    setLoading,
-    addNotification,
-    removeNotification
-  }
+  return { notifications, addNotification, removeNotification }
 })

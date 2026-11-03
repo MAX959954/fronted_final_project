@@ -28,3 +28,6 @@ coverage
 *.sw?
 
 *.tsbuildinfo
+
+# taste-skill working files (screenshots, direction sheet)
+.taste-skill/
