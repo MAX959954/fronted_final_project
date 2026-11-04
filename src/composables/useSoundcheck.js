@@ -25,9 +25,10 @@ function pluck(freq, duration, damping) {
   const out = buffer.getChannelData(0)
   const period = Math.max(2, Math.round(ac.sampleRate / freq))
   for (let i = 0; i < length; i++) {
-    out[i] = i < period
-      ? Math.random() * 2 - 1
-      : damping * 0.5 * (out[i - period] + out[i - period - 1 >= 0 ? i - period - 1 : 0])
+    out[i] =
+      i < period
+        ? Math.random() * 2 - 1
+        : damping * 0.5 * (out[i - period] + out[i - period - 1 >= 0 ? i - period - 1 : 0])
   }
   return buffer
 }
@@ -201,5 +202,9 @@ export function useSoundcheck() {
 
   onBeforeUnmount(() => clearTimeout(timer))
 
-  return { playing, trigger, supported: typeof window !== 'undefined' && !!(window.AudioContext || window.webkitAudioContext) }
+  return {
+    playing,
+    trigger,
+    supported: typeof window !== 'undefined' && !!(window.AudioContext || window.webkitAudioContext),
+  }
 }

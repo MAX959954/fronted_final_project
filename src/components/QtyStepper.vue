@@ -17,9 +17,13 @@ function set(value) {
 
 <template>
   <div class="stepper" role="group" :aria-label="label || t('product.qty')">
-    <button type="button" :aria-label="t('cart.minus')" :disabled="modelValue <= min" @click="set(modelValue - 1)">−</button>
+    <button type="button" :aria-label="t('cart.minus')" :disabled="modelValue <= min" @click="set(modelValue - 1)">
+      −
+    </button>
     <output aria-live="polite">{{ modelValue }}</output>
-    <button type="button" :aria-label="t('cart.plus')" :disabled="modelValue >= max" @click="set(modelValue + 1)">+</button>
+    <button type="button" :aria-label="t('cart.plus')" :disabled="modelValue >= max" @click="set(modelValue + 1)">
+      +
+    </button>
   </div>
 </template>
 
@@ -34,7 +38,10 @@ function set(value) {
 .stepper button {
   height: 44px;
   font-size: 1.25rem;
-  transition: background-color var(--dur-fast) ease, color var(--dur-fast) ease, transform var(--dur-fast) var(--ease-out);
+  transition:
+    background-color var(--dur-fast) ease,
+    color var(--dur-fast) ease,
+    transform var(--dur-fast) var(--ease-out);
 }
 
 .stepper button:hover:not([disabled]) {

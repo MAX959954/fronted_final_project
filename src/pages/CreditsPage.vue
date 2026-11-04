@@ -14,7 +14,9 @@ const { t } = useI18n()
       <tbody>
         <tr v-for="c in credits" :key="c.url">
           <th scope="row">{{ c.what }}</th>
-          <td><a :href="c.url" class="link" target="_blank" rel="noopener">{{ c.title }}</a></td>
+          <td>
+            <a :href="c.url" class="link" target="_blank" rel="noopener">{{ c.title }}</a>
+          </td>
           <td>{{ c.author }}</td>
           <td class="muted">{{ c.licence }}</td>
         </tr>

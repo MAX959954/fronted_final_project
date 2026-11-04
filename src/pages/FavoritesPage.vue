@@ -30,7 +30,9 @@ const favs = useFavoritesStore()
 }
 
 .grid-leave-active {
-  transition: opacity 250ms ease, transform 300ms var(--ease-out);
+  transition:
+    opacity 250ms ease,
+    transform 300ms var(--ease-out);
 }
 
 .grid-leave-to {

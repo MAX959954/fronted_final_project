@@ -43,8 +43,20 @@ const progress = computed(() => Math.min(1, cart.subtotal / FREE_SHIPPING_FROM))
 
       <aside class="summary">
         <div class="free">
-          <p>{{ cart.leftForFreeShipping ? t('cart.freeLeft', { amount: price(cart.leftForFreeShipping) }) : t('cart.freeDone') }}</p>
-          <div class="meter" role="progressbar" :aria-valuenow="Math.round(progress * 100)" aria-valuemin="0" aria-valuemax="100">
+          <p>
+            {{
+              cart.leftForFreeShipping
+                ? t('cart.freeLeft', { amount: price(cart.leftForFreeShipping) })
+                : t('cart.freeDone')
+            }}
+          </p>
+          <div
+            class="meter"
+            role="progressbar"
+            :aria-valuenow="Math.round(progress * 100)"
+            aria-valuemin="0"
+            aria-valuemax="100"
+          >
             <span :style="{ transform: `scaleX(${progress})` }" />
           </div>
         </div>
@@ -149,7 +161,9 @@ const progress = computed(() => Math.min(1, cart.subtotal / FREE_SHIPPING_FROM))
 
 .line-enter-active,
 .line-leave-active {
-  transition: opacity 300ms ease, transform 400ms var(--ease-out);
+  transition:
+    opacity 300ms ease,
+    transform 400ms var(--ease-out);
 }
 
 .line-enter-from {
@@ -256,11 +270,22 @@ dd {
     gap: 8px 16px;
   }
 
-  .thumb { grid-area: thumb; }
-  .line-info { grid-area: info; }
-  .stepper { grid-area: qty; }
-  .line-total { grid-area: total; }
-  .remove { grid-area: remove; justify-self: start; }
+  .thumb {
+    grid-area: thumb;
+  }
+  .line-info {
+    grid-area: info;
+  }
+  .stepper {
+    grid-area: qty;
+  }
+  .line-total {
+    grid-area: total;
+  }
+  .remove {
+    grid-area: remove;
+    justify-self: start;
+  }
 
   .thumb img {
     width: 80px;

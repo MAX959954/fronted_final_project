@@ -42,14 +42,20 @@ function onKey(e) {
 }
 
 // The cart count jumps when something is added, so the visitor sees where it went.
-watch(() => cart.totalItems, (now, before) => {
-  if (now > before) {
-    bump.value = false
-    requestAnimationFrame(() => (bump.value = true))
-  }
-})
+watch(
+  () => cart.totalItems,
+  (now, before) => {
+    if (now > before) {
+      bump.value = false
+      requestAnimationFrame(() => (bump.value = true))
+    }
+  },
+)
 
-watch(() => route.fullPath, () => (menuOpen.value = false))
+watch(
+  () => route.fullPath,
+  () => (menuOpen.value = false),
+)
 watch(menuOpen, (open) => document.body.style.setProperty('overflow', open ? 'hidden' : ''))
 
 onMounted(() => {
@@ -92,7 +98,9 @@ onBeforeUnmount(() => {
           @click="langOpen = !langOpen"
         >
           {{ LOCALES.find((l) => l.code === locale).short }}
-          <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 4.5 6 8l3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.6" /></svg>
+          <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true">
+            <path d="M2.5 4.5 6 8l3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.6" />
+          </svg>
         </button>
         <Transition name="drop">
           <ul v-if="langOpen" class="lang-menu" role="menu">
@@ -113,7 +121,15 @@ onBeforeUnmount(() => {
       </div>
 
       <RouterLink to="/favorites" class="icon-btn fav-link" :aria-label="`${t('nav.favorites')}: ${favs.count}`">
-        <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 7.6a4.3 4.3 0 0 1 7.5 2.7c0 5.6-7.5 10.2-7.5 10.2Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" /></svg>
+        <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true">
+          <path
+            d="M12 20.5s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 7.6a4.3 4.3 0 0 1 7.5 2.7c0 5.6-7.5 10.2-7.5 10.2Z"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linejoin="round"
+          />
+        </svg>
         <span v-if="favs.count" class="count">{{ favs.count }}</span>
       </RouterLink>
 
@@ -122,7 +138,13 @@ onBeforeUnmount(() => {
         <span class="cart-count">{{ cart.totalItems }}</span>
       </RouterLink>
 
-      <button class="menu-btn" type="button" :aria-expanded="menuOpen" aria-controls="mobile-menu" @click="menuOpen = !menuOpen">
+      <button
+        class="menu-btn"
+        type="button"
+        :aria-expanded="menuOpen"
+        aria-controls="mobile-menu"
+        @click="menuOpen = !menuOpen"
+      >
         {{ menuOpen ? t('nav.close') : t('nav.menu') }}
       </button>
     </div>
@@ -210,7 +232,9 @@ onBeforeUnmount(() => {
   font-size: var(--step-small);
   font-weight: 500;
   background: var(--surface-2);
-  transition: background-color var(--dur-fast) ease, color var(--dur-fast) ease;
+  transition:
+    background-color var(--dur-fast) ease,
+    color var(--dur-fast) ease;
 }
 
 .lang-btn:hover {
@@ -245,7 +269,9 @@ onBeforeUnmount(() => {
   padding: 10px 12px;
   text-align: left;
   font-size: var(--step-small);
-  transition: background-color var(--dur-fast) ease, color var(--dur-fast) ease;
+  transition:
+    background-color var(--dur-fast) ease,
+    color var(--dur-fast) ease;
 }
 
 .lang-menu button:hover {
@@ -295,10 +321,18 @@ onBeforeUnmount(() => {
 }
 
 @keyframes bump {
-  0% { transform: scale(1); }
-  30% { transform: scale(1.12); }
-  60% { transform: scale(0.96); }
-  100% { transform: scale(1); }
+  0% {
+    transform: scale(1);
+  }
+  30% {
+    transform: scale(1.12);
+  }
+  60% {
+    transform: scale(0.96);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 
 .menu-btn {
@@ -311,7 +345,9 @@ onBeforeUnmount(() => {
 
 .drop-enter-active,
 .drop-leave-active {
-  transition: opacity var(--dur-fast) ease, transform var(--dur) var(--ease-out);
+  transition:
+    opacity var(--dur-fast) ease,
+    transform var(--dur) var(--ease-out);
 }
 
 .drop-enter-from,
@@ -369,7 +405,9 @@ onBeforeUnmount(() => {
 }
 
 .sheet-enter-active .sheet-link {
-  transition: transform var(--dur-slow) var(--ease-out), opacity var(--dur-slow) ease;
+  transition:
+    transform var(--dur-slow) var(--ease-out),
+    opacity var(--dur-slow) ease;
   transition-delay: calc(var(--i) * 50ms);
 }
 

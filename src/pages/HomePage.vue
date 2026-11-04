@@ -42,7 +42,12 @@ const rows = [
   { sub: 'cymbals', image: hihatImg, to: '/catalog?cat=drums&sub=cymbals' },
   { sub: 'amps', image: comboImg, to: '/catalog?cat=accessories&sub=amps' },
   { sub: 'pedals', image: boardImg, to: '/catalog?cat=accessories&sub=pedals' },
-  { sub: 'extras', image: picksImg, to: '/catalog?cat=accessories', from: Math.min(fromPrice('picks'), fromPrice('strings')) },
+  {
+    sub: 'extras',
+    image: picksImg,
+    to: '/catalog?cat=accessories',
+    from: Math.min(fromPrice('picks'), fromPrice('strings')),
+  },
 ]
 const activeRow = ref(0)
 const rowEls = ref([])
@@ -149,7 +154,9 @@ onBeforeUnmount(() => {
     <!-- HERO -->
     <section ref="heroEl" class="hero" :style="{ '--panels': panels.length }">
       <div class="hero-stage" :style="{ backgroundColor: current.ground }">
-        <h1 class="hero-title">Backline<span class="visually-hidden"> · {{ t('meta.title').split('—').pop() }}</span></h1>
+        <h1 class="hero-title">
+          Backline<span class="visually-hidden"> · {{ t('meta.title').split('—').pop() }}</span>
+        </h1>
 
         <div class="hero-frame">
           <img
@@ -233,7 +240,10 @@ onBeforeUnmount(() => {
             width="800"
             height="1000"
             loading="lazy"
-            :style="{ transform: `scale(${distances[setupStage].scale})`, transformOrigin: distances[setupStage].origin }"
+            :style="{
+              transform: `scale(${distances[setupStage].scale})`,
+              transformOrigin: distances[setupStage].origin,
+            }"
           />
         </div>
         <p class="setup-caption" :class="{ shown: setupStage >= 2 }">{{ t('setup.caption') }}</p>
@@ -264,7 +274,14 @@ onBeforeUnmount(() => {
         <p v-reveal>{{ t('gallery.text') }}</p>
       </div>
       <figure v-for="(img, i) in galleryImages" :key="img" ref="galleryEls" class="shot">
-        <img :src="img" :alt="t('gallery.captions')[i]" :style="{ objectPosition: galleryFocus[i] }" width="1600" height="1000" loading="lazy" />
+        <img
+          :src="img"
+          :alt="t('gallery.captions')[i]"
+          :style="{ objectPosition: galleryFocus[i] }"
+          width="1600"
+          height="1000"
+          loading="lazy"
+        />
         <figcaption>{{ t('gallery.captions')[i] }}</figcaption>
       </figure>
     </section>
@@ -276,7 +293,9 @@ onBeforeUnmount(() => {
         <details v-for="item in faq" :key="item.q" data-r>
           <summary>
             <span>{{ item.q }}</span>
-            <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M7 4l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" /></svg>
+            <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true">
+              <path d="M7 4l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" />
+            </svg>
           </summary>
           <p>{{ item.a }}</p>
         </details>
@@ -286,7 +305,9 @@ onBeforeUnmount(() => {
     <!-- CTA: ONE WORD IS THE BUTTON -->
     <RouterLink to="/catalog" class="cta">
       <span class="cta-text">{{ t('cta.text') }}</span>
-      <svg class="cta-arrow" width="48" height="48" viewBox="0 0 48 48" aria-hidden="true"><path d="M12 36 36 12M16 12h20v20" fill="none" stroke="currentColor" stroke-width="3" /></svg>
+      <svg class="cta-arrow" width="48" height="48" viewBox="0 0 48 48" aria-hidden="true">
+        <path d="M12 36 36 12M16 12h20v20" fill="none" stroke="currentColor" stroke-width="3" />
+      </svg>
       <span class="cta-verb" :style="{ fontSize: verbSize }">{{ verb }}</span>
     </RouterLink>
   </div>
@@ -352,7 +373,9 @@ onBeforeUnmount(() => {
   object-fit: cover;
   clip-path: inset(100% 0 0 0);
   transform: scale(1.12);
-  transition: clip-path 900ms var(--ease-in-out), transform 1600ms var(--ease-out);
+  transition:
+    clip-path 900ms var(--ease-in-out),
+    transform 1600ms var(--ease-out);
 }
 
 .hero-frame img.on,
@@ -409,7 +432,9 @@ onBeforeUnmount(() => {
 
 .caption-enter-active,
 .caption-leave-active {
-  transition: opacity 240ms ease, transform 360ms var(--ease-out);
+  transition:
+    opacity 240ms ease,
+    transform 360ms var(--ease-out);
 }
 
 .caption-enter-from {
@@ -457,7 +482,9 @@ onBeforeUnmount(() => {
   object-fit: cover;
   opacity: 0;
   transform: scale(1.05);
-  transition: opacity 420ms ease, transform 1200ms var(--ease-out);
+  transition:
+    opacity 420ms ease,
+    transform 1200ms var(--ease-out);
 }
 
 .sound-photo img.on {
@@ -560,7 +587,9 @@ onBeforeUnmount(() => {
   color: var(--accent);
   opacity: 0;
   transform: translateY(0.4em);
-  transition: opacity 500ms ease, transform 700ms var(--ease-out);
+  transition:
+    opacity 500ms ease,
+    transform 700ms var(--ease-out);
 }
 
 .setup-b.shown {
@@ -583,7 +612,9 @@ onBeforeUnmount(() => {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 900ms var(--ease-in-out), transform-origin 900ms var(--ease-in-out);
+  transition:
+    transform 900ms var(--ease-in-out),
+    transform-origin 900ms var(--ease-in-out);
 }
 
 .setup-caption {
@@ -593,7 +624,9 @@ onBeforeUnmount(() => {
   max-width: 30ch;
   opacity: 0;
   transform: translateY(16px);
-  transition: opacity 500ms ease, transform 700ms var(--ease-out);
+  transition:
+    opacity 500ms ease,
+    transform 700ms var(--ease-out);
 }
 
 .setup-caption.shown {
@@ -695,7 +728,11 @@ onBeforeUnmount(() => {
   position: absolute;
   inset: auto 0 0 0;
   height: 140px;
-  background: linear-gradient(to top, rgb(0 0 0 / 0.65), rgb(0 0 0 / 0)); /* taste-skill-ignore: neutral scrim under a caption */
+  background: linear-gradient(
+    to top,
+    rgb(0 0 0 / 0.65),
+    rgb(0 0 0 / 0)
+  ); /* taste-skill-ignore: neutral scrim under a caption */
 }
 
 .shot figcaption {
@@ -751,7 +788,9 @@ summary::-webkit-details-marker {
 
 summary svg {
   flex: none;
-  transition: transform var(--dur) var(--ease-out), color var(--dur-fast) ease;
+  transition:
+    transform var(--dur) var(--ease-out),
+    color var(--dur-fast) ease;
 }
 
 summary:hover svg {
@@ -785,7 +824,9 @@ details p {
   background: var(--accent);
   color: var(--accent-ink);
   overflow: hidden;
-  transition: background-color 120ms linear, color 120ms linear;
+  transition:
+    background-color 120ms linear,
+    color 120ms linear;
 }
 
 .cta:hover,

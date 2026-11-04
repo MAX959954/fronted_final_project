@@ -7,8 +7,8 @@ Dark "stage at night" design, scroll-driven animation, six languages and a worki
 
 ![Home page: the shop name stays pinned while instruments change underneath](.github/screenshots/home.png)
 
-| Catalogue with filters | Product page | Phone |
-| --- | --- | --- |
+| Catalogue with filters                        | Product page                                     | Phone                                           |
+| --------------------------------------------- | ------------------------------------------------ | ----------------------------------------------- |
 | ![Catalogue](.github/screenshots/catalog.png) | ![Product page](.github/screenshots/product.png) | ![Phone layout](.github/screenshots/mobile.jpg) |
 
 ## Features
@@ -23,14 +23,14 @@ Dark "stage at night" design, scroll-driven animation, six languages and a worki
 
 ## Tech stack
 
-| | |
-| --- | --- |
-| Framework | Vue 3 (Composition API, `<script setup>`) |
-| State | Pinia |
-| Routing | Vue Router 4, lazy-loaded pages |
-| Build | Vite 7 |
-| Styling | Plain CSS with design tokens (custom properties), scoped component styles |
-| Deploy | GitHub Actions → GitHub Pages |
+|           |                                                                           |
+| --------- | ------------------------------------------------------------------------- |
+| Framework | Vue 3 (Composition API, `<script setup>`)                                 |
+| State     | Pinia                                                                     |
+| Routing   | Vue Router 4, lazy-loaded pages                                           |
+| Build     | Vite 7                                                                    |
+| Styling   | Plain CSS with design tokens (custom properties), scoped component styles |
+| Deploy    | GitHub Actions → GitHub Pages                                             |
 
 ## Project structure
 

@@ -49,7 +49,9 @@ const app = useAppStore()
 
 .toast-enter-active,
 .toast-leave-active {
-  transition: transform 420ms var(--ease-out), opacity 300ms ease;
+  transition:
+    transform 420ms var(--ease-out),
+    opacity 300ms ease;
 }
 
 .toast-enter-from {

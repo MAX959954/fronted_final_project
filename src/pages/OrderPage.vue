@@ -52,7 +52,9 @@ const lines = computed(() =>
           <ul class="items">
             <li v-for="l in lines" :key="l.id">
               <img :src="l.product.image" alt="" width="64" height="80" />
-              <span>{{ l.product.name }} <span class="muted">× {{ l.qty }}</span></span>
+              <span
+                >{{ l.product.name }} <span class="muted">× {{ l.qty }}</span></span
+              >
               <span>{{ price(l.price * l.qty) }}</span>
             </li>
           </ul>

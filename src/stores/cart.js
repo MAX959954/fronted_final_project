@@ -73,7 +73,18 @@ export const useCartStore = defineStore('cart', () => {
   const findOrder = (id) => load('orders', []).find((o) => o.id === id)
 
   return {
-    items, lines, totalItems, subtotal, leftForFreeShipping,
-    shipping, qtyOf, add, setQty, remove, clear, placeOrder, findOrder,
+    items,
+    lines,
+    totalItems,
+    subtotal,
+    leftForFreeShipping,
+    shipping,
+    qtyOf,
+    add,
+    setQty,
+    remove,
+    clear,
+    placeOrder,
+    findOrder,
   }
 })

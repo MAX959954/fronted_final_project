@@ -31,8 +31,17 @@ const { t } = useI18n()
 }
 
 @keyframes flicker {
-  0%, 12%, 16%, 30% { opacity: 1; }
-  10%, 14%, 28% { opacity: 0.25; }
+  0%,
+  12%,
+  16%,
+  30% {
+    opacity: 1;
+  }
+  10%,
+  14%,
+  28% {
+    opacity: 0.25;
+  }
 }
 
 .page-title {

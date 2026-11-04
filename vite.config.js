@@ -29,14 +29,10 @@ export default defineConfig({
   // so every asset URL needs the repository name as its base path.
   base: '/fronted_final_project/',
 
-  plugins: [
-    vue(),
-    vueDevTools(),
-    spaFallback(),
-  ],
+  plugins: [vue(), vueDevTools(), spaFallback()],
   resolve: {
     alias: {
-      '@': fileURLToPath(new URL('./src', import.meta.url))
+      '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
   },
 })
