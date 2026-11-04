@@ -2,7 +2,7 @@
 import { computed } from 'vue'
 import { useI18n } from '@/i18n'
 
-const { t } = useI18n()
+const { t, tm } = useI18n()
 const year = new Date().getFullYear()
 
 const columns = computed(() => [
@@ -37,7 +37,7 @@ const columns = computed(() => [
 <template>
   <footer class="foot">
     <ul class="promises wrap">
-      <li v-for="p in t('footer.promises')" :key="p">{{ p }}</li>
+      <li v-for="p in tm('footer.promises')" :key="p">{{ p }}</li>
     </ul>
 
     <div class="main wrap">

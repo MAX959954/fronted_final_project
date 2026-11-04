@@ -2,7 +2,8 @@
 import { ref, computed, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from '@/i18n'
-import { productById, products } from '@/data/products'
+import { useCatalogStore } from '@/stores/catalog'
+import CatalogGate from '@/components/CatalogGate.vue'
 import { useCartStore } from '@/stores/cart'
 import { useFavoritesStore } from '@/stores/favorites'
 import { useAppStore } from '@/stores/app'
@@ -10,13 +11,14 @@ import ProductCard from '@/components/ProductCard.vue'
 import QtyStepper from '@/components/QtyStepper.vue'
 import SoundcheckButton from '@/components/SoundcheckButton.vue'
 
-const { t, price, productText } = useI18n()
+const { t, price } = useI18n()
+const catalog = useCatalogStore()
 const route = useRoute()
 const cart = useCartStore()
 const favs = useFavoritesStore()
 const app = useAppStore()
 
-const product = computed(() => productById(route.params.id))
+const product = computed(() => catalog.productById(String(route.params.id)))
 const qty = ref(1)
 watch(product, () => (qty.value = 1))
 
@@ -33,12 +35,12 @@ const PAIRS = {
 
 const related = computed(() => {
   if (!product.value) return []
-  const ids = PAIRS[product.value.sub] || products.filter((p) => p.sub === product.value.sub).map((p) => p.id)
+  const ids = PAIRS[product.value.sub] || catalog.products.filter((p) => p.sub === product.value.sub).map((p) => p.id)
   const picked = ids
     .filter((id) => id !== product.value.id)
-    .map(productById)
+    .map(catalog.productById)
     .filter(Boolean)
-  for (const p of products) {
+  for (const p of catalog.products) {
     if (picked.length >= 3) break
     if (p.cat === product.value.cat && p.id !== product.value.id && !picked.includes(p)) picked.push(p)
   }
@@ -60,91 +62,126 @@ function toggleFav() {
 </script>
 
 <template>
-  <div v-if="product" class="page product">
-    <div class="split wrap">
-      <figure class="stage">
-        <img
-          :src="product.image.src"
-          :srcset="product.image.srcset"
-          sizes="(max-width: 860px) 100vw, 55vw"
-          :alt="product.name"
-          width="1000"
-          height="1250"
-          fetchpriority="high"
-        />
-      </figure>
-
-      <div v-reveal class="buy">
-        <RouterLink :to="`/catalog?cat=${product.cat}&sub=${product.sub}`" class="crumb link" data-r>
-          ← {{ t(`cats.${product.sub}`) }}
-        </RouterLink>
-        <h1 data-r>{{ product.name }}</h1>
-        <p class="price" data-r>{{ price(product.price) }}</p>
-        <p class="desc" data-r>{{ productText(product) }}</p>
-
-        <div class="actions" data-r>
-          <QtyStepper v-model="qty" />
-          <button type="button" class="btn add" @click="addToCart">{{ t('product.add') }}</button>
-          <button
-            type="button"
-            class="icon-btn fav"
-            :aria-pressed="isFav"
-            :aria-label="isFav ? t('product.unfav') : t('product.fav')"
-            @click="toggleFav"
-          >
-            <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true">
-              <path
-                d="M12 20.5s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 7.6a4.3 4.3 0 0 1 7.5 2.7c0 5.6-7.5 10.2-7.5 10.2Z"
-                :fill="isFav ? 'currentColor' : 'none'"
-                stroke="currentColor"
-                stroke-width="1.8"
-                stroke-linejoin="round"
-              />
-            </svg>
-          </button>
+  <CatalogGate framed>
+    <template #loading>
+      <div class="page product">
+        <div class="split wrap">
+          <div class="skeleton stage-skeleton" />
+          <div class="buy-skeleton">
+            <div class="skeleton" />
+            <div class="skeleton" />
+            <div class="skeleton" />
+          </div>
         </div>
-
-        <p v-if="cart.qtyOf(product.id)" class="in-cart" data-r>
-          <RouterLink to="/cart" class="link">{{ t('product.inCart', { n: cart.qtyOf(product.id) }) }}</RouterLink>
-        </p>
-
-        <div v-if="product.sound" class="sound" data-r>
-          <SoundcheckButton :sound="product.sound" />
-          <span class="muted">{{ t('product.soundHint') }}</span>
-        </div>
-
-        <ul class="promises" data-r>
-          <li>{{ t('product.stock') }}</li>
-          <li v-if="product.cat === 'guitars'">{{ t('product.setup') }}</li>
-        </ul>
-
-        <section class="specs" data-r aria-labelledby="specs-h">
-          <h2 id="specs-h">{{ t('product.specs') }}</h2>
-          <dl>
-            <div v-for="[key, value] in specs" :key="key">
-              <dt>{{ t(`specs.${key}`) }}</dt>
-              <dd>{{ value }}</dd>
-            </div>
-          </dl>
-        </section>
       </div>
+    </template>
+
+    <div v-if="product" class="page product">
+      <div class="split wrap">
+        <figure class="stage">
+          <img
+            :src="product.image.src"
+            :srcset="product.image.srcset"
+            sizes="(max-width: 860px) 100vw, 55vw"
+            :alt="product.name"
+            width="1000"
+            height="1250"
+            fetchpriority="high"
+          />
+        </figure>
+
+        <div v-reveal class="buy">
+          <RouterLink :to="`/catalog?cat=${product.cat}&sub=${product.sub}`" class="crumb link" data-r>
+            ← {{ t(`cats.${product.sub}`) }}
+          </RouterLink>
+          <h1 data-r>{{ product.name }}</h1>
+          <p class="price" data-r>{{ price(product.price) }}</p>
+          <p class="desc" data-r>{{ catalog.describe(product) }}</p>
+
+          <div class="actions" data-r>
+            <QtyStepper v-model="qty" />
+            <button type="button" class="btn add" @click="addToCart">{{ t('product.add') }}</button>
+            <button
+              type="button"
+              class="icon-btn fav"
+              :aria-pressed="isFav"
+              :aria-label="isFav ? t('product.unfav') : t('product.fav')"
+              @click="toggleFav"
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true">
+                <path
+                  d="M12 20.5s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 7.6a4.3 4.3 0 0 1 7.5 2.7c0 5.6-7.5 10.2-7.5 10.2Z"
+                  :fill="isFav ? 'currentColor' : 'none'"
+                  stroke="currentColor"
+                  stroke-width="1.8"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </button>
+          </div>
+
+          <p v-if="cart.qtyOf(product.id)" class="in-cart" data-r>
+            <RouterLink to="/cart" class="link">{{ t('product.inCart', { n: cart.qtyOf(product.id) }) }}</RouterLink>
+          </p>
+
+          <div v-if="product.sound" class="sound" data-r>
+            <SoundcheckButton :sound="product.sound" />
+            <span class="muted">{{ t('product.soundHint') }}</span>
+          </div>
+
+          <ul class="promises" data-r>
+            <li>{{ t('product.stock') }}</li>
+            <li v-if="product.cat === 'guitars'">{{ t('product.setup') }}</li>
+          </ul>
+
+          <section class="specs" data-r aria-labelledby="specs-h">
+            <h2 id="specs-h">{{ t('product.specs') }}</h2>
+            <dl>
+              <div v-for="[key, value] in specs" :key="key">
+                <dt>{{ t(`specs.${key}`) }}</dt>
+                <dd>{{ value }}</dd>
+              </div>
+            </dl>
+          </section>
+        </div>
+      </div>
+
+      <section v-if="related.length" v-reveal class="related wrap" aria-labelledby="related-h">
+        <h2 id="related-h" data-r>{{ t('product.related') }}</h2>
+        <ul class="related-grid" data-r>
+          <li v-for="p in related" :key="p.id"><ProductCard :product="p" /></li>
+        </ul>
+      </section>
     </div>
 
-    <section v-if="related.length" v-reveal class="related wrap" aria-labelledby="related-h">
-      <h2 id="related-h" data-r>{{ t('product.related') }}</h2>
-      <ul class="related-grid" data-r>
-        <li v-for="p in related" :key="p.id"><ProductCard :product="p" /></li>
-      </ul>
-    </section>
-  </div>
-
-  <div v-else class="page wrap missing">
-    <h1 class="page-title">{{ t('product.notFound') }}</h1>
-    <RouterLink to="/catalog" class="btn">{{ t('product.back') }}</RouterLink>
-  </div>
+    <div v-else class="page wrap missing">
+      <h1 class="page-title">{{ t('product.notFound') }}</h1>
+      <RouterLink to="/catalog" class="btn">{{ t('product.back') }}</RouterLink>
+    </div>
+  </CatalogGate>
 </template>
 
 <style scoped>
+.stage-skeleton {
+  aspect-ratio: 4 / 5;
+}
+
+.buy-skeleton {
+  display: grid;
+  gap: 20px;
+  padding-top: 48px;
+}
+
+.buy-skeleton .skeleton {
+  height: 1.4em;
+  width: 60%;
+}
+
+.buy-skeleton .skeleton:first-child {
+  height: 3em;
+  width: 80%;
+}
+
 .product {
   padding-top: 24px;
 }

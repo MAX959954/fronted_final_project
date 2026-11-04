@@ -1,16 +1,17 @@
 // localStorage can be missing or throw (private mode, blocked site data); the shop must still work without it.
 const PREFIX = 'backline:'
 
-export function load(key, fallback) {
+/** Reads a saved value. The shape is not checked here: callers validate what they get back. */
+export function load(key: string, fallback: unknown): unknown {
   try {
     const raw = window.localStorage.getItem(PREFIX + key)
-    return raw == null ? fallback : JSON.parse(raw)
+    return raw == null ? fallback : (JSON.parse(raw) as unknown)
   } catch {
     return fallback
   }
 }
 
-export function save(key, value) {
+export function save(key: string, value: unknown): void {
   try {
     window.localStorage.setItem(PREFIX + key, JSON.stringify(value))
   } catch {

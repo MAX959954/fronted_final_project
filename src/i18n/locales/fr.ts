@@ -1,5 +1,12 @@
-export default {
+import type { Messages } from './en'
+
+const fr: Messages = {
   meta: { title: 'Backline — guitares, batteries et accessoires' },
+  state: {
+    loading: 'Chargement…',
+    error: 'Impossible de charger le catalogue. Vérifiez votre connexion et réessayez.',
+    retry: 'Réessayer',
+  },
   nav: {
     home: 'Backline',
     catalog: 'Catalogue',
@@ -263,3 +270,5 @@ export default {
     favRemoved: '« {name} » retiré des favoris',
   },
 }
+
+export default fr

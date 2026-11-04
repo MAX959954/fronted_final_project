@@ -1,0 +1,321 @@
+[
+  {
+    "id": "ember-lp",
+    "cat": "guitars",
+    "sub": "electric",
+    "sound": "electric",
+    "name": "Ember LP Custom",
+    "price": 1290,
+    "image": "g-ember",
+    "specs": {
+      "strings": "6",
+      "scale": "628 mm",
+      "pickups": "HH",
+      "weight": "4.2 kg"
+    }
+  },
+  {
+    "id": "surf-s",
+    "cat": "guitars",
+    "sub": "electric",
+    "sound": "electric",
+    "name": "Surf S-Type",
+    "price": 890,
+    "image": "g-surf",
+    "specs": {
+      "strings": "6",
+      "scale": "648 mm",
+      "pickups": "SSS",
+      "weight": "3.5 kg"
+    }
+  },
+  {
+    "id": "brass-t",
+    "cat": "guitars",
+    "sub": "electric",
+    "sound": "electric",
+    "name": "Brass T-Line",
+    "price": 1040,
+    "image": "g-brass",
+    "specs": {
+      "strings": "6",
+      "scale": "648 mm",
+      "pickups": "SS",
+      "weight": "3.6 kg"
+    }
+  },
+  {
+    "id": "sunburst-sc",
+    "cat": "guitars",
+    "sub": "acoustic",
+    "sound": "acoustic",
+    "name": "Sunburst Cutaway EQ",
+    "price": 640,
+    "image": "g-sunburst",
+    "specs": {
+      "strings": "6",
+      "scale": "650 mm",
+      "pickups": "Piezo",
+      "weight": "2.1 kg"
+    }
+  },
+  {
+    "id": "canary-12",
+    "cat": "guitars",
+    "sub": "acoustic",
+    "sound": "acoustic",
+    "name": "Canary 12-String",
+    "price": 720,
+    "image": "g-canary",
+    "specs": {
+      "strings": "12",
+      "scale": "650 mm",
+      "pickups": "—",
+      "weight": "2.4 kg"
+    }
+  },
+  {
+    "id": "parlour-nat",
+    "cat": "guitars",
+    "sub": "acoustic",
+    "sound": "acoustic",
+    "name": "Parlour Natural",
+    "price": 390,
+    "image": "g-parlour",
+    "specs": {
+      "strings": "6",
+      "scale": "610 mm",
+      "pickups": "—",
+      "weight": "1.6 kg"
+    }
+  },
+  {
+    "id": "walnut-ga",
+    "cat": "guitars",
+    "sub": "acoustic",
+    "sound": "acoustic",
+    "name": "Walnut Grand Auditorium",
+    "price": 980,
+    "image": "g-walnut",
+    "specs": {
+      "strings": "6",
+      "scale": "645 mm",
+      "pickups": "Piezo",
+      "weight": "2.2 kg"
+    }
+  },
+  {
+    "id": "nocturne-eq",
+    "cat": "guitars",
+    "sub": "acoustic",
+    "sound": "acoustic",
+    "name": "Nocturne Black EQ",
+    "price": 560,
+    "image": "g-nocturne",
+    "specs": {
+      "strings": "6",
+      "scale": "650 mm",
+      "pickups": "Piezo",
+      "weight": "2.0 kg"
+    }
+  },
+  {
+    "id": "stage-five",
+    "cat": "drums",
+    "sub": "kits",
+    "sound": "kit",
+    "name": "Stage Five Kit",
+    "price": 1190,
+    "image": "d-stagekit",
+    "specs": {
+      "pieces": "5",
+      "shells": "22 / 10 / 12 / 16 / 14",
+      "material": "Birch"
+    }
+  },
+  {
+    "id": "mesh-e",
+    "cat": "drums",
+    "sub": "kits",
+    "sound": "kit",
+    "name": "Mesh Electronic Kit",
+    "price": 1490,
+    "image": "d-electronic",
+    "specs": {
+      "pads": "8",
+      "heads": "Mesh",
+      "material": "Steel rack"
+    }
+  },
+  {
+    "id": "blue-snare",
+    "cat": "drums",
+    "sub": "snares",
+    "sound": "snare",
+    "name": "Blue Burst Snare",
+    "price": 290,
+    "image": "d-snare",
+    "specs": {
+      "size": "14″ × 5.5″",
+      "material": "Maple"
+    }
+  },
+  {
+    "id": "dark-ride",
+    "cat": "drums",
+    "sub": "cymbals",
+    "sound": "cymbal",
+    "name": "Dark Flat Ride 20″",
+    "price": 340,
+    "image": "c-ride",
+    "specs": {
+      "size": "20″",
+      "material": "B20 bronze"
+    }
+  },
+  {
+    "id": "quick-hat",
+    "cat": "drums",
+    "sub": "cymbals",
+    "sound": "cymbal",
+    "name": "Quick Hi-Hat 15″",
+    "price": 260,
+    "image": "c-hihat",
+    "specs": {
+      "size": "15″",
+      "material": "B20 bronze"
+    }
+  },
+  {
+    "id": "bright-splash",
+    "cat": "drums",
+    "sub": "cymbals",
+    "sound": "cymbal",
+    "name": "Bright Splash 10″",
+    "price": 110,
+    "image": "c-splash",
+    "specs": {
+      "size": "10″",
+      "material": "B8 bronze"
+    }
+  },
+  {
+    "id": "practice-15",
+    "cat": "accessories",
+    "sub": "amps",
+    "sound": "electric",
+    "name": "Practice Combo 15",
+    "price": 109,
+    "image": "a-practice",
+    "specs": {
+      "power": "15 W",
+      "speaker": "8″"
+    }
+  },
+  {
+    "id": "club-fx-15",
+    "cat": "accessories",
+    "sub": "amps",
+    "sound": "electric",
+    "name": "Club Combo FX 15",
+    "price": 169,
+    "image": "a-stagecombo",
+    "specs": {
+      "power": "15 W",
+      "speaker": "8″",
+      "effects": "16"
+    }
+  },
+  {
+    "id": "red-drive",
+    "cat": "accessories",
+    "sub": "pedals",
+    "sound": "electric",
+    "name": "Red Drive Pedal",
+    "price": 179,
+    "image": "a-overdrive",
+    "specs": {
+      "power": "9 V",
+      "effects": "1"
+    }
+  },
+  {
+    "id": "board-seven",
+    "cat": "accessories",
+    "sub": "pedals",
+    "sound": "electric",
+    "name": "Pedalboard Set ×7",
+    "price": 749,
+    "image": "a-pedalboard",
+    "specs": {
+      "effects": "7",
+      "power": "9 V"
+    }
+  },
+  {
+    "id": "acoustic-strings",
+    "cat": "accessories",
+    "sub": "strings",
+    "sound": null,
+    "name": "Acoustic Strings Medium",
+    "price": 14,
+    "image": "a-strings",
+    "specs": {
+      "gauge": "12–54",
+      "material": "Phosphor bronze"
+    }
+  },
+  {
+    "id": "pick-sampler",
+    "cat": "accessories",
+    "sub": "picks",
+    "sound": null,
+    "name": "Pick Sampler ×26",
+    "price": 12,
+    "image": "a-picks",
+    "specs": {
+      "count": "26",
+      "material": "Celluloid / nylon"
+    }
+  },
+  {
+    "id": "hickory-5a",
+    "cat": "accessories",
+    "sub": "sticks",
+    "sound": "snare",
+    "name": "Hickory 5A Sticks ×3",
+    "price": 24,
+    "image": "a-sticks",
+    "specs": {
+      "count": "3",
+      "material": "Hickory",
+      "length": "406 mm"
+    }
+  },
+  {
+    "id": "braided-cable",
+    "cat": "accessories",
+    "sub": "cables",
+    "sound": null,
+    "name": "Braided Cable 6 m",
+    "price": 29,
+    "image": "a-cable",
+    "specs": {
+      "length": "6 m",
+      "material": "Braided textile"
+    }
+  },
+  {
+    "id": "open-back",
+    "cat": "accessories",
+    "sub": "headphones",
+    "sound": null,
+    "name": "Open-Back Headphones",
+    "price": 149,
+    "image": "a-headphones",
+    "specs": {
+      "impedance": "32 Ω",
+      "weight": "0.2 kg"
+    }
+  }
+]

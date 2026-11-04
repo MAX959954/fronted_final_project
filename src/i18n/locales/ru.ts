@@ -1,5 +1,12 @@
-export default {
+import type { Messages } from './en'
+
+const ru: Messages = {
   meta: { title: 'Backline — гитары, барабаны и аксессуары' },
+  state: {
+    loading: 'Загрузка…',
+    error: 'Не удалось загрузить каталог. Проверьте соединение и попробуйте ещё раз.',
+    retry: 'Повторить',
+  },
   nav: {
     home: 'Backline',
     catalog: 'Каталог',
@@ -254,3 +261,5 @@ export default {
   notFound: { title: 'Не та сцена', text: 'Такой страницы нет.', home: 'На главную' },
   toast: { added: '«{name}» в корзине', favAdded: '«{name}» в избранном', favRemoved: '«{name}» убран из избранного' },
 }
+
+export default ru
