@@ -10,7 +10,9 @@
   --curtain: #4a1813;
   --danger: #ff8a7a;
 
-  --font: 'Inter Tight', 'Helvetica Neue', Arial, 'PingFang SC', 'Hiragino Sans', 'Microsoft YaHei', 'Yu Gothic', 'Noto Sans CJK SC', sans-serif;
+  --font:
+    'Inter Tight', 'Helvetica Neue', Arial, 'PingFang SC', 'Hiragino Sans', 'Microsoft YaHei', 'Yu Gothic',
+    'Noto Sans CJK SC', sans-serif;
 
   /* five size steps, nothing in between */
   --step-small: clamp(0.9375rem, 0.9rem + 0.1vw, 1rem);
@@ -61,18 +63,31 @@ img {
   max-width: 100%;
 }
 
-h1, h2, h3, h4, p, ul, ol, dl, dd, figure, blockquote {
+h1,
+h2,
+h3,
+h4,
+p,
+ul,
+ol,
+dl,
+dd,
+figure,
+blockquote {
   margin: 0;
 }
 
-h1, h2, h3 {
+h1,
+h2,
+h3 {
   font-weight: 500;
   letter-spacing: -0.035em;
   line-height: 0.98;
   text-wrap: balance;
 }
 
-ul, ol {
+ul,
+ol {
   padding: 0;
   list-style: none;
 }
@@ -150,7 +165,10 @@ button {
   font-weight: 500;
   font-size: var(--step-body);
   white-space: nowrap;
-  transition: background-color var(--dur-fast) ease, color var(--dur-fast) ease, transform var(--dur-fast) var(--ease-out);
+  transition:
+    background-color var(--dur-fast) ease,
+    color var(--dur-fast) ease,
+    transform var(--dur-fast) var(--ease-out);
 }
 
 .btn:hover {
@@ -189,12 +207,14 @@ button {
   text-decoration-thickness: 2px;
   text-underline-offset: 5px;
   text-decoration-color: transparent;
-  transition: text-decoration-color var(--dur) ease, text-underline-offset var(--dur) var(--ease-out), color var(--dur-fast) ease;
+  transition:
+    text-decoration-color var(--dur) ease,
+    text-underline-offset var(--dur) var(--ease-out),
+    color var(--dur-fast) ease;
 }
 
 .link:hover,
-.link:focus-visible,
-.link.router-link-active {
+.link:focus-visible {
   text-decoration-color: currentColor;
   text-underline-offset: 3px;
 }
@@ -206,7 +226,10 @@ button {
   height: 44px;
   background: var(--surface-2);
   color: var(--ink);
-  transition: background-color var(--dur-fast) ease, color var(--dur-fast) ease, transform var(--dur-fast) var(--ease-out);
+  transition:
+    background-color var(--dur-fast) ease,
+    color var(--dur-fast) ease,
+    transform var(--dur-fast) var(--ease-out);
 }
 
 .icon-btn:hover {
@@ -243,7 +266,9 @@ button {
   background: var(--surface);
   border: 1px solid #3a352f;
   border-radius: 0;
-  transition: border-color var(--dur-fast) ease, background-color var(--dur-fast) ease;
+  transition:
+    border-color var(--dur-fast) ease,
+    background-color var(--dur-fast) ease;
 }
 
 .field textarea {
@@ -279,7 +304,9 @@ button {
 .reveal[data-r-self] {
   opacity: 0;
   transform: translateY(26px);
-  transition: opacity var(--dur-slow) var(--ease-out), transform var(--dur-slow) var(--ease-out);
+  transition:
+    opacity var(--dur-slow) var(--ease-out),
+    transform var(--dur-slow) var(--ease-out);
   transition-delay: calc(var(--i, 0) * 75ms);
 }
 
@@ -291,7 +318,9 @@ button {
 
 .page-enter-active,
 .page-leave-active {
-  transition: opacity 260ms ease, transform 260ms var(--ease-out);
+  transition:
+    opacity 260ms ease,
+    transform 260ms var(--ease-out);
 }
 
 .page-enter-from {

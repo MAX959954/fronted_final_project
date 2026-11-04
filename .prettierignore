@@ -1,0 +1,7 @@
+dist
+coverage
+playwright-report
+test-results
+.taste-skill
+package-lock.json
+src/assets

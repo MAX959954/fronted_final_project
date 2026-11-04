@@ -34,7 +34,10 @@ const PAIRS = {
 const related = computed(() => {
   if (!product.value) return []
   const ids = PAIRS[product.value.sub] || products.filter((p) => p.sub === product.value.sub).map((p) => p.id)
-  const picked = ids.filter((id) => id !== product.value.id).map(productById).filter(Boolean)
+  const picked = ids
+    .filter((id) => id !== product.value.id)
+    .map(productById)
+    .filter(Boolean)
   for (const p of products) {
     if (picked.length >= 3) break
     if (p.cat === product.value.cat && p.id !== product.value.id && !picked.includes(p)) picked.push(p)
@@ -60,7 +63,15 @@ function toggleFav() {
   <div v-if="product" class="page product">
     <div class="split wrap">
       <figure class="stage">
-        <img :src="product.image" :alt="product.name" width="1000" height="1250" fetchpriority="high" />
+        <img
+          :src="product.image.src"
+          :srcset="product.image.srcset"
+          sizes="(max-width: 860px) 100vw, 55vw"
+          :alt="product.name"
+          width="1000"
+          height="1250"
+          fetchpriority="high"
+        />
       </figure>
 
       <div v-reveal class="buy">
@@ -82,7 +93,13 @@ function toggleFav() {
             @click="toggleFav"
           >
             <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M12 20.5s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 7.6a4.3 4.3 0 0 1 7.5 2.7c0 5.6-7.5 10.2-7.5 10.2Z" :fill="isFav ? 'currentColor' : 'none'" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" />
+              <path
+                d="M12 20.5s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 7.6a4.3 4.3 0 0 1 7.5 2.7c0 5.6-7.5 10.2-7.5 10.2Z"
+                :fill="isFav ? 'currentColor' : 'none'"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linejoin="round"
+              />
             </svg>
           </button>
         </div>

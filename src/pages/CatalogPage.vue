@@ -52,7 +52,9 @@ const results = computed(() => {
   return list
 })
 
-const title = computed(() => (sub.value ? t(`cats.${sub.value}`) : cat.value ? t(`cats.${cat.value}`) : t('catalog.title')))
+const title = computed(() =>
+  sub.value ? t(`cats.${sub.value}`) : cat.value ? t(`cats.${cat.value}`) : t('catalog.title'),
+)
 const filtered = computed(() => cat.value || sub.value || q.value || max.value < CEILING)
 </script>
 
@@ -177,7 +179,10 @@ const filtered = computed(() => cat.value || sub.value || q.value || max.value <
   padding: 0 18px;
   background: var(--surface-2);
   font-weight: 500;
-  transition: background-color var(--dur-fast) ease, color var(--dur-fast) ease, transform var(--dur-fast) var(--ease-out);
+  transition:
+    background-color var(--dur-fast) ease,
+    color var(--dur-fast) ease,
+    transform var(--dur-fast) var(--ease-out);
 }
 
 .chip:hover {
@@ -202,7 +207,9 @@ const filtered = computed(() => cat.value || sub.value || q.value || max.value <
 }
 
 .subs-enter-active {
-  transition: opacity var(--dur) ease, transform var(--dur) var(--ease-out);
+  transition:
+    opacity var(--dur) ease,
+    transform var(--dur) var(--ease-out);
 }
 
 .subs-enter-from {
@@ -237,7 +244,9 @@ const filtered = computed(() => cat.value || sub.value || q.value || max.value <
 }
 
 .grid-enter-active {
-  transition: opacity 500ms ease, transform 600ms var(--ease-out);
+  transition:
+    opacity 500ms ease,
+    transform 600ms var(--ease-out);
   transition-delay: calc(var(--i) * 45ms);
 }
 

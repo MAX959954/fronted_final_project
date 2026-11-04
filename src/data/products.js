@@ -1,27 +1,4 @@
-import emberImg from '@/assets/img/g-ember.jpg'
-import surfImg from '@/assets/img/g-surf.jpg'
-import brassImg from '@/assets/img/g-brass.jpg'
-import sunburstImg from '@/assets/img/g-sunburst.jpg'
-import canaryImg from '@/assets/img/g-canary.jpg'
-import parlourImg from '@/assets/img/g-parlour.jpg'
-import walnutImg from '@/assets/img/g-walnut.jpg'
-import nocturneImg from '@/assets/img/g-nocturne.jpg'
-import stagekitImg from '@/assets/img/d-stagekit.jpg'
-import electronicImg from '@/assets/img/d-electronic.jpg'
-import snareImg from '@/assets/img/d-snare.jpg'
-import rideImg from '@/assets/img/c-ride.jpg'
-import hihatImg from '@/assets/img/c-hihat.jpg'
-import splashImg from '@/assets/img/c-splash.jpg'
-import practiceImg from '@/assets/img/a-practice.jpg'
-import stagecomboImg from '@/assets/img/a-stagecombo.jpg'
-import overdriveImg from '@/assets/img/a-overdrive.jpg'
-import pedalboardImg from '@/assets/img/a-pedalboard.jpg'
-import stringsImg from '@/assets/img/a-strings.jpg'
-import picksImg from '@/assets/img/a-picks.jpg'
-import sticksImg from '@/assets/img/a-sticks.jpg'
-import cableImg from '@/assets/img/a-cable.jpg'
-import headphonesImg from '@/assets/img/a-headphones.jpg'
-
+import { photo } from './images'
 // Top-level departments and the sub-categories inside each.
 export const CATEGORIES = {
   guitars: ['electric', 'acoustic'],
@@ -33,8 +10,13 @@ export const CATEGORIES = {
 // `specs` values are language-neutral; their labels live in the locale files.
 export const products = [
   {
-    id: 'ember-lp', cat: 'guitars', sub: 'electric', sound: 'electric',
-    name: 'Ember LP Custom', price: 1290, image: emberImg,
+    id: 'ember-lp',
+    cat: 'guitars',
+    sub: 'electric',
+    sound: 'electric',
+    name: 'Ember LP Custom',
+    price: 1290,
+    image: photo('g-ember'),
     specs: { strings: '6', scale: '628 mm', pickups: 'HH', weight: '4.2 kg' },
     text: {
       ru: 'Корпус из красного дерева с кленовым топом в цвете «тёмный океан». Два хамбакера дают плотный, тёплый перегруз.',
@@ -46,8 +28,13 @@ export const products = [
     },
   },
   {
-    id: 'surf-s', cat: 'guitars', sub: 'electric', sound: 'electric',
-    name: 'Surf S-Type', price: 890, image: surfImg,
+    id: 'surf-s',
+    cat: 'guitars',
+    sub: 'electric',
+    sound: 'electric',
+    name: 'Surf S-Type',
+    price: 890,
+    image: photo('g-surf'),
     specs: { strings: '6', scale: '648 mm', pickups: 'SSS', weight: '3.5 kg' },
     text: {
       ru: 'Ольховый корпус цвета морской волны и три сингла. Звонкий чистый звук для фанка, инди и сёрфа.',
@@ -59,8 +46,13 @@ export const products = [
     },
   },
   {
-    id: 'brass-t', cat: 'guitars', sub: 'electric', sound: 'electric',
-    name: 'Brass T-Line', price: 1040, image: brassImg,
+    id: 'brass-t',
+    cat: 'guitars',
+    sub: 'electric',
+    sound: 'electric',
+    name: 'Brass T-Line',
+    price: 1040,
+    image: photo('g-brass'),
     specs: { strings: '6', scale: '648 mm', pickups: 'SS', weight: '3.6 kg' },
     text: {
       ru: 'Ясеневый корпус в санбёрсте и латунный бридж. Хлёсткая атака для кантри, блюза и рока.',
@@ -72,8 +64,13 @@ export const products = [
     },
   },
   {
-    id: 'sunburst-sc', cat: 'guitars', sub: 'acoustic', sound: 'acoustic',
-    name: 'Sunburst Cutaway EQ', price: 640, image: sunburstImg,
+    id: 'sunburst-sc',
+    cat: 'guitars',
+    sub: 'acoustic',
+    sound: 'acoustic',
+    name: 'Sunburst Cutaway EQ',
+    price: 640,
+    image: photo('g-sunburst'),
     specs: { strings: '6', scale: '650 mm', pickups: 'Piezo', weight: '2.1 kg' },
     text: {
       ru: 'Электроакустика с вырезом и встроенным тюнером. Удобный доступ к верхним ладам и чистый звук со сцены.',
@@ -85,8 +82,13 @@ export const products = [
     },
   },
   {
-    id: 'canary-12', cat: 'guitars', sub: 'acoustic', sound: 'acoustic',
-    name: 'Canary 12-String', price: 720, image: canaryImg,
+    id: 'canary-12',
+    cat: 'guitars',
+    sub: 'acoustic',
+    sound: 'acoustic',
+    name: 'Canary 12-String',
+    price: 720,
+    image: photo('g-canary'),
     specs: { strings: '12', scale: '650 mm', pickups: '—', weight: '2.4 kg' },
     text: {
       ru: 'Двенадцатиструнный дредноут в ярко-жёлтом лаке. Мерцающий хоровой звук, как у фолк-записей семидесятых.',
@@ -98,8 +100,13 @@ export const products = [
     },
   },
   {
-    id: 'parlour-nat', cat: 'guitars', sub: 'acoustic', sound: 'acoustic',
-    name: 'Parlour Natural', price: 390, image: parlourImg,
+    id: 'parlour-nat',
+    cat: 'guitars',
+    sub: 'acoustic',
+    sound: 'acoustic',
+    name: 'Parlour Natural',
+    price: 390,
+    image: photo('g-parlour'),
     specs: { strings: '6', scale: '610 mm', pickups: '—', weight: '1.6 kg' },
     text: {
       ru: 'Небольшой салонный корпус и короткая мензура. Лёгкая гитара для дома, поездок и первых аккордов.',
@@ -111,8 +118,13 @@ export const products = [
     },
   },
   {
-    id: 'walnut-ga', cat: 'guitars', sub: 'acoustic', sound: 'acoustic',
-    name: 'Walnut Grand Auditorium', price: 980, image: walnutImg,
+    id: 'walnut-ga',
+    cat: 'guitars',
+    sub: 'acoustic',
+    sound: 'acoustic',
+    name: 'Walnut Grand Auditorium',
+    price: 980,
+    image: photo('g-walnut'),
     specs: { strings: '6', scale: '645 mm', pickups: 'Piezo', weight: '2.2 kg' },
     text: {
       ru: 'Массив ели на деке и обечайки из ореха. Сбалансированный звук и для фингерстайла, и для боя.',
@@ -124,8 +136,13 @@ export const products = [
     },
   },
   {
-    id: 'nocturne-eq', cat: 'guitars', sub: 'acoustic', sound: 'acoustic',
-    name: 'Nocturne Black EQ', price: 560, image: nocturneImg,
+    id: 'nocturne-eq',
+    cat: 'guitars',
+    sub: 'acoustic',
+    sound: 'acoustic',
+    name: 'Nocturne Black EQ',
+    price: 560,
+    image: photo('g-nocturne'),
     specs: { strings: '6', scale: '650 mm', pickups: 'Piezo', weight: '2.0 kg' },
     text: {
       ru: 'Чёрный матовый дредноут с вырезом и звукоснимателем. Подключили к пульту — и сразу на сцену.',
@@ -137,8 +154,13 @@ export const products = [
     },
   },
   {
-    id: 'stage-five', cat: 'drums', sub: 'kits', sound: 'kit',
-    name: 'Stage Five Kit', price: 1190, image: stagekitImg,
+    id: 'stage-five',
+    cat: 'drums',
+    sub: 'kits',
+    sound: 'kit',
+    name: 'Stage Five Kit',
+    price: 1190,
+    image: photo('d-stagekit'),
     specs: { pieces: '5', shells: '22 / 10 / 12 / 16 / 14', material: 'Birch' },
     text: {
       ru: 'Пятипредметная установка из берёзы в белом лаке, со стойками. Бочка 22″ и яркие томы для клубной сцены.',
@@ -150,8 +172,13 @@ export const products = [
     },
   },
   {
-    id: 'mesh-e', cat: 'drums', sub: 'kits', sound: 'kit',
-    name: 'Mesh Electronic Kit', price: 1490, image: electronicImg,
+    id: 'mesh-e',
+    cat: 'drums',
+    sub: 'kits',
+    sound: 'kit',
+    name: 'Mesh Electronic Kit',
+    price: 1490,
+    image: photo('d-electronic'),
     specs: { pads: '8', heads: 'Mesh', material: 'Steel rack' },
     text: {
       ru: 'Электронная установка с сетчатыми пластиками. Тихие репетиции в наушниках и запись прямо в компьютер.',
@@ -163,8 +190,13 @@ export const products = [
     },
   },
   {
-    id: 'blue-snare', cat: 'drums', sub: 'snares', sound: 'snare',
-    name: 'Blue Burst Snare', price: 290, image: snareImg,
+    id: 'blue-snare',
+    cat: 'drums',
+    sub: 'snares',
+    sound: 'snare',
+    name: 'Blue Burst Snare',
+    price: 290,
+    image: photo('d-snare'),
     specs: { size: '14″ × 5.5″', material: 'Maple' },
     text: {
       ru: 'Кленовый малый барабан в синем берсте. Сухой щелчок на тихой игре и мощный римшот на громкой.',
@@ -176,8 +208,13 @@ export const products = [
     },
   },
   {
-    id: 'dark-ride', cat: 'drums', sub: 'cymbals', sound: 'cymbal',
-    name: 'Dark Flat Ride 20″', price: 340, image: rideImg,
+    id: 'dark-ride',
+    cat: 'drums',
+    sub: 'cymbals',
+    sound: 'cymbal',
+    name: 'Dark Flat Ride 20″',
+    price: 340,
+    image: photo('c-ride'),
     specs: { size: '20″', material: 'B20 bronze' },
     text: {
       ru: 'Тёмный райд без купола, кованый вручную. Сухой, чёткий звук для джаза и студии.',
@@ -189,8 +226,13 @@ export const products = [
     },
   },
   {
-    id: 'quick-hat', cat: 'drums', sub: 'cymbals', sound: 'cymbal',
-    name: 'Quick Hi-Hat 15″', price: 260, image: hihatImg,
+    id: 'quick-hat',
+    cat: 'drums',
+    sub: 'cymbals',
+    sound: 'cymbal',
+    name: 'Quick Hi-Hat 15″',
+    price: 260,
+    image: photo('c-hihat'),
     specs: { size: '15″', material: 'B20 bronze' },
     text: {
       ru: 'Пара хай-хэтов 15″ с быстрым откликом. Плотный «чик» ногой и шипящее открытие.',
@@ -202,8 +244,13 @@ export const products = [
     },
   },
   {
-    id: 'bright-splash', cat: 'drums', sub: 'cymbals', sound: 'cymbal',
-    name: 'Bright Splash 10″', price: 110, image: splashImg,
+    id: 'bright-splash',
+    cat: 'drums',
+    sub: 'cymbals',
+    sound: 'cymbal',
+    name: 'Bright Splash 10″',
+    price: 110,
+    image: photo('c-splash'),
     specs: { size: '10″', material: 'B8 bronze' },
     text: {
       ru: 'Маленький яркий сплэш для акцентов. Вспыхивает и сразу гаснет.',
@@ -215,8 +262,13 @@ export const products = [
     },
   },
   {
-    id: 'practice-15', cat: 'accessories', sub: 'amps', sound: 'electric',
-    name: 'Practice Combo 15', price: 109, image: practiceImg,
+    id: 'practice-15',
+    cat: 'accessories',
+    sub: 'amps',
+    sound: 'electric',
+    name: 'Practice Combo 15',
+    price: 109,
+    image: photo('a-practice'),
     specs: { power: '15 W', speaker: '8″' },
     text: {
       ru: 'Комбик на 15 ватт с чистым и перегруженным каналом. Выход на наушники для занятий ночью.',
@@ -228,8 +280,13 @@ export const products = [
     },
   },
   {
-    id: 'club-fx-15', cat: 'accessories', sub: 'amps', sound: 'electric',
-    name: 'Club Combo FX 15', price: 169, image: stagecomboImg,
+    id: 'club-fx-15',
+    cat: 'accessories',
+    sub: 'amps',
+    sound: 'electric',
+    name: 'Club Combo FX 15',
+    price: 169,
+    image: photo('a-stagecombo'),
     specs: { power: '15 W', speaker: '8″', effects: '16' },
     text: {
       ru: 'Компактный комбик со встроенными эффектами: дилэй, хорус, ревер. Всё, что нужно для первой репетиции.',
@@ -241,8 +298,13 @@ export const products = [
     },
   },
   {
-    id: 'red-drive', cat: 'accessories', sub: 'pedals', sound: 'electric',
-    name: 'Red Drive Pedal', price: 179, image: overdriveImg,
+    id: 'red-drive',
+    cat: 'accessories',
+    sub: 'pedals',
+    sound: 'electric',
+    name: 'Red Drive Pedal',
+    price: 179,
+    image: photo('a-overdrive'),
     specs: { power: '9 V', effects: '1' },
     text: {
       ru: 'Педаль овердрайва с трёхполосным эквалайзером. От лёгкого хруста до плотного рок-перегруза.',
@@ -254,8 +316,13 @@ export const products = [
     },
   },
   {
-    id: 'board-seven', cat: 'accessories', sub: 'pedals', sound: 'electric',
-    name: 'Pedalboard Set ×7', price: 749, image: pedalboardImg,
+    id: 'board-seven',
+    cat: 'accessories',
+    sub: 'pedals',
+    sound: 'electric',
+    name: 'Pedalboard Set ×7',
+    price: 749,
+    image: photo('a-pedalboard'),
     specs: { effects: '7', power: '9 V' },
     text: {
       ru: 'Готовый набор из семи педалей и мультиэффекта: фузз, хорус, дилэй, вау и другие. Собран и проверен.',
@@ -267,8 +334,13 @@ export const products = [
     },
   },
   {
-    id: 'acoustic-strings', cat: 'accessories', sub: 'strings', sound: null,
-    name: 'Acoustic Strings Medium', price: 14, image: stringsImg,
+    id: 'acoustic-strings',
+    cat: 'accessories',
+    sub: 'strings',
+    sound: null,
+    name: 'Acoustic Strings Medium',
+    price: 14,
+    image: photo('a-strings'),
     specs: { gauge: '12–54', material: 'Phosphor bronze' },
     text: {
       ru: 'Комплект струн из фосфорной бронзы средней толщины. Мы ставим их на каждую акустику перед отправкой.',
@@ -280,8 +352,13 @@ export const products = [
     },
   },
   {
-    id: 'pick-sampler', cat: 'accessories', sub: 'picks', sound: null,
-    name: 'Pick Sampler ×26', price: 12, image: picksImg,
+    id: 'pick-sampler',
+    cat: 'accessories',
+    sub: 'picks',
+    sound: null,
+    name: 'Pick Sampler ×26',
+    price: 12,
+    image: photo('a-picks'),
     specs: { count: '26', material: 'Celluloid / nylon' },
     text: {
       ru: '26 медиаторов разной толщины и формы. Найдите свой, не покупая каждый по отдельности.',
@@ -293,8 +370,13 @@ export const products = [
     },
   },
   {
-    id: 'hickory-5a', cat: 'accessories', sub: 'sticks', sound: 'snare',
-    name: 'Hickory 5A Sticks ×3', price: 24, image: sticksImg,
+    id: 'hickory-5a',
+    cat: 'accessories',
+    sub: 'sticks',
+    sound: 'snare',
+    name: 'Hickory 5A Sticks ×3',
+    price: 24,
+    image: photo('a-sticks'),
     specs: { count: '3', material: 'Hickory', length: '406 mm' },
     text: {
       ru: 'Три пары палочек 5A из гикори с деревянным наконечником. Универсальный вес для любого стиля.',
@@ -306,8 +388,13 @@ export const products = [
     },
   },
   {
-    id: 'braided-cable', cat: 'accessories', sub: 'cables', sound: null,
-    name: 'Braided Cable 6 m', price: 29, image: cableImg,
+    id: 'braided-cable',
+    cat: 'accessories',
+    sub: 'cables',
+    sound: null,
+    name: 'Braided Cable 6 m',
+    price: 29,
+    image: photo('a-cable'),
     specs: { length: '6 m', material: 'Braided textile' },
     text: {
       ru: 'Инструментальный кабель в тканевой оплётке с угловым джеком. Не путается и не трещит.',
@@ -319,8 +406,13 @@ export const products = [
     },
   },
   {
-    id: 'open-back', cat: 'accessories', sub: 'headphones', sound: null,
-    name: 'Open-Back Headphones', price: 149, image: headphonesImg,
+    id: 'open-back',
+    cat: 'accessories',
+    sub: 'headphones',
+    sound: null,
+    name: 'Open-Back Headphones',
+    price: 149,
+    image: photo('a-headphones'),
     specs: { impedance: '32 Ω', weight: '0.2 kg' },
     text: {
       ru: 'Открытые наушники для сведения и занятий с электронными барабанами. Честная середина и мягкие амбушюры.',

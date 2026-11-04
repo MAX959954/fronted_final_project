@@ -33,7 +33,9 @@ function toggleFav() {
   <article class="card">
     <RouterLink :to="`/product/${product.id}`" class="frame" :aria-label="product.name">
       <img
-        :src="product.image"
+        :src="product.image.src"
+        :srcset="product.image.srcset"
+        sizes="(max-width: 760px) 50vw, 360px"
         :alt="product.name"
         width="800"
         height="1000"
@@ -69,7 +71,9 @@ function toggleFav() {
         <p class="price">{{ price(product.price) }}</p>
         <button type="button" class="btn btn--small add" :class="{ done: justAdded }" @click="addToCart">
           <span class="add-label">{{ t('product.add') }}</span>
-          <svg class="tick" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.2" /></svg>
+          <svg class="tick" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="m5 12.5 4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.2" />
+          </svg>
         </button>
       </div>
     </div>
@@ -94,7 +98,9 @@ function toggleFav() {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 900ms var(--ease-out), filter 600ms ease;
+  transition:
+    transform 900ms var(--ease-out),
+    filter 600ms ease;
   filter: saturate(0.92);
 }
 
@@ -147,7 +153,9 @@ function toggleFav() {
 
 .add-label,
 .tick {
-  transition: transform var(--dur) var(--ease-out), opacity var(--dur-fast) ease;
+  transition:
+    transform var(--dur) var(--ease-out),
+    opacity var(--dur-fast) ease;
 }
 
 .tick {

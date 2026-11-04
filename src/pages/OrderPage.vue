@@ -51,8 +51,17 @@ const lines = computed(() =>
           <h2 id="items-h">{{ t('order.items') }}</h2>
           <ul class="items">
             <li v-for="l in lines" :key="l.id">
-              <img :src="l.product.image" alt="" width="64" height="80" />
-              <span>{{ l.product.name }} <span class="muted">× {{ l.qty }}</span></span>
+              <img
+                :src="l.product.image.src"
+                :srcset="l.product.image.srcset"
+                sizes="64px"
+                alt=""
+                width="64"
+                height="80"
+              />
+              <span
+                >{{ l.product.name }} <span class="muted">× {{ l.qty }}</span></span
+              >
               <span>{{ price(l.price * l.qty) }}</span>
             </li>
           </ul>

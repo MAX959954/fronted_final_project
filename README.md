@@ -1,38 +1,94 @@
-# fontend-project
+# Backline — a music instrument shop
 
-This template should help get you started developing with Vue 3 in Vite.
+A single-page shop for guitars, drums, cymbals and the accessories that go with them, built with Vue 3.
+Dark "stage at night" design, scroll-driven animation, six languages and a working cart-to-order flow.
 
-## Recommended IDE Setup
+**Live demo:** https://max959954.github.io/fronted_final_project/
 
-[VS Code](https://code.visualstudio.com/) + [Vue (Official)](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+![Home page: the shop name stays pinned while instruments change underneath](.github/screenshots/home.png)
 
-## Recommended Browser Setup
+| Catalogue with filters                        | Product page                                     | Phone                                           |
+| --------------------------------------------- | ------------------------------------------------ | ----------------------------------------------- |
+| ![Catalogue](.github/screenshots/catalog.png) | ![Product page](.github/screenshots/product.png) | ![Phone layout](.github/screenshots/mobile.jpg) |
 
-- Chromium-based browsers (Chrome, Edge, Brave, etc.):
-  - [Vue.js devtools](https://chromewebstore.google.com/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd) 
-  - [Turn on Custom Object Formatter in Chrome DevTools](http://bit.ly/object-formatters)
-- Firefox:
-  - [Vue.js devtools](https://addons.mozilla.org/en-US/firefox/addon/vue-js-devtools/)
-  - [Turn on Custom Object Formatter in Firefox DevTools](https://fxdx.dev/firefox-devtools-custom-object-formatters/)
+## Features
 
-## Customize configuration
+- **Catalogue** of 24 products across guitars, drums and accessories: department and sub-category filters, search, sorting and a price slider. Every filter lives in the URL, so a filtered view can be shared or bookmarked.
+- **Product page** with specifications, quantity, favourites, related items and a **Soundcheck** button that synthesises the instrument in the browser with the Web Audio API (Karplus–Strong strings for guitars, a drum pattern for kits, filtered noise for cymbals). No audio files are downloaded.
+- **Cart and checkout**: quantity controls, free-delivery progress bar (free from €300, otherwise €15), form validation with accessible error messages, and an order confirmation page.
+- **Persistence**: cart, favourites, past orders and the chosen language survive a reload (localStorage, with a safe fallback when storage is blocked).
+- **Six languages**: Russian, English, German, French, Chinese and Japanese, including product descriptions. Prices and dates are formatted per locale with `Intl`.
+- **Motion**: pinned hero, staggered section reveals, page transitions, animated cart badge and toasts. Everything respects `prefers-reduced-motion`.
+- **Responsive and accessible**: phone layout of its own, keyboard-operable controls, visible focus, `aria-*` on icon buttons, menus and live regions.
 
-See [Vite Configuration Reference](https://vite.dev/config/).
+## Tech stack
 
-## Project Setup
+|           |                                                                           |
+| --------- | ------------------------------------------------------------------------- |
+| Framework | Vue 3 (Composition API, `<script setup>`)                                 |
+| State     | Pinia                                                                     |
+| Routing   | Vue Router 4, lazy-loaded pages                                           |
+| Build     | Vite 7                                                                    |
+| Styling   | Plain CSS with design tokens (custom properties), scoped component styles |
+| Images    | vite-imagetools: WebP in 480 / 960 / 1400 px, served through `srcset`     |
+| Quality   | ESLint (eslint-plugin-vue), Prettier, Vitest, Playwright                  |
+| Deploy    | GitHub Actions → GitHub Pages                                             |
+
+## Project structure
+
+```
+src/
+├── pages/          route components (Home, Catalog, Product, Cart, Checkout, Order, Favorites, Credits, 404)
+├── components/     SiteHeader, SiteFooter, ProductCard, QtyStepper, SoundcheckButton, ToastStack
+├── stores/         Pinia stores: cart (incl. orders), favorites, app (toasts), persist helper
+├── data/           product catalogue, photo credits, responsive photo helper
+├── i18n/           translation runtime and one dictionary per locale
+├── composables/    useSoundcheck (Web Audio synthesis)
+├── directives/     v-reveal (IntersectionObserver scroll reveal)
+└── styles/         global tokens, type scale, controls, motion
+e2e/                Playwright specs (full checkout flow, responsive images)
+```
+
+Unit tests live next to the code they cover, in `__tests__/` folders.
+
+## Decisions worth explaining
+
+- **The cart stores only `{ id, qty }`.** Prices and names are always read from the catalogue, so a stale price in someone's localStorage can never reach checkout.
+- **A small hand-written i18n module instead of vue-i18n.** The app needs key lookup, `{param}` interpolation, arrays for lists and `Intl` formatting, in under 80 lines. A reactive `locale` ref means templates re-render on language change with no plugin. For a larger app with pluralisation rules I would switch to vue-i18n.
+- **Filters in the URL, not in a store.** The route query is the single source of truth for the catalogue, which gives back/forward navigation and shareable links for free.
+- **No payment form.** There is no backend, so checkout offers pay-on-delivery or bank transfer and stores the order locally instead of pretending to take card details.
+- **Photos are resized at build time.** The source JPGs stay in the repo; `src/data/images.js` asks vite-imagetools for WebP variants and every `<img>` gets a `srcset` plus `sizes` matched to its slot. A catalogue card on a phone downloads about 20 KB instead of a 300 KB original.
+- **Deep links on GitHub Pages.** Pages only serves real files, so `/catalog` opened directly would be a 404. A tiny Vite plugin copies `index.html` to `404.html` at build time; Pages serves it for unknown paths and Vue Router renders the right page.
+
+## Getting started
+
+Requires Node.js 20.19+ or 22.12+.
 
 ```sh
 npm install
+npm run dev       # dev server with hot reload
+npm run build     # production build into dist/
+npm run preview   # serve the production build locally
+
+npm run lint          # ESLint
+npm run format        # Prettier (format:check only reports)
+npm test              # unit tests with Vitest (test:watch to keep it running)
+npm run test:e2e      # Playwright, against the production build
 ```
 
-### Compile and Hot-Reload for Development
+Before the first e2e run, download the browser once: `npx playwright install chromium`.
 
-```sh
-npm run dev
-```
+## CI and deployment
 
-### Compile and Minify for Production
+[`.github/workflows/deploy.yml`](.github/workflows/deploy.yml) runs on every push and pull request: lint, format check and unit tests in one job, Playwright on desktop and mobile Chrome in another. Only a push to `main` where both pass is built and published to GitHub Pages; a failed e2e run uploads the Playwright report as an artifact.
+One-time setup in the repository: **Settings → Pages → Build and deployment → Source: GitHub Actions**.
 
-```sh
-npm run build
-```
+## Roadmap
+
+- Products served from a mock API, with loading and error states
+- TypeScript, starting with the product, cart and order types
+- Locale dictionaries loaded on demand instead of all six in the main bundle
+
+## Credits
+
+Product names, prices and service terms are sample content. Photographs come from Unsplash and from Wikimedia Commons / Flickr under Creative Commons licences; the full attribution list is on the [photo credits page](https://max959954.github.io/fronted_final_project/credits) and in [`src/data/credits.js`](src/data/credits.js).

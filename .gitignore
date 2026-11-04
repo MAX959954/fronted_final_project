@@ -31,3 +31,9 @@ coverage
 
 # taste-skill working files (screenshots, direction sheet)
 .taste-skill/
+
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/

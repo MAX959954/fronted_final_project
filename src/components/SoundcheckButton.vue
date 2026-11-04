@@ -33,7 +33,10 @@ const { playing, trigger, supported } = useSoundcheck()
   padding: 0 20px 0 16px;
   background: var(--surface-2);
   font-weight: 500;
-  transition: background-color var(--dur-fast) ease, color var(--dur-fast) ease, transform var(--dur-fast) var(--ease-out);
+  transition:
+    background-color var(--dur-fast) ease,
+    color var(--dur-fast) ease,
+    transform var(--dur-fast) var(--ease-out);
 }
 
 .soundcheck:hover {
@@ -65,7 +68,11 @@ const { playing, trigger, supported } = useSoundcheck()
 }
 
 @keyframes level {
-  from { transform: scaleY(0.25); }
-  to { transform: scaleY(1.25); }
+  from {
+    transform: scaleY(0.25);
+  }
+  to {
+    transform: scaleY(1.25);
+  }
 }
 </style>

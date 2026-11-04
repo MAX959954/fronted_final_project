@@ -16,7 +16,12 @@ const sending = ref(false)
 
 const needsAddress = computed(() => delivery.value === 'courier')
 const shipping = computed(() => cart.shipping(delivery.value))
-const required = computed(() => ['name', 'email', 'phone', ...(needsAddress.value ? ['country', 'city', 'street', 'zip'] : [])])
+const required = computed(() => [
+  'name',
+  'email',
+  'phone',
+  ...(needsAddress.value ? ['country', 'city', 'street', 'zip'] : []),
+])
 
 function validate() {
   for (const key of Object.keys(errors)) delete errors[key]
@@ -35,7 +40,12 @@ function submit() {
   }
   sending.value = true
   const customer = Object.fromEntries(Object.entries(form).map(([k, v]) => [k, v.trim()]))
-  const order = cart.placeOrder({ customer, delivery: delivery.value, payment: payment.value, comment: customer.comment })
+  const order = cart.placeOrder({
+    customer,
+    delivery: delivery.value,
+    payment: payment.value,
+    comment: customer.comment,
+  })
   router.push(`/order/${order.id}`)
 }
 
@@ -89,7 +99,10 @@ const fields = {
             <label class="option" :class="{ on: delivery === 'courier' }">
               <input v-model="delivery" type="radio" value="courier" />
               <span class="opt-title">{{ t('checkout.courier') }}</span>
-              <span class="muted">{{ t('checkout.courierNote') }} · {{ cart.shipping('courier') ? price(cart.shipping('courier')) : t('cart.free') }}</span>
+              <span class="muted"
+                >{{ t('checkout.courierNote') }} ·
+                {{ cart.shipping('courier') ? price(cart.shipping('courier')) : t('cart.free') }}</span
+              >
             </label>
             <label class="option" :class="{ on: delivery === 'pickup' }">
               <input v-model="delivery" type="radio" value="pickup" />
@@ -144,8 +157,17 @@ const fields = {
         <h2>{{ t('checkout.summary') }}</h2>
         <ul class="items">
           <li v-for="line in cart.lines" :key="line.id">
-            <img :src="line.product.image" alt="" width="56" height="70" />
-            <span class="item-name">{{ line.product.name }} <span class="muted">× {{ line.qty }}</span></span>
+            <img
+              :src="line.product.image.src"
+              :srcset="line.product.image.srcset"
+              sizes="56px"
+              alt=""
+              width="56"
+              height="70"
+            />
+            <span class="item-name"
+              >{{ line.product.name }} <span class="muted">× {{ line.qty }}</span></span
+            >
             <span>{{ price(line.total) }}</span>
           </li>
         </ul>
@@ -227,7 +249,9 @@ legend {
   padding: 18px 18px 18px 52px;
   background: var(--surface);
   cursor: pointer;
-  transition: background-color var(--dur-fast) ease, color var(--dur-fast) ease;
+  transition:
+    background-color var(--dur-fast) ease,
+    color var(--dur-fast) ease;
 }
 
 .option:hover {
@@ -272,7 +296,9 @@ legend {
 
 .fold-enter-active,
 .fold-leave-active {
-  transition: opacity var(--dur) ease, transform var(--dur) var(--ease-out);
+  transition:
+    opacity var(--dur) ease,
+    transform var(--dur) var(--ease-out);
 }
 
 .fold-enter-from,

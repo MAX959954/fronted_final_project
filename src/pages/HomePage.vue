@@ -2,23 +2,7 @@
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
 import { useI18n } from '@/i18n'
 import { productById, fromPrice } from '@/data/products'
-
-import surfImg from '@/assets/img/g-surf.jpg'
-import canaryImg from '@/assets/img/g-canary.jpg'
-import electronicImg from '@/assets/img/d-electronic.jpg'
-import snareImg from '@/assets/img/d-snare.jpg'
-import hihatImg from '@/assets/img/c-hihat.jpg'
-import comboImg from '@/assets/img/a-stagecombo.jpg'
-import boardImg from '@/assets/img/a-pedalboard.jpg'
-import picksImg from '@/assets/img/a-picks.jpg'
-import brassImg from '@/assets/img/g-brass.jpg'
-import fretboardImg from '@/assets/img/s-fretboard.jpg'
-import roomImg from '@/assets/img/s-room.jpg'
-import acousticImg from '@/assets/img/s-acoustic.jpg'
-import playerImg from '@/assets/img/s-player.jpg'
-import stageImg from '@/assets/img/s-stage.jpg'
-import studioImg from '@/assets/img/s-studio.jpg'
-import drummerImg from '@/assets/img/s-drummer.jpg'
+import { photo } from '@/data/images'
 
 const { t, price } = useI18n()
 
@@ -35,14 +19,19 @@ const current = computed(() => panels[active.value])
 
 /* ---------- choose your sound ---------- */
 const rows = [
-  { sub: 'electric', image: surfImg, to: '/catalog?cat=guitars&sub=electric' },
-  { sub: 'acoustic', image: canaryImg, to: '/catalog?cat=guitars&sub=acoustic' },
-  { sub: 'kits', image: electronicImg, to: '/catalog?cat=drums&sub=kits' },
-  { sub: 'snares', image: snareImg, to: '/catalog?cat=drums&sub=snares' },
-  { sub: 'cymbals', image: hihatImg, to: '/catalog?cat=drums&sub=cymbals' },
-  { sub: 'amps', image: comboImg, to: '/catalog?cat=accessories&sub=amps' },
-  { sub: 'pedals', image: boardImg, to: '/catalog?cat=accessories&sub=pedals' },
-  { sub: 'extras', image: picksImg, to: '/catalog?cat=accessories', from: Math.min(fromPrice('picks'), fromPrice('strings')) },
+  { sub: 'electric', image: photo('g-surf'), to: '/catalog?cat=guitars&sub=electric' },
+  { sub: 'acoustic', image: photo('g-canary'), to: '/catalog?cat=guitars&sub=acoustic' },
+  { sub: 'kits', image: photo('d-electronic'), to: '/catalog?cat=drums&sub=kits' },
+  { sub: 'snares', image: photo('d-snare'), to: '/catalog?cat=drums&sub=snares' },
+  { sub: 'cymbals', image: photo('c-hihat'), to: '/catalog?cat=drums&sub=cymbals' },
+  { sub: 'amps', image: photo('a-stagecombo'), to: '/catalog?cat=accessories&sub=amps' },
+  { sub: 'pedals', image: photo('a-pedalboard'), to: '/catalog?cat=accessories&sub=pedals' },
+  {
+    sub: 'extras',
+    image: photo('a-picks'),
+    to: '/catalog?cat=accessories',
+    from: Math.min(fromPrice('picks'), fromPrice('strings')),
+  },
 ]
 const activeRow = ref(0)
 const rowEls = ref([])
@@ -52,6 +41,7 @@ const rowFrom = (row) => price(row.from ?? fromPrice(row.sub))
 /* ---------- setup: one frame, three distances ---------- */
 const setupEl = ref(null)
 const setupStage = ref(0)
+const setupPhoto = photo('g-brass')
 const distances = [
   { scale: 1, origin: '50% 50%' },
   { scale: 1.8, origin: '58% 62%' },
@@ -59,11 +49,11 @@ const distances = [
 ]
 
 /* ---------- service ---------- */
-const serviceImages = [fretboardImg, roomImg, acousticImg, playerImg]
+const serviceImages = [photo('s-fretboard'), photo('s-room'), photo('s-acoustic'), photo('s-player')]
 const blocks = computed(() => t('service.blocks'))
 
 /* ---------- gallery ---------- */
-const galleryImages = [stageImg, studioImg, drummerImg]
+const galleryImages = [photo('s-stage'), photo('s-studio'), photo('s-drummer')]
 const galleryFocus = ['50% 50%', '50% 8%', '50% 40%']
 const galleryEls = ref([])
 
@@ -71,7 +61,8 @@ const galleryEls = ref([])
 const faq = computed(() => t('faq.items'))
 const verb = computed(() => t('cta.verb'))
 const verbSize = computed(() => {
-  const wide = /[　-鿿]/.test(verb.value) ? 1.02 : 0.6
+  // CJK glyphs are roughly square, so they need almost twice the width of Latin letters.
+  const wide = /[\u3000-\u9fff]/.test(verb.value) ? 1.02 : 0.6
   return `min(30vw, calc((100vw - 2 * var(--gutter)) / ${(verb.value.length * wide).toFixed(2)}))`
 })
 
@@ -149,13 +140,17 @@ onBeforeUnmount(() => {
     <!-- HERO -->
     <section ref="heroEl" class="hero" :style="{ '--panels': panels.length }">
       <div class="hero-stage" :style="{ backgroundColor: current.ground }">
-        <h1 class="hero-title">Backline<span class="visually-hidden"> · {{ t('meta.title').split('—').pop() }}</span></h1>
+        <h1 class="hero-title">
+          Backline<span class="visually-hidden"> · {{ t('meta.title').split('—').pop() }}</span>
+        </h1>
 
         <div class="hero-frame">
           <img
             v-for="(p, i) in panels"
             :key="p.product.id"
-            :src="p.product.image"
+            :src="p.product.image.src"
+            :srcset="p.product.image.srcset"
+            sizes="(max-width: 720px) 100vw, 66vh"
             :alt="p.product.name"
             :class="{ on: i === active, past: i < active }"
             width="800"
@@ -186,7 +181,9 @@ onBeforeUnmount(() => {
         <img
           v-for="(row, i) in rows"
           :key="row.sub"
-          :src="row.image"
+          :src="row.image.src"
+          :srcset="row.image.srcset"
+          sizes="(max-width: 900px) 100vw, 40vw"
           alt=""
           :class="{ on: i === activeRow }"
           width="800"
@@ -228,12 +225,17 @@ onBeforeUnmount(() => {
         </h2>
         <div class="setup-frame">
           <img
-            :src="brassImg"
+            :src="setupPhoto.src"
+            :srcset="setupPhoto.srcset"
+            sizes="(max-width: 720px) 100vw, 30vw"
             alt="Brass T-Line"
             width="800"
             height="1000"
             loading="lazy"
-            :style="{ transform: `scale(${distances[setupStage].scale})`, transformOrigin: distances[setupStage].origin }"
+            :style="{
+              transform: `scale(${distances[setupStage].scale})`,
+              transformOrigin: distances[setupStage].origin,
+            }"
           />
         </div>
         <p class="setup-caption" :class="{ shown: setupStage >= 2 }">{{ t('setup.caption') }}</p>
@@ -248,7 +250,16 @@ onBeforeUnmount(() => {
           <article v-for="(b, i) in blocks" :key="b.title" v-reveal class="block" :class="{ flip: i % 2 }">
             <h3 data-r>{{ b.title }}</h3>
             <div class="block-row">
-              <img :src="serviceImages[i]" alt="" width="420" height="560" loading="lazy" data-r />
+              <img
+                :src="serviceImages[i].src"
+                :srcset="serviceImages[i].srcset"
+                sizes="(max-width: 720px) 50vw, 200px"
+                alt=""
+                width="420"
+                height="560"
+                loading="lazy"
+                data-r
+              />
               <ul data-r>
                 <li v-for="line in b.lines" :key="line">{{ line }}</li>
               </ul>
@@ -263,8 +274,17 @@ onBeforeUnmount(() => {
       <div class="wrap gallery-lead">
         <p v-reveal>{{ t('gallery.text') }}</p>
       </div>
-      <figure v-for="(img, i) in galleryImages" :key="img" ref="galleryEls" class="shot">
-        <img :src="img" :alt="t('gallery.captions')[i]" :style="{ objectPosition: galleryFocus[i] }" width="1600" height="1000" loading="lazy" />
+      <figure v-for="(img, i) in galleryImages" :key="img.src" ref="galleryEls" class="shot">
+        <img
+          :src="img.src"
+          :srcset="img.srcset"
+          sizes="100vw"
+          :alt="t('gallery.captions')[i]"
+          :style="{ objectPosition: galleryFocus[i] }"
+          width="1600"
+          height="1000"
+          loading="lazy"
+        />
         <figcaption>{{ t('gallery.captions')[i] }}</figcaption>
       </figure>
     </section>
@@ -276,7 +296,9 @@ onBeforeUnmount(() => {
         <details v-for="item in faq" :key="item.q" data-r>
           <summary>
             <span>{{ item.q }}</span>
-            <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M7 4l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" /></svg>
+            <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true">
+              <path d="M7 4l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" />
+            </svg>
           </summary>
           <p>{{ item.a }}</p>
         </details>
@@ -286,7 +308,9 @@ onBeforeUnmount(() => {
     <!-- CTA: ONE WORD IS THE BUTTON -->
     <RouterLink to="/catalog" class="cta">
       <span class="cta-text">{{ t('cta.text') }}</span>
-      <svg class="cta-arrow" width="48" height="48" viewBox="0 0 48 48" aria-hidden="true"><path d="M12 36 36 12M16 12h20v20" fill="none" stroke="currentColor" stroke-width="3" /></svg>
+      <svg class="cta-arrow" width="48" height="48" viewBox="0 0 48 48" aria-hidden="true">
+        <path d="M12 36 36 12M16 12h20v20" fill="none" stroke="currentColor" stroke-width="3" />
+      </svg>
       <span class="cta-verb" :style="{ fontSize: verbSize }">{{ verb }}</span>
     </RouterLink>
   </div>
@@ -352,7 +376,9 @@ onBeforeUnmount(() => {
   object-fit: cover;
   clip-path: inset(100% 0 0 0);
   transform: scale(1.12);
-  transition: clip-path 900ms var(--ease-in-out), transform 1600ms var(--ease-out);
+  transition:
+    clip-path 900ms var(--ease-in-out),
+    transform 1600ms var(--ease-out);
 }
 
 .hero-frame img.on,
@@ -409,7 +435,9 @@ onBeforeUnmount(() => {
 
 .caption-enter-active,
 .caption-leave-active {
-  transition: opacity 240ms ease, transform 360ms var(--ease-out);
+  transition:
+    opacity 240ms ease,
+    transform 360ms var(--ease-out);
 }
 
 .caption-enter-from {
@@ -457,7 +485,9 @@ onBeforeUnmount(() => {
   object-fit: cover;
   opacity: 0;
   transform: scale(1.05);
-  transition: opacity 420ms ease, transform 1200ms var(--ease-out);
+  transition:
+    opacity 420ms ease,
+    transform 1200ms var(--ease-out);
 }
 
 .sound-photo img.on {
@@ -560,7 +590,9 @@ onBeforeUnmount(() => {
   color: var(--accent);
   opacity: 0;
   transform: translateY(0.4em);
-  transition: opacity 500ms ease, transform 700ms var(--ease-out);
+  transition:
+    opacity 500ms ease,
+    transform 700ms var(--ease-out);
 }
 
 .setup-b.shown {
@@ -583,7 +615,9 @@ onBeforeUnmount(() => {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 900ms var(--ease-in-out), transform-origin 900ms var(--ease-in-out);
+  transition:
+    transform 900ms var(--ease-in-out),
+    transform-origin 900ms var(--ease-in-out);
 }
 
 .setup-caption {
@@ -593,7 +627,9 @@ onBeforeUnmount(() => {
   max-width: 30ch;
   opacity: 0;
   transform: translateY(16px);
-  transition: opacity 500ms ease, transform 700ms var(--ease-out);
+  transition:
+    opacity 500ms ease,
+    transform 700ms var(--ease-out);
 }
 
 .setup-caption.shown {
@@ -695,7 +731,11 @@ onBeforeUnmount(() => {
   position: absolute;
   inset: auto 0 0 0;
   height: 140px;
-  background: linear-gradient(to top, rgb(0 0 0 / 0.65), rgb(0 0 0 / 0)); /* taste-skill-ignore: neutral scrim under a caption */
+  background: linear-gradient(
+    to top,
+    rgb(0 0 0 / 0.65),
+    rgb(0 0 0 / 0)
+  ); /* taste-skill-ignore: neutral scrim under a caption */
 }
 
 .shot figcaption {
@@ -751,7 +791,9 @@ summary::-webkit-details-marker {
 
 summary svg {
   flex: none;
-  transition: transform var(--dur) var(--ease-out), color var(--dur-fast) ease;
+  transition:
+    transform var(--dur) var(--ease-out),
+    color var(--dur-fast) ease;
 }
 
 summary:hover svg {
@@ -785,7 +827,9 @@ details p {
   background: var(--accent);
   color: var(--accent-ink);
   overflow: hidden;
-  transition: background-color 120ms linear, color 120ms linear;
+  transition:
+    background-color 120ms linear,
+    color 120ms linear;
 }
 
 .cta:hover,

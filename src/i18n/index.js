@@ -45,7 +45,7 @@ export function t(key, params) {
   if (value === undefined) value = lookup(messages.en, key)
   if (value === undefined) return key
   if (typeof value !== 'string' || !params) return value
-  return value.replace(/\{(\w+)\}/g, (_, name) => (params[name] ?? `{${name}}`))
+  return value.replace(/\{(\w+)\}/g, (_, name) => params[name] ?? `{${name}}`)
 }
 
 const tagOf = (code) => LOCALES.find((l) => l.code === code)?.tag || 'en-GB'
