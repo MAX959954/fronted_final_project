@@ -33,7 +33,9 @@ function toggleFav() {
   <article class="card">
     <RouterLink :to="`/product/${product.id}`" class="frame" :aria-label="product.name">
       <img
-        :src="product.image"
+        :src="product.image.src"
+        :srcset="product.image.srcset"
+        sizes="(max-width: 760px) 50vw, 360px"
         :alt="product.name"
         width="800"
         height="1000"

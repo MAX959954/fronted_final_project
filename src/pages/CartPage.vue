@@ -24,7 +24,15 @@ const progress = computed(() => Math.min(1, cart.subtotal / FREE_SHIPPING_FROM))
       <TransitionGroup tag="ul" name="line" class="lines">
         <li v-for="line in cart.lines" :key="line.id" class="line">
           <RouterLink :to="`/product/${line.id}`" class="thumb">
-            <img :src="line.product.image" :alt="line.product.name" width="160" height="200" loading="lazy" />
+            <img
+              :src="line.product.image.src"
+              :srcset="line.product.image.srcset"
+              sizes="160px"
+              :alt="line.product.name"
+              width="160"
+              height="200"
+              loading="lazy"
+            />
           </RouterLink>
           <div class="line-info">
             <p class="muted sub">{{ t(`cats.${line.product.sub}`) }}</p>

@@ -5,6 +5,7 @@ import { resolve } from 'node:path'
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import vueDevTools from 'vite-plugin-vue-devtools'
+import { imagetools } from 'vite-imagetools'
 
 // GitHub Pages only knows real files, so /catalog or /product/ember-lp opened directly
 // (or after F5) would be a 404. Pages serves 404.html for every unknown path: making it a
@@ -29,7 +30,7 @@ export default defineConfig({
   // so every asset URL needs the repository name as its base path.
   base: '/fronted_final_project/',
 
-  plugins: [vue(), vueDevTools(), spaFallback()],
+  plugins: [vue(), vueDevTools(), imagetools(), spaFallback()],
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),

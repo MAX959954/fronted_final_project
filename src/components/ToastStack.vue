@@ -8,7 +8,7 @@ const app = useAppStore()
   <div class="toasts" role="status" aria-live="polite">
     <TransitionGroup name="toast">
       <p v-for="n in app.notifications" :key="n.id" class="toast" @click="app.removeNotification(n.id)">
-        <img v-if="n.image" :src="n.image" alt="" width="44" height="44" />
+        <img v-if="n.image" :src="n.image.src" :srcset="n.image.srcset" sizes="44px" alt="" width="44" height="44" />
         <span>{{ n.message }}</span>
       </p>
     </TransitionGroup>

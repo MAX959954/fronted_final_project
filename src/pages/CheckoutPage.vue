@@ -157,7 +157,14 @@ const fields = {
         <h2>{{ t('checkout.summary') }}</h2>
         <ul class="items">
           <li v-for="line in cart.lines" :key="line.id">
-            <img :src="line.product.image" alt="" width="56" height="70" />
+            <img
+              :src="line.product.image.src"
+              :srcset="line.product.image.srcset"
+              sizes="56px"
+              alt=""
+              width="56"
+              height="70"
+            />
             <span class="item-name"
               >{{ line.product.name }} <span class="muted">× {{ line.qty }}</span></span
             >

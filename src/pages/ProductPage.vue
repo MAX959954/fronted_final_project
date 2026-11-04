@@ -63,7 +63,15 @@ function toggleFav() {
   <div v-if="product" class="page product">
     <div class="split wrap">
       <figure class="stage">
-        <img :src="product.image" :alt="product.name" width="1000" height="1250" fetchpriority="high" />
+        <img
+          :src="product.image.src"
+          :srcset="product.image.srcset"
+          sizes="(max-width: 860px) 100vw, 55vw"
+          :alt="product.name"
+          width="1000"
+          height="1250"
+          fetchpriority="high"
+        />
       </figure>
 
       <div v-reveal class="buy">

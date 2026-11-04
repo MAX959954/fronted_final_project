@@ -2,23 +2,7 @@
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
 import { useI18n } from '@/i18n'
 import { productById, fromPrice } from '@/data/products'
-
-import surfImg from '@/assets/img/g-surf.jpg'
-import canaryImg from '@/assets/img/g-canary.jpg'
-import electronicImg from '@/assets/img/d-electronic.jpg'
-import snareImg from '@/assets/img/d-snare.jpg'
-import hihatImg from '@/assets/img/c-hihat.jpg'
-import comboImg from '@/assets/img/a-stagecombo.jpg'
-import boardImg from '@/assets/img/a-pedalboard.jpg'
-import picksImg from '@/assets/img/a-picks.jpg'
-import brassImg from '@/assets/img/g-brass.jpg'
-import fretboardImg from '@/assets/img/s-fretboard.jpg'
-import roomImg from '@/assets/img/s-room.jpg'
-import acousticImg from '@/assets/img/s-acoustic.jpg'
-import playerImg from '@/assets/img/s-player.jpg'
-import stageImg from '@/assets/img/s-stage.jpg'
-import studioImg from '@/assets/img/s-studio.jpg'
-import drummerImg from '@/assets/img/s-drummer.jpg'
+import { photo } from '@/data/images'
 
 const { t, price } = useI18n()
 
@@ -35,16 +19,16 @@ const current = computed(() => panels[active.value])
 
 /* ---------- choose your sound ---------- */
 const rows = [
-  { sub: 'electric', image: surfImg, to: '/catalog?cat=guitars&sub=electric' },
-  { sub: 'acoustic', image: canaryImg, to: '/catalog?cat=guitars&sub=acoustic' },
-  { sub: 'kits', image: electronicImg, to: '/catalog?cat=drums&sub=kits' },
-  { sub: 'snares', image: snareImg, to: '/catalog?cat=drums&sub=snares' },
-  { sub: 'cymbals', image: hihatImg, to: '/catalog?cat=drums&sub=cymbals' },
-  { sub: 'amps', image: comboImg, to: '/catalog?cat=accessories&sub=amps' },
-  { sub: 'pedals', image: boardImg, to: '/catalog?cat=accessories&sub=pedals' },
+  { sub: 'electric', image: photo('g-surf'), to: '/catalog?cat=guitars&sub=electric' },
+  { sub: 'acoustic', image: photo('g-canary'), to: '/catalog?cat=guitars&sub=acoustic' },
+  { sub: 'kits', image: photo('d-electronic'), to: '/catalog?cat=drums&sub=kits' },
+  { sub: 'snares', image: photo('d-snare'), to: '/catalog?cat=drums&sub=snares' },
+  { sub: 'cymbals', image: photo('c-hihat'), to: '/catalog?cat=drums&sub=cymbals' },
+  { sub: 'amps', image: photo('a-stagecombo'), to: '/catalog?cat=accessories&sub=amps' },
+  { sub: 'pedals', image: photo('a-pedalboard'), to: '/catalog?cat=accessories&sub=pedals' },
   {
     sub: 'extras',
-    image: picksImg,
+    image: photo('a-picks'),
     to: '/catalog?cat=accessories',
     from: Math.min(fromPrice('picks'), fromPrice('strings')),
   },
@@ -57,6 +41,7 @@ const rowFrom = (row) => price(row.from ?? fromPrice(row.sub))
 /* ---------- setup: one frame, three distances ---------- */
 const setupEl = ref(null)
 const setupStage = ref(0)
+const setupPhoto = photo('g-brass')
 const distances = [
   { scale: 1, origin: '50% 50%' },
   { scale: 1.8, origin: '58% 62%' },
@@ -64,11 +49,11 @@ const distances = [
 ]
 
 /* ---------- service ---------- */
-const serviceImages = [fretboardImg, roomImg, acousticImg, playerImg]
+const serviceImages = [photo('s-fretboard'), photo('s-room'), photo('s-acoustic'), photo('s-player')]
 const blocks = computed(() => t('service.blocks'))
 
 /* ---------- gallery ---------- */
-const galleryImages = [stageImg, studioImg, drummerImg]
+const galleryImages = [photo('s-stage'), photo('s-studio'), photo('s-drummer')]
 const galleryFocus = ['50% 50%', '50% 8%', '50% 40%']
 const galleryEls = ref([])
 
@@ -76,7 +61,8 @@ const galleryEls = ref([])
 const faq = computed(() => t('faq.items'))
 const verb = computed(() => t('cta.verb'))
 const verbSize = computed(() => {
-  const wide = /[　-鿿]/.test(verb.value) ? 1.02 : 0.6
+  // CJK glyphs are roughly square, so they need almost twice the width of Latin letters.
+  const wide = /[\u3000-\u9fff]/.test(verb.value) ? 1.02 : 0.6
   return `min(30vw, calc((100vw - 2 * var(--gutter)) / ${(verb.value.length * wide).toFixed(2)}))`
 })
 
@@ -162,7 +148,9 @@ onBeforeUnmount(() => {
           <img
             v-for="(p, i) in panels"
             :key="p.product.id"
-            :src="p.product.image"
+            :src="p.product.image.src"
+            :srcset="p.product.image.srcset"
+            sizes="(max-width: 720px) 100vw, 66vh"
             :alt="p.product.name"
             :class="{ on: i === active, past: i < active }"
             width="800"
@@ -193,7 +181,9 @@ onBeforeUnmount(() => {
         <img
           v-for="(row, i) in rows"
           :key="row.sub"
-          :src="row.image"
+          :src="row.image.src"
+          :srcset="row.image.srcset"
+          sizes="(max-width: 900px) 100vw, 40vw"
           alt=""
           :class="{ on: i === activeRow }"
           width="800"
@@ -235,7 +225,9 @@ onBeforeUnmount(() => {
         </h2>
         <div class="setup-frame">
           <img
-            :src="brassImg"
+            :src="setupPhoto.src"
+            :srcset="setupPhoto.srcset"
+            sizes="(max-width: 720px) 100vw, 30vw"
             alt="Brass T-Line"
             width="800"
             height="1000"
@@ -258,7 +250,16 @@ onBeforeUnmount(() => {
           <article v-for="(b, i) in blocks" :key="b.title" v-reveal class="block" :class="{ flip: i % 2 }">
             <h3 data-r>{{ b.title }}</h3>
             <div class="block-row">
-              <img :src="serviceImages[i]" alt="" width="420" height="560" loading="lazy" data-r />
+              <img
+                :src="serviceImages[i].src"
+                :srcset="serviceImages[i].srcset"
+                sizes="(max-width: 720px) 50vw, 200px"
+                alt=""
+                width="420"
+                height="560"
+                loading="lazy"
+                data-r
+              />
               <ul data-r>
                 <li v-for="line in b.lines" :key="line">{{ line }}</li>
               </ul>
@@ -273,9 +274,11 @@ onBeforeUnmount(() => {
       <div class="wrap gallery-lead">
         <p v-reveal>{{ t('gallery.text') }}</p>
       </div>
-      <figure v-for="(img, i) in galleryImages" :key="img" ref="galleryEls" class="shot">
+      <figure v-for="(img, i) in galleryImages" :key="img.src" ref="galleryEls" class="shot">
         <img
-          :src="img"
+          :src="img.src"
+          :srcset="img.srcset"
+          sizes="100vw"
           :alt="t('gallery.captions')[i]"
           :style="{ objectPosition: galleryFocus[i] }"
           width="1600"
