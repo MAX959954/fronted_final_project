@@ -13,9 +13,10 @@ Dark "stage at night" design, scroll-driven animation, six languages and a worki
 
 ## Features
 
-- **Catalogue** of 24 products across guitars, drums and accessories: department and sub-category filters, search, sorting and a price slider. Every filter lives in the URL, so a filtered view can be shared or bookmarked.
+- **Catalogue** of 23 products across guitars, drums and accessories: department and sub-category filters, search, sorting and a price slider. Every filter lives in the URL, so a filtered view can be shared or bookmarked.
 - **Product page** with specifications, quantity, favourites, related items and a **Soundcheck** button that synthesises the instrument in the browser with the Web Audio API (Karplus–Strong strings for guitars, a drum pattern for kits, filtered noise for cymbals). No audio files are downloaded.
 - **Cart and checkout**: quantity controls, free-delivery progress bar (free from €300, otherwise €15), form validation with accessible error messages, and an order confirmation page.
+- **Data over HTTP**: the catalogue and descriptions are fetched from an API layer, with skeletons while loading and an error screen with retry when the request fails.
 - **Persistence**: cart, favourites, past orders and the chosen language survive a reload (localStorage, with a safe fallback when storage is blocked).
 - **Six languages**: Russian, English, German, French, Chinese and Japanese, including product descriptions. Prices and dates are formatted per locale with `Intl`.
 - **Motion**: pinned hero, staggered section reveals, page transitions, animated cart badge and toasts. Everything respects `prefers-reduced-motion`.
@@ -26,6 +27,7 @@ Dark "stage at night" design, scroll-driven animation, six languages and a worki
 |           |                                                                           |
 | --------- | ------------------------------------------------------------------------- |
 | Framework | Vue 3 (Composition API, `<script setup>`)                                 |
+| Language  | TypeScript for types, API, stores, i18n and router; checked by vue-tsc    |
 | State     | Pinia                                                                     |
 | Routing   | Vue Router 4, lazy-loaded pages                                           |
 | Build     | Vite 7                                                                    |
@@ -37,16 +39,20 @@ Dark "stage at night" design, scroll-driven animation, six languages and a worki
 ## Project structure
 
 ```
+public/api/          the catalogue "API": products.json + descriptions/<locale>.json
 src/
+├── types.ts        domain types: Product, CartLine, Order, Customer…
+├── api/            HTTP client for the catalogue, typed responses, ApiError
 ├── pages/          route components (Home, Catalog, Product, Cart, Checkout, Order, Favorites, Credits, 404)
-├── components/     SiteHeader, SiteFooter, ProductCard, QtyStepper, SoundcheckButton, ToastStack
-├── stores/         Pinia stores: cart (incl. orders), favorites, app (toasts), persist helper
-├── data/           product catalogue, photo credits, responsive photo helper
-├── i18n/           translation runtime and one dictionary per locale
-├── composables/    useSoundcheck (Web Audio synthesis)
+├── components/     shared UI; CatalogGate (loading / error / ready), skeletons
+│   └── home/       one component per home-page section (Hero, Sound, Setup, Service, Gallery, Faq, Cta)
+├── stores/         Pinia: catalog (fetching + status), cart (incl. orders), favorites, app (toasts), persist
+├── data/           categories, photo credits, responsive photo helper
+├── i18n/           translation runtime; English built in, other dictionaries loaded on demand
+├── composables/    useScroll (one shared rAF scroll loop), useSoundcheck (Web Audio synthesis)
 ├── directives/     v-reveal (IntersectionObserver scroll reveal)
-└── styles/         global tokens, type scale, controls, motion
-e2e/                Playwright specs (full checkout flow, responsive images)
+└── styles/         global tokens, type scale, controls, motion, skeletons
+e2e/                Playwright: checkout flow, loading/error states, language switching, responsive images
 ```
 
 Unit tests live next to the code they cover, in `__tests__/` folders.
@@ -54,10 +60,11 @@ Unit tests live next to the code they cover, in `__tests__/` folders.
 ## Decisions worth explaining
 
 - **The cart stores only `{ id, qty }`.** Prices and names are always read from the catalogue, so a stale price in someone's localStorage can never reach checkout.
-- **A small hand-written i18n module instead of vue-i18n.** The app needs key lookup, `{param}` interpolation, arrays for lists and `Intl` formatting, in under 80 lines. A reactive `locale` ref means templates re-render on language change with no plugin. For a larger app with pluralisation rules I would switch to vue-i18n.
+- **The catalogue is fetched, not imported.** `src/api/products.ts` loads the static JSON in `public/api` exactly as it would call a backend; setting `VITE_API_URL` points it at a real service (for example Spring Boot) with no other change. A Pinia `catalog` store owns the request and its `idle → loading → ready | error` status, deduplicates concurrent loads and retries on demand. Pages wrap their content in `CatalogGate`, which shows a skeleton shaped like the page, then the content or an error with a retry button.
+- **A small hand-written i18n module instead of vue-i18n.** The app needs key lookup, `{param}` interpolation, structured entries (`tm()`) and `Intl` formatting, in about 100 lines. English is in the main bundle as the fallback; the other five dictionaries are separate chunks downloaded when chosen, and the switch happens only after the chunk has arrived, so the page never shows a half-translated frame. Every dictionary is typed as `Messages` (the shape of `en`), so a missing key is a compile error. For pluralisation rules I would switch to vue-i18n.
 - **Filters in the URL, not in a store.** The route query is the single source of truth for the catalogue, which gives back/forward navigation and shareable links for free.
 - **No payment form.** There is no backend, so checkout offers pay-on-delivery or bank transfer and stores the order locally instead of pretending to take card details.
-- **Photos are resized at build time.** The source JPGs stay in the repo; `src/data/images.js` asks vite-imagetools for WebP variants and every `<img>` gets a `srcset` plus `sizes` matched to its slot. A catalogue card on a phone downloads about 20 KB instead of a 300 KB original.
+- **Photos are resized at build time.** The source JPGs stay in the repo; `src/data/images.ts` asks vite-imagetools for WebP variants and every `<img>` gets a `srcset` plus `sizes` matched to its slot. A catalogue card on a phone downloads about 20 KB instead of a 300 KB original.
 - **Deep links on GitHub Pages.** Pages only serves real files, so `/catalog` opened directly would be a 404. A tiny Vite plugin copies `index.html` to `404.html` at build time; Pages serves it for unknown paths and Vue Router renders the right page.
 
 ## Getting started
@@ -71,6 +78,7 @@ npm run build     # production build into dist/
 npm run preview   # serve the production build locally
 
 npm run lint          # ESLint
+npm run typecheck     # vue-tsc
 npm run format        # Prettier (format:check only reports)
 npm test              # unit tests with Vitest (test:watch to keep it running)
 npm run test:e2e      # Playwright, against the production build
@@ -80,14 +88,14 @@ Before the first e2e run, download the browser once: `npx playwright install chr
 
 ## CI and deployment
 
-[`.github/workflows/deploy.yml`](.github/workflows/deploy.yml) runs on every push and pull request: lint, format check and unit tests in one job, Playwright on desktop and mobile Chrome in another. Only a push to `main` where both pass is built and published to GitHub Pages; a failed e2e run uploads the Playwright report as an artifact.
+[`.github/workflows/deploy.yml`](.github/workflows/deploy.yml) runs on every push and pull request: lint, type check, format check and unit tests in one job, Playwright on desktop and mobile Chrome in another. Only a push to `main` where both pass is built and published to GitHub Pages; a failed e2e run uploads the Playwright report as an artifact.
 One-time setup in the repository: **Settings → Pages → Build and deployment → Source: GitHub Actions**.
 
 ## Roadmap
 
-- Products served from a mock API, with loading and error states
-- TypeScript, starting with the product, cart and order types
-- Locale dictionaries loaded on demand instead of all six in the main bundle
+- A Spring Boot service for the catalogue and orders, plugged in through `VITE_API_URL`
+- `<script setup lang="ts">` in the remaining components, so templates are type-checked too
+- `useSoundcheck` in TypeScript
 
 ## Credits
 

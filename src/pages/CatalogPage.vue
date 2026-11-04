@@ -2,16 +2,19 @@
 import { computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from '@/i18n'
-import { products, CATEGORIES } from '@/data/products'
+import { CATEGORIES } from '@/data/categories'
+import { useCatalogStore } from '@/stores/catalog'
+import CatalogGate from '@/components/CatalogGate.vue'
+import ProductCardSkeleton from '@/components/ProductCardSkeleton.vue'
 import ProductCard from '@/components/ProductCard.vue'
 
-const { t, price, locale } = useI18n()
+const { t, price } = useI18n()
+const catalog = useCatalogStore()
 const route = useRoute()
 const router = useRouter()
 
-const TOP_PRICE = Math.max(...products.map((p) => p.price))
 const STEP = 10
-const CEILING = Math.ceil(TOP_PRICE / STEP) * STEP
+const ceiling = computed(() => Math.ceil(catalog.topPrice / STEP) * STEP)
 
 // Every filter lives in the URL, so a filtered view can be shared or bookmarked.
 const cat = computed(() => (CATEGORIES[route.query.cat] ? route.query.cat : ''))
@@ -20,7 +23,7 @@ const q = computed(() => String(route.query.q || ''))
 const sort = computed(() => (['pop', 'low', 'high', 'name'].includes(route.query.sort) ? route.query.sort : 'pop'))
 const max = computed(() => {
   const n = Number(route.query.max)
-  return Number.isFinite(n) && n > 0 ? Math.min(n, CEILING) : CEILING
+  return Number.isFinite(n) && n > 0 ? Math.min(n, ceiling.value) : ceiling.value
 })
 
 function setQuery(patch) {
@@ -29,7 +32,7 @@ function setQuery(patch) {
     if (next[key] === '' || next[key] == null) delete next[key]
   }
   if (next.sort === 'pop') delete next.sort
-  if (Number(next.max) >= CEILING) delete next.max
+  if (Number(next.max) >= ceiling.value) delete next.max
   router.replace({ query: next })
 }
 
@@ -38,12 +41,12 @@ const selectSub = (value) => setQuery({ sub: sub.value === value ? '' : value })
 
 const results = computed(() => {
   const needle = q.value.trim().toLowerCase()
-  const list = products.filter((p) => {
+  const list = catalog.products.filter((p) => {
     if (cat.value && p.cat !== cat.value) return false
     if (sub.value && p.sub !== sub.value) return false
     if (p.price > max.value) return false
     if (!needle) return true
-    const haystack = [p.name, t(`cats.${p.sub}`), p.text[locale.value] || p.text.en].join(' ').toLowerCase()
+    const haystack = [p.name, t(`cats.${p.sub}`), catalog.describe(p)].join(' ').toLowerCase()
     return haystack.includes(needle)
   })
   if (sort.value === 'low') return [...list].sort((a, b) => a.price - b.price)
@@ -55,96 +58,106 @@ const results = computed(() => {
 const title = computed(() =>
   sub.value ? t(`cats.${sub.value}`) : cat.value ? t(`cats.${cat.value}`) : t('catalog.title'),
 )
-const filtered = computed(() => cat.value || sub.value || q.value || max.value < CEILING)
+const filtered = computed(() => cat.value || sub.value || q.value || max.value < ceiling.value)
 </script>
 
 <template>
   <div class="page wrap catalog">
     <header class="head">
       <h1 class="page-title">{{ title }}</h1>
-      <p class="count muted" aria-live="polite">{{ t('catalog.count', { n: results.length }) }}</p>
+      <p v-if="catalog.status === 'ready'" class="count muted" aria-live="polite">
+        {{ t('catalog.count', { n: results.length }) }}
+      </p>
     </header>
 
-    <div class="controls">
-      <div class="depts" role="group" :aria-label="t('catalog.department')">
-        <button type="button" class="chip" :aria-pressed="!cat" @click="selectCat('')">{{ t('cats.all') }}</button>
-        <button
-          v-for="key in Object.keys(CATEGORIES)"
-          :key="key"
-          type="button"
-          class="chip"
-          :aria-pressed="cat === key"
-          @click="selectCat(key)"
-        >
-          {{ t(`cats.${key}`) }}
-        </button>
-      </div>
+    <CatalogGate>
+      <template #loading>
+        <ul class="grid">
+          <li v-for="n in 8" :key="n"><ProductCardSkeleton /></li>
+        </ul>
+      </template>
 
-      <Transition name="subs">
-        <div v-if="cat" :key="cat" class="subs" role="group" :aria-label="t(`cats.${cat}`)">
+      <div class="controls">
+        <div class="depts" role="group" :aria-label="t('catalog.department')">
+          <button type="button" class="chip" :aria-pressed="!cat" @click="selectCat('')">{{ t('cats.all') }}</button>
           <button
-            v-for="key in CATEGORIES[cat]"
+            v-for="key in Object.keys(CATEGORIES)"
             :key="key"
             type="button"
-            class="chip chip--sub"
-            :aria-pressed="sub === key"
-            @click="selectSub(key)"
+            class="chip"
+            :aria-pressed="cat === key"
+            @click="selectCat(key)"
           >
             {{ t(`cats.${key}`) }}
           </button>
         </div>
-      </Transition>
 
-      <div class="tools">
-        <div class="field search">
-          <label for="q" class="visually-hidden">{{ t('catalog.search') }}</label>
-          <input
-            id="q"
-            type="search"
-            :value="q"
-            :placeholder="t('catalog.search')"
-            autocomplete="off"
-            @input="setQuery({ q: $event.target.value })"
-          />
-        </div>
-        <div class="field">
-          <label for="sort" class="visually-hidden">{{ t('catalog.sort') }}</label>
-          <select id="sort" :value="sort" @change="setQuery({ sort: $event.target.value })">
-            <option value="pop">{{ t('catalog.sortPop') }}</option>
-            <option value="low">{{ t('catalog.sortLow') }}</option>
-            <option value="high">{{ t('catalog.sortHigh') }}</option>
-            <option value="name">{{ t('catalog.sortName') }}</option>
-          </select>
-        </div>
-        <div class="range">
-          <label for="max">{{ t('catalog.maxPrice', { price: price(max) }) }}</label>
-          <input
-            id="max"
-            type="range"
-            min="10"
-            :max="CEILING"
-            :step="STEP"
-            :value="max"
-            @input="setQuery({ max: $event.target.value })"
-          />
+        <Transition name="subs">
+          <div v-if="cat" :key="cat" class="subs" role="group" :aria-label="t(`cats.${cat}`)">
+            <button
+              v-for="key in CATEGORIES[cat]"
+              :key="key"
+              type="button"
+              class="chip chip--sub"
+              :aria-pressed="sub === key"
+              @click="selectSub(key)"
+            >
+              {{ t(`cats.${key}`) }}
+            </button>
+          </div>
+        </Transition>
+
+        <div class="tools">
+          <div class="field search">
+            <label for="q" class="visually-hidden">{{ t('catalog.search') }}</label>
+            <input
+              id="q"
+              type="search"
+              :value="q"
+              :placeholder="t('catalog.search')"
+              autocomplete="off"
+              @input="setQuery({ q: $event.target.value })"
+            />
+          </div>
+          <div class="field">
+            <label for="sort" class="visually-hidden">{{ t('catalog.sort') }}</label>
+            <select id="sort" :value="sort" @change="setQuery({ sort: $event.target.value })">
+              <option value="pop">{{ t('catalog.sortPop') }}</option>
+              <option value="low">{{ t('catalog.sortLow') }}</option>
+              <option value="high">{{ t('catalog.sortHigh') }}</option>
+              <option value="name">{{ t('catalog.sortName') }}</option>
+            </select>
+          </div>
+          <div class="range">
+            <label for="max">{{ t('catalog.maxPrice', { price: price(max) }) }}</label>
+            <input
+              id="max"
+              type="range"
+              min="10"
+              :max="ceiling"
+              :step="STEP"
+              :value="max"
+              @input="setQuery({ max: $event.target.value })"
+            />
+          </div>
         </div>
       </div>
-    </div>
 
-    <TransitionGroup v-if="results.length" tag="ul" name="grid" class="grid">
-      <li v-for="(p, i) in results" :key="p.id" :style="{ '--i': Math.min(i, 8) }">
-        <ProductCard :product="p" :eager="i < 4" />
-      </li>
-    </TransitionGroup>
+      <TransitionGroup v-if="results.length" tag="ul" name="grid" class="grid">
+        <li v-for="(p, i) in results" :key="p.id" :style="{ '--i': Math.min(i, 8) }">
+          <ProductCard :product="p" :eager="i < 4" />
+        </li>
+      </TransitionGroup>
 
-    <div v-else class="empty">
-      <p>{{ t('catalog.empty') }}</p>
-      <button type="button" class="btn" @click="router.replace({ query: {} })">{{ t('catalog.reset') }}</button>
-    </div>
+      <div v-else class="empty">
+        <p>{{ t('catalog.empty') }}</p>
+        <button type="button" class="btn" @click="router.replace({ query: {} })">{{ t('catalog.reset') }}</button>
+      </div>
 
-    <p v-if="filtered && results.length" class="reset-line">
-      <button type="button" class="link" @click="router.replace({ query: {} })">{{ t('catalog.reset') }}</button>
-    </p>
+      <p v-if="filtered && results.length" class="reset-line">
+        <button type="button" class="link" @click="router.replace({ query: {} })">{{ t('catalog.reset') }}</button>
+      </p>
+    </CatalogGate>
   </div>
 </template>
 

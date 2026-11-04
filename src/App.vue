@@ -2,6 +2,9 @@
 import SiteHeader from '@/components/SiteHeader.vue'
 import SiteFooter from '@/components/SiteFooter.vue'
 import ToastStack from '@/components/ToastStack.vue'
+import { useCatalogStore } from '@/stores/catalog'
+
+useCatalogStore().load()
 </script>
 
 <template>

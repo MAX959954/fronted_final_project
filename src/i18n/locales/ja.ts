@@ -1,5 +1,12 @@
-export default {
+import type { Messages } from './en'
+
+const ja: Messages = {
   meta: { title: 'Backline — ギター、ドラム、アクセサリー' },
+  state: {
+    loading: '読み込み中…',
+    error: 'カタログを読み込めませんでした。接続を確認して、もう一度お試しください。',
+    retry: '再試行',
+  },
   nav: {
     home: 'Backline',
     catalog: 'カタログ',
@@ -250,3 +257,5 @@ export default {
     favRemoved: '「{name}」をお気に入りから外しました',
   },
 }
+
+export default ja

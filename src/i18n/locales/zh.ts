@@ -1,5 +1,8 @@
-export default {
+import type { Messages } from './en'
+
+const zh: Messages = {
   meta: { title: 'Backline — 吉他、鼓与配件' },
+  state: { loading: '加载中…', error: '无法加载商品目录。请检查网络连接后重试。', retry: '重试' },
   nav: {
     home: 'Backline',
     catalog: '商品目录',
@@ -210,3 +213,5 @@ export default {
   notFound: { title: '走错舞台了', text: '这个页面不存在。', home: '回到首页' },
   toast: { added: '「{name}」已加入购物车', favAdded: '「{name}」已收藏', favRemoved: '「{name}」已取消收藏' },
 }
+
+export default zh

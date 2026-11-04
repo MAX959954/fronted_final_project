@@ -1,4 +1,5 @@
 <script setup>
+import CatalogGate from '@/components/CatalogGate.vue'
 import { computed } from 'vue'
 import { useI18n } from '@/i18n'
 import { useCartStore, FREE_SHIPPING_FROM } from '@/stores/cart'
@@ -15,80 +16,84 @@ const progress = computed(() => Math.min(1, cart.subtotal / FREE_SHIPPING_FROM))
   <div class="page wrap cart">
     <h1 class="page-title">{{ t('cart.title') }}</h1>
 
-    <div v-if="!cart.lines.length" class="empty">
-      <p>{{ t('cart.empty') }}</p>
-      <RouterLink to="/catalog" class="btn">{{ t('cart.browse') }}</RouterLink>
-    </div>
+    <CatalogGate>
+      <template #loading><div class="skeleton skeleton-block" /></template>
 
-    <div v-else class="layout">
-      <TransitionGroup tag="ul" name="line" class="lines">
-        <li v-for="line in cart.lines" :key="line.id" class="line">
-          <RouterLink :to="`/product/${line.id}`" class="thumb">
-            <img
-              :src="line.product.image.src"
-              :srcset="line.product.image.srcset"
-              sizes="160px"
-              :alt="line.product.name"
-              width="160"
-              height="200"
-              loading="lazy"
+      <div v-if="!cart.lines.length" class="empty">
+        <p>{{ t('cart.empty') }}</p>
+        <RouterLink to="/catalog" class="btn">{{ t('cart.browse') }}</RouterLink>
+      </div>
+
+      <div v-else class="layout">
+        <TransitionGroup tag="ul" name="line" class="lines">
+          <li v-for="line in cart.lines" :key="line.id" class="line">
+            <RouterLink :to="`/product/${line.id}`" class="thumb">
+              <img
+                :src="line.product.image.src"
+                :srcset="line.product.image.srcset"
+                sizes="160px"
+                :alt="line.product.name"
+                width="160"
+                height="200"
+                loading="lazy"
+              />
+            </RouterLink>
+            <div class="line-info">
+              <p class="muted sub">{{ t(`cats.${line.product.sub}`) }}</p>
+              <RouterLink :to="`/product/${line.id}`" class="link name">{{ line.product.name }}</RouterLink>
+              <p class="muted">{{ price(line.product.price) }}</p>
+            </div>
+            <QtyStepper
+              :model-value="line.qty"
+              :label="line.product.name"
+              @update:model-value="cart.setQty(line.id, $event)"
             />
-          </RouterLink>
-          <div class="line-info">
-            <p class="muted sub">{{ t(`cats.${line.product.sub}`) }}</p>
-            <RouterLink :to="`/product/${line.id}`" class="link name">{{ line.product.name }}</RouterLink>
-            <p class="muted">{{ price(line.product.price) }}</p>
-          </div>
-          <QtyStepper
-            :model-value="line.qty"
-            :label="line.product.name"
-            @update:model-value="cart.setQty(line.id, $event)"
-          />
-          <p class="line-total">{{ price(line.total) }}</p>
-          <button type="button" class="remove link" @click="cart.remove(line.id)">{{ t('cart.remove') }}</button>
-        </li>
-      </TransitionGroup>
+            <p class="line-total">{{ price(line.total) }}</p>
+            <button type="button" class="remove link" @click="cart.remove(line.id)">{{ t('cart.remove') }}</button>
+          </li>
+        </TransitionGroup>
 
-      <aside class="summary">
-        <div class="free">
-          <p>
-            {{
-              cart.leftForFreeShipping
-                ? t('cart.freeLeft', { amount: price(cart.leftForFreeShipping) })
-                : t('cart.freeDone')
-            }}
-          </p>
-          <div
-            class="meter"
-            role="progressbar"
-            :aria-valuenow="Math.round(progress * 100)"
-            aria-valuemin="0"
-            aria-valuemax="100"
-          >
-            <span :style="{ transform: `scaleX(${progress})` }" />
+        <aside class="summary">
+          <div class="free">
+            <p>
+              {{
+                cart.leftForFreeShipping
+                  ? t('cart.freeLeft', { amount: price(cart.leftForFreeShipping) })
+                  : t('cart.freeDone')
+              }}
+            </p>
+            <div
+              class="meter"
+              role="progressbar"
+              :aria-valuenow="Math.round(progress * 100)"
+              aria-valuemin="0"
+              aria-valuemax="100"
+            >
+              <span :style="{ transform: `scaleX(${progress})` }" />
+            </div>
           </div>
-        </div>
-        <dl>
-          <div>
-            <dt>{{ t('cart.subtotal') }}</dt>
-            <dd>{{ price(cart.subtotal) }}</dd>
+          <dl>
+            <div>
+              <dt>{{ t('cart.subtotal') }}</dt>
+              <dd>{{ price(cart.subtotal) }}</dd>
+            </div>
+            <div>
+              <dt>{{ t('cart.delivery') }}</dt>
+              <dd>{{ shipping ? price(shipping) : t('cart.free') }}</dd>
+            </div>
+            <div class="total">
+              <dt>{{ t('cart.total') }}</dt>
+              <dd>{{ price(cart.subtotal + shipping) }}</dd>
+            </div>
+          </dl>
+          <RouterLink to="/checkout" class="btn checkout">{{ t('cart.checkout') }}</RouterLink>
+          <div class="minor">
+            <RouterLink to="/catalog" class="link">{{ t('cart.continue') }}</RouterLink>
+            <button type="button" class="link muted" @click="cart.clear()">{{ t('cart.clear') }}</button>
           </div>
-          <div>
-            <dt>{{ t('cart.delivery') }}</dt>
-            <dd>{{ shipping ? price(shipping) : t('cart.free') }}</dd>
-          </div>
-          <div class="total">
-            <dt>{{ t('cart.total') }}</dt>
-            <dd>{{ price(cart.subtotal + shipping) }}</dd>
-          </div>
-        </dl>
-        <RouterLink to="/checkout" class="btn checkout">{{ t('cart.checkout') }}</RouterLink>
-        <div class="minor">
-          <RouterLink to="/catalog" class="link">{{ t('cart.continue') }}</RouterLink>
-          <button type="button" class="link muted" @click="cart.clear()">{{ t('cart.clear') }}</button>
-        </div>
-      </aside>
-    </div>
+        </aside>
+      </div>
+    </CatalogGate>
   </div>
 </template>
 

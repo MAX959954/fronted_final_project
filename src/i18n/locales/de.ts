@@ -1,5 +1,12 @@
-export default {
+import type { Messages } from './en'
+
+const de: Messages = {
   meta: { title: 'Backline — Gitarren, Drums und Zubehör' },
+  state: {
+    loading: 'Wird geladen…',
+    error: 'Der Katalog konnte nicht geladen werden. Prüfen Sie die Verbindung und versuchen Sie es erneut.',
+    retry: 'Erneut versuchen',
+  },
   nav: {
     home: 'Backline',
     catalog: 'Katalog',
@@ -257,3 +264,5 @@ export default {
     favRemoved: '„{name}“ von der Merkliste entfernt',
   },
 }
+
+export default de

@@ -1,4 +1,5 @@
 <script setup>
+import CatalogGate from '@/components/CatalogGate.vue'
 import { reactive, ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useI18n } from '@/i18n'
@@ -68,55 +69,20 @@ const fields = {
   <div class="page wrap checkout">
     <h1 class="page-title">{{ t('checkout.title') }}</h1>
 
-    <div v-if="!cart.lines.length && !sending" class="empty">
-      <p>{{ t('checkout.empty') }}</p>
-      <RouterLink to="/catalog" class="btn">{{ t('cart.browse') }}</RouterLink>
-    </div>
+    <CatalogGate>
+      <template #loading><div class="skeleton skeleton-block" /></template>
 
-    <form v-else class="layout" novalidate @submit.prevent="submit">
-      <div class="form">
-        <fieldset v-reveal>
-          <legend data-r>{{ t('checkout.contact') }}</legend>
-          <div class="grid" data-r>
-            <div v-for="f in fields.contact" :key="f.key" class="field" :class="{ wide: f.key === 'name' }">
-              <label :for="`f-${f.key}`">{{ t(`checkout.${f.key}`) }}</label>
-              <input
-                :id="`f-${f.key}`"
-                v-model="form[f.key]"
-                :type="f.type"
-                :autocomplete="f.auto"
-                :aria-invalid="!!errors[f.key]"
-                :aria-describedby="errors[f.key] ? `e-${f.key}` : undefined"
-              />
-              <p v-if="errors[f.key]" :id="`e-${f.key}`" class="error">{{ errors[f.key] }}</p>
-            </div>
-          </div>
-        </fieldset>
+      <div v-if="!cart.lines.length && !sending" class="empty">
+        <p>{{ t('checkout.empty') }}</p>
+        <RouterLink to="/catalog" class="btn">{{ t('cart.browse') }}</RouterLink>
+      </div>
 
-        <fieldset v-reveal>
-          <legend data-r>{{ t('checkout.delivery') }}</legend>
-          <div class="options" data-r>
-            <label class="option" :class="{ on: delivery === 'courier' }">
-              <input v-model="delivery" type="radio" value="courier" />
-              <span class="opt-title">{{ t('checkout.courier') }}</span>
-              <span class="muted"
-                >{{ t('checkout.courierNote') }} ·
-                {{ cart.shipping('courier') ? price(cart.shipping('courier')) : t('cart.free') }}</span
-              >
-            </label>
-            <label class="option" :class="{ on: delivery === 'pickup' }">
-              <input v-model="delivery" type="radio" value="pickup" />
-              <span class="opt-title">{{ t('checkout.pickup') }}</span>
-              <span class="muted">{{ t('checkout.pickupNote') }}</span>
-            </label>
-          </div>
-        </fieldset>
-
-        <Transition name="fold">
-          <fieldset v-if="needsAddress">
-            <legend>{{ t('checkout.address') }}</legend>
-            <div class="grid">
-              <div v-for="f in fields.address" :key="f.key" class="field" :class="{ wide: f.key === 'street' }">
+      <form v-else class="layout" novalidate @submit.prevent="submit">
+        <div class="form">
+          <fieldset v-reveal>
+            <legend data-r>{{ t('checkout.contact') }}</legend>
+            <div class="grid" data-r>
+              <div v-for="f in fields.contact" :key="f.key" class="field" :class="{ wide: f.key === 'name' }">
                 <label :for="`f-${f.key}`">{{ t(`checkout.${f.key}`) }}</label>
                 <input
                   :id="`f-${f.key}`"
@@ -130,64 +96,103 @@ const fields = {
               </div>
             </div>
           </fieldset>
-        </Transition>
 
-        <fieldset v-reveal>
-          <legend data-r>{{ t('checkout.payment') }}</legend>
-          <div class="options" data-r>
-            <label class="option" :class="{ on: payment === 'cod' }">
-              <input v-model="payment" type="radio" value="cod" />
-              <span class="opt-title">{{ t('checkout.cod') }}</span>
-            </label>
-            <label class="option" :class="{ on: payment === 'transfer' }">
-              <input v-model="payment" type="radio" value="transfer" />
-              <span class="opt-title">{{ t('checkout.transfer') }}</span>
-            </label>
+          <fieldset v-reveal>
+            <legend data-r>{{ t('checkout.delivery') }}</legend>
+            <div class="options" data-r>
+              <label class="option" :class="{ on: delivery === 'courier' }">
+                <input v-model="delivery" type="radio" value="courier" />
+                <span class="opt-title">{{ t('checkout.courier') }}</span>
+                <span class="muted"
+                  >{{ t('checkout.courierNote') }} ·
+                  {{ cart.shipping('courier') ? price(cart.shipping('courier')) : t('cart.free') }}</span
+                >
+              </label>
+              <label class="option" :class="{ on: delivery === 'pickup' }">
+                <input v-model="delivery" type="radio" value="pickup" />
+                <span class="opt-title">{{ t('checkout.pickup') }}</span>
+                <span class="muted">{{ t('checkout.pickupNote') }}</span>
+              </label>
+            </div>
+          </fieldset>
+
+          <Transition name="fold">
+            <fieldset v-if="needsAddress">
+              <legend>{{ t('checkout.address') }}</legend>
+              <div class="grid">
+                <div v-for="f in fields.address" :key="f.key" class="field" :class="{ wide: f.key === 'street' }">
+                  <label :for="`f-${f.key}`">{{ t(`checkout.${f.key}`) }}</label>
+                  <input
+                    :id="`f-${f.key}`"
+                    v-model="form[f.key]"
+                    :type="f.type"
+                    :autocomplete="f.auto"
+                    :aria-invalid="!!errors[f.key]"
+                    :aria-describedby="errors[f.key] ? `e-${f.key}` : undefined"
+                  />
+                  <p v-if="errors[f.key]" :id="`e-${f.key}`" class="error">{{ errors[f.key] }}</p>
+                </div>
+              </div>
+            </fieldset>
+          </Transition>
+
+          <fieldset v-reveal>
+            <legend data-r>{{ t('checkout.payment') }}</legend>
+            <div class="options" data-r>
+              <label class="option" :class="{ on: payment === 'cod' }">
+                <input v-model="payment" type="radio" value="cod" />
+                <span class="opt-title">{{ t('checkout.cod') }}</span>
+              </label>
+              <label class="option" :class="{ on: payment === 'transfer' }">
+                <input v-model="payment" type="radio" value="transfer" />
+                <span class="opt-title">{{ t('checkout.transfer') }}</span>
+              </label>
+            </div>
+            <p class="muted note" data-r>{{ t('checkout.payNote') }}</p>
+          </fieldset>
+
+          <div class="field">
+            <label for="f-comment">{{ t('checkout.comment') }}</label>
+            <textarea id="f-comment" v-model="form.comment" :placeholder="t('checkout.commentHint')" />
           </div>
-          <p class="muted note" data-r>{{ t('checkout.payNote') }}</p>
-        </fieldset>
-
-        <div class="field">
-          <label for="f-comment">{{ t('checkout.comment') }}</label>
-          <textarea id="f-comment" v-model="form.comment" :placeholder="t('checkout.commentHint')" />
         </div>
-      </div>
 
-      <aside class="summary">
-        <h2>{{ t('checkout.summary') }}</h2>
-        <ul class="items">
-          <li v-for="line in cart.lines" :key="line.id">
-            <img
-              :src="line.product.image.src"
-              :srcset="line.product.image.srcset"
-              sizes="56px"
-              alt=""
-              width="56"
-              height="70"
-            />
-            <span class="item-name"
-              >{{ line.product.name }} <span class="muted">× {{ line.qty }}</span></span
-            >
-            <span>{{ price(line.total) }}</span>
-          </li>
-        </ul>
-        <dl>
-          <div>
-            <dt>{{ t('cart.subtotal') }}</dt>
-            <dd>{{ price(cart.subtotal) }}</dd>
-          </div>
-          <div>
-            <dt>{{ t('cart.delivery') }}</dt>
-            <dd>{{ shipping ? price(shipping) : t('cart.free') }}</dd>
-          </div>
-          <div class="total">
-            <dt>{{ t('cart.total') }}</dt>
-            <dd>{{ price(cart.subtotal + shipping) }}</dd>
-          </div>
-        </dl>
-        <button type="submit" class="btn place" :disabled="sending">{{ t('checkout.place') }}</button>
-      </aside>
-    </form>
+        <aside class="summary">
+          <h2>{{ t('checkout.summary') }}</h2>
+          <ul class="items">
+            <li v-for="line in cart.lines" :key="line.id">
+              <img
+                :src="line.product.image.src"
+                :srcset="line.product.image.srcset"
+                sizes="56px"
+                alt=""
+                width="56"
+                height="70"
+              />
+              <span class="item-name"
+                >{{ line.product.name }} <span class="muted">× {{ line.qty }}</span></span
+              >
+              <span>{{ price(line.total) }}</span>
+            </li>
+          </ul>
+          <dl>
+            <div>
+              <dt>{{ t('cart.subtotal') }}</dt>
+              <dd>{{ price(cart.subtotal) }}</dd>
+            </div>
+            <div>
+              <dt>{{ t('cart.delivery') }}</dt>
+              <dd>{{ shipping ? price(shipping) : t('cart.free') }}</dd>
+            </div>
+            <div class="total">
+              <dt>{{ t('cart.total') }}</dt>
+              <dd>{{ price(cart.subtotal + shipping) }}</dd>
+            </div>
+          </dl>
+          <button type="submit" class="btn place" :disabled="sending">{{ t('checkout.place') }}</button>
+        </aside>
+      </form>
+    </CatalogGate>
   </div>
 </template>
 

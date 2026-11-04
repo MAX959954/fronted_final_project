@@ -1,7 +1,9 @@
 <script setup>
+import CatalogGate from '@/components/CatalogGate.vue'
 import { useI18n } from '@/i18n'
 import { useFavoritesStore } from '@/stores/favorites'
 import ProductCard from '@/components/ProductCard.vue'
+import ProductCardSkeleton from '@/components/ProductCardSkeleton.vue'
 
 const { t } = useI18n()
 const favs = useFavoritesStore()
@@ -11,14 +13,22 @@ const favs = useFavoritesStore()
   <div class="page wrap">
     <h1 class="page-title">{{ t('fav.title') }}</h1>
 
-    <TransitionGroup v-if="favs.items.length" tag="ul" name="grid" class="grid">
-      <li v-for="p in favs.items" :key="p.id"><ProductCard :product="p" /></li>
-    </TransitionGroup>
+    <CatalogGate>
+      <template #loading>
+        <ul class="grid">
+          <li v-for="n in 4" :key="n"><ProductCardSkeleton /></li>
+        </ul>
+      </template>
 
-    <div v-else class="empty">
-      <p>{{ t('fav.empty') }}</p>
-      <RouterLink to="/catalog" class="btn">{{ t('cart.browse') }}</RouterLink>
-    </div>
+      <TransitionGroup v-if="favs.items.length" tag="ul" name="grid" class="grid">
+        <li v-for="p in favs.items" :key="p.id"><ProductCard :product="p" /></li>
+      </TransitionGroup>
+
+      <div v-else class="empty">
+        <p>{{ t('fav.empty') }}</p>
+        <RouterLink to="/catalog" class="btn">{{ t('cart.browse') }}</RouterLink>
+      </div>
+    </CatalogGate>
   </div>
 </template>
 

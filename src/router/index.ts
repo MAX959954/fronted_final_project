@@ -1,7 +1,7 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router'
 import HomePage from '@/pages/HomePage.vue'
 
-const routes = [
+const routes: RouteRecordRaw[] = [
   { path: '/', name: 'Home', component: HomePage },
   { path: '/catalog', name: 'Catalog', component: () => import('@/pages/CatalogPage.vue') },
   { path: '/product/:id', name: 'Product', component: () => import('@/pages/ProductPage.vue') },
@@ -20,7 +20,7 @@ const router = createRouter({
     if (saved) return saved
     // Footer links point at home-page sections; wait for the page transition to finish first.
     if (to.hash) {
-      return new Promise((resolve) => {
+      return new Promise<{ el: string; top: number; behavior: ScrollBehavior }>((resolve) => {
         setTimeout(() => resolve({ el: to.hash, top: 88, behavior: 'smooth' }), from.path === to.path ? 0 : 400)
       })
     }

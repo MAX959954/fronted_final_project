@@ -2,83 +2,89 @@
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from '@/i18n'
-import { productById } from '@/data/products'
+import { useCatalogStore } from '@/stores/catalog'
+import CatalogGate from '@/components/CatalogGate.vue'
 import { useCartStore } from '@/stores/cart'
 
 const { t, price, date } = useI18n()
 const route = useRoute()
 const cart = useCartStore()
+const catalog = useCatalogStore()
 
 const order = computed(() => cart.findOrder(route.params.id))
 const lines = computed(() =>
-  (order.value?.items || []).map((i) => ({ ...i, product: productById(i.id) })).filter((l) => l.product),
+  (order.value?.items || []).map((i) => ({ ...i, product: catalog.productById(i.id) })).filter((l) => l.product),
 )
 </script>
 
 <template>
   <div class="page wrap order">
-    <template v-if="order">
-      <div v-reveal class="head">
-        <svg class="tick" data-r width="72" height="72" viewBox="0 0 72 72" aria-hidden="true">
-          <circle cx="36" cy="36" r="33" fill="var(--accent)" />
-          <path d="m22 37 9 9 19-20" fill="none" stroke="var(--accent-ink)" stroke-width="5" />
-        </svg>
-        <h1 class="page-title" data-r>{{ t('order.title') }}</h1>
-        <p class="lead" data-r>{{ t('order.text', { email: order.customer.email }) }}</p>
-      </div>
+    <CatalogGate>
+      <template #loading><div class="skeleton skeleton-block" /></template>
 
-      <div v-reveal class="body">
-        <dl class="meta" data-r>
-          <div>
-            <dt>{{ t('order.number') }}</dt>
-            <dd>{{ order.id }}</dd>
-          </div>
-          <div>
-            <dt>{{ t('order.date') }}</dt>
-            <dd>{{ date(order.date) }}</dd>
-          </div>
-          <div>
-            <dt>{{ t('cart.delivery') }}</dt>
-            <dd>{{ t(order.delivery === 'pickup' ? 'checkout.pickup' : 'checkout.courier') }}</dd>
-          </div>
-          <div>
-            <dt>{{ t('checkout.payment') }}</dt>
-            <dd>{{ t(order.payment === 'transfer' ? 'checkout.transfer' : 'checkout.cod') }}</dd>
-          </div>
-        </dl>
+      <template v-if="order">
+        <div v-reveal class="head">
+          <svg class="tick" data-r width="72" height="72" viewBox="0 0 72 72" aria-hidden="true">
+            <circle cx="36" cy="36" r="33" fill="var(--accent)" />
+            <path d="m22 37 9 9 19-20" fill="none" stroke="var(--accent-ink)" stroke-width="5" />
+          </svg>
+          <h1 class="page-title" data-r>{{ t('order.title') }}</h1>
+          <p class="lead" data-r>{{ t('order.text', { email: order.customer.email }) }}</p>
+        </div>
 
-        <section data-r aria-labelledby="items-h">
-          <h2 id="items-h">{{ t('order.items') }}</h2>
-          <ul class="items">
-            <li v-for="l in lines" :key="l.id">
-              <img
-                :src="l.product.image.src"
-                :srcset="l.product.image.srcset"
-                sizes="64px"
-                alt=""
-                width="64"
-                height="80"
-              />
-              <span
-                >{{ l.product.name }} <span class="muted">× {{ l.qty }}</span></span
-              >
-              <span>{{ price(l.price * l.qty) }}</span>
-            </li>
-          </ul>
-          <p class="total">
-            <span>{{ t('cart.total') }}</span>
-            <span>{{ price(order.total) }}</span>
-          </p>
-        </section>
-      </div>
+        <div v-reveal class="body">
+          <dl class="meta" data-r>
+            <div>
+              <dt>{{ t('order.number') }}</dt>
+              <dd>{{ order.id }}</dd>
+            </div>
+            <div>
+              <dt>{{ t('order.date') }}</dt>
+              <dd>{{ date(order.date) }}</dd>
+            </div>
+            <div>
+              <dt>{{ t('cart.delivery') }}</dt>
+              <dd>{{ t(order.delivery === 'pickup' ? 'checkout.pickup' : 'checkout.courier') }}</dd>
+            </div>
+            <div>
+              <dt>{{ t('checkout.payment') }}</dt>
+              <dd>{{ t(order.payment === 'transfer' ? 'checkout.transfer' : 'checkout.cod') }}</dd>
+            </div>
+          </dl>
 
-      <RouterLink to="/catalog" class="btn">{{ t('order.back') }}</RouterLink>
-    </template>
+          <section data-r aria-labelledby="items-h">
+            <h2 id="items-h">{{ t('order.items') }}</h2>
+            <ul class="items">
+              <li v-for="l in lines" :key="l.id">
+                <img
+                  :src="l.product.image.src"
+                  :srcset="l.product.image.srcset"
+                  sizes="64px"
+                  alt=""
+                  width="64"
+                  height="80"
+                />
+                <span
+                  >{{ l.product.name }} <span class="muted">× {{ l.qty }}</span></span
+                >
+                <span>{{ price(l.price * l.qty) }}</span>
+              </li>
+            </ul>
+            <p class="total">
+              <span>{{ t('cart.total') }}</span>
+              <span>{{ price(order.total) }}</span>
+            </p>
+          </section>
+        </div>
 
-    <template v-else>
-      <h1 class="page-title">{{ t('order.missing') }}</h1>
-      <RouterLink to="/catalog" class="btn">{{ t('order.back') }}</RouterLink>
-    </template>
+        <RouterLink to="/catalog" class="btn">{{ t('order.back') }}</RouterLink>
+      </template>
+
+      <template v-else>
+        <h1 class="page-title">{{ t('order.missing') }}</h1>
+        <RouterLink to="/catalog" class="btn">{{ t('order.back') }}</RouterLink>
+      </template>
+    </CatalogGate>
   </div>
 </template>
 

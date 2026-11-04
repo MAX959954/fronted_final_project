@@ -1,5 +1,10 @@
-export default {
+const en = {
   meta: { title: 'Backline — guitars, drums and gear' },
+  state: {
+    loading: 'Loading…',
+    error: 'The catalogue could not be loaded. Check your connection and try again.',
+    retry: 'Try again',
+  },
   nav: {
     home: 'Backline',
     catalog: 'Catalogue',
@@ -257,3 +262,7 @@ export default {
     favRemoved: '“{name}” removed from favourites',
   },
 }
+
+export type Messages = typeof en
+
+export default en

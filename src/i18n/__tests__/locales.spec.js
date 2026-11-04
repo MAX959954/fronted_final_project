@@ -1,17 +1,20 @@
 import { describe, it, expect } from 'vitest'
 import { LOCALES } from '@/i18n'
-import { products } from '@/data/products'
 import en from '@/i18n/locales/en'
 import ru from '@/i18n/locales/ru'
 import de from '@/i18n/locales/de'
 import fr from '@/i18n/locales/fr'
 import zh from '@/i18n/locales/zh'
 import ja from '@/i18n/locales/ja'
+import products from '../../../public/api/products.json'
 
 const dictionaries = { ru, de, fr, zh, ja }
+const descriptions = import.meta.glob('../../../public/api/descriptions/*.json', { eager: true, import: 'default' })
+const descriptionsFor = (code) => descriptions[`../../../public/api/descriptions/${code}.json`]
 
 // Flattens a dictionary into "path -> shape" pairs. Arrays keep their length in the shape,
 // so a FAQ entry missing in one language is caught as well as a missing key.
+// (TypeScript already checks keys; array lengths and placeholders are only checked here.)
 function shape(node, path = '', out = {}) {
   if (Array.isArray(node)) {
     out[path] = `array(${node.length})`
@@ -54,11 +57,15 @@ describe('locale files', () => {
       }
     })
   }
+})
 
-  it('every product has a description in every language', () => {
-    const codes = LOCALES.map((l) => l.code)
-    for (const p of products) {
-      for (const code of codes) expect(p.text[code], `${p.id} / ${code}`).toBeTruthy()
-    }
-  })
+describe('product descriptions (public/api/descriptions)', () => {
+  for (const { code } of LOCALES) {
+    it(`${code} describes every product and nothing else`, () => {
+      const texts = descriptionsFor(code)
+      expect(texts, `missing file for ${code}`).toBeDefined()
+      expect(Object.keys(texts).sort()).toEqual(products.map((p) => p.id).sort())
+      for (const [id, text] of Object.entries(texts)) expect(text.trim(), `${code} / ${id}`).not.toBe('')
+    })
+  }
 })
